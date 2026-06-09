@@ -37,22 +37,24 @@ export const KIT_GROUPS: KitGroup[] = [
 export default function Sidebar() {
   return (
     <nav className="kit-sidebar" aria-label="Navegação do UI Kit">
-      {KIT_GROUPS.map((g) => (
-        <div className="kit-group" key={g.title}>
-          <p className="kit-group-title gsfs-ui-label">{g.title}</p>
-          {g.items.map((it) => (
-            <NavLink
-              key={it.slug}
-              to={`/ui-kit/${it.slug}`}
-              className={({ isActive }) =>
-                'kit-link' + (isActive ? ' is-active' : '')
-              }
-            >
-              {it.label}
-            </NavLink>
-          ))}
-        </div>
-      ))}
+      <div className="kit-sidebar-sticky">
+        {KIT_GROUPS.map((g) => (
+          <div className="kit-group" key={g.title}>
+            <p className="kit-group-title gsfs-ui-label">{g.title}</p>
+            {g.items.map((it) => (
+              <NavLink
+                key={it.slug}
+                to={`/ui-kit/${it.slug}`}
+                className={({ isActive }) =>
+                  'kit-link' + (isActive ? ' is-active' : '')
+                }
+              >
+                {it.label}
+              </NavLink>
+            ))}
+          </div>
+        ))}
+      </div>
     </nav>
   )
 }
