@@ -12,10 +12,13 @@ export function DocSection({ title, desc, children }: { title: string; desc?: st
   )
 }
 
-export function DocBlock({ title, children }: { title: string; children: ReactNode }) {
+export function DocBlock({ title, code, children }: { title: string; code?: string; children: ReactNode }) {
   return (
     <div className="doc-block">
-      <h2 className="gsfs-h3">{title}</h2>
+      <h2 className="gsfs-h3">
+        {title}
+        {code && <code className="doc-block-code">{code}</code>}
+      </h2>
       <div className="doc-grid">{children}</div>
     </div>
   )

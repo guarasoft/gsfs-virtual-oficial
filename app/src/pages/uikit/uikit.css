@@ -48,6 +48,18 @@
 .doc-section .doc-desc { color: var(--color-text-muted); max-width: 64ch; margin: 0; }
 .doc-block { margin-bottom: var(--space-12); }
 .doc-block h2 { margin: 0 0 var(--space-4); color: var(--color-text-strong); }
+.doc-block-code {
+  margin-left: 10px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--color-text-muted);
+  background: var(--color-bg-raised);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 2px 6px;
+  vertical-align: middle;
+}
 .doc-grid {
   display: flex;
   flex-wrap: wrap;
