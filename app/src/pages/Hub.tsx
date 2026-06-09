@@ -2,12 +2,14 @@ import { Link } from 'react-router-dom'
 
 // Hub = portal de review interno. Não é o produto final.
 // Cada card leva ao entregável de uma fase.
+type CardTone = 'approved' | 'pending' | 'soon'
 type Card = {
   to: string
   phase: string
   name: string
   desc: string
   tag: string
+  tone: CardTone
   enabled: boolean
 }
 
@@ -17,7 +19,8 @@ const cards: Card[] = [
     phase: 'Fase 1',
     name: 'Wireframes',
     desc: 'Arquitetura de informação e fluxos em baixa fidelidade (cinza/estrutural). Jornada em 8 etapas.',
-    tag: 'Em andamento',
+    tag: 'Aprovada',
+    tone: 'approved',
     enabled: true,
   },
   {
@@ -25,7 +28,8 @@ const cards: Card[] = [
     phase: 'Fase 2',
     name: 'UI Kit',
     desc: 'Linguagem visual e componentes (cores, tipografia, HUD, painéis de sensor).',
-    tag: 'Em andamento',
+    tag: 'Aguardando validação',
+    tone: 'pending',
     enabled: true,
   },
   {
@@ -34,6 +38,7 @@ const cards: Card[] = [
     name: 'Protótipo',
     desc: 'O simulador de alta fidelidade, navegável e determinístico. É o produto entregue ao cliente.',
     tag: 'Em breve',
+    tone: 'soon',
     enabled: false,
   },
 ]
@@ -55,7 +60,7 @@ export default function Hub() {
               <div className="hub-card-phase">{c.phase}</div>
               <div className="hub-card-name">{c.name}</div>
               <div className="hub-card-desc">{c.desc}</div>
-              <span className="hub-card-tag">{c.tag}</span>
+              <span className={`hub-card-tag hub-card-tag--${c.tone}`}>{c.tag}</span>
             </>
           )
           return c.enabled ? (
