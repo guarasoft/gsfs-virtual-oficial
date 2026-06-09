@@ -70,6 +70,25 @@
   padding: 2px 6px;
 }
 
+/* ---- Tipografia: espécimes empilhados em coluna ---- */
+.type-group-title { margin: 0 0 var(--space-4); color: var(--color-text-strong); }
+.type-panel {
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 0 var(--space-6);
+  margin-bottom: var(--space-12);
+}
+.type-row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-6) 0;
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+.type-row:last-child { border-bottom: none; }
+.type-spec { color: var(--color-text-muted); }
+
 /* ---- Swatch de cor (grade alinhada) ---- */
 .swatch {
   width: 112px;
