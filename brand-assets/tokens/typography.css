@@ -1,0 +1,181 @@
+/* ============================================================
+   GSFS Virtual — Tokens de Tipografia
+   Versão: 0.2
+   Data: 2026-05-26
+
+   Definições oficiais do cliente (GSFS Visual Identity System v1.0):
+
+   FONTE PRIMÁRIA: EXO 2 — hierarquia editorial/marca:
+     H1 / HEADLINE   Exo 2 ExtraBold (800)   48/56
+     H2 / SUBHEAD    Exo 2 Bold      (700)   28/36
+     H3 / SECTION    Exo 2 SemiBold  (600)   18/24
+     BODY / COPY     Exo 2 Regular   (400)   14/22
+     CAPS / LABEL    Exo 2 Medium    (500)   12/16
+
+   FONTE SECUNDÁRIA: INTER — "Used for UI, captions, and data interfaces".
+     Aplica-se à camada funcional do simulador (HUD, painéis, tabelas,
+     leituras de dados, legendas). Usar numerais tabulares em métricas.
+
+   COMPLEMENTO RESULT (não coberto pelo cliente):
+     MONO  → JetBrains Mono : apenas para strings que exigem alinhamento
+             monoespaçado (hash hex de 64 chars, coordenadas em coluna).
+
+   Fontes self-hosted (.woff2) em brand-assets/fonts/ — declaradas abaixo.
+   Alternativa em dev (CDN): @import do Google Fonts (Exo 2 / Inter / JetBrains Mono).
+   Os caminhos url() são relativos a este arquivo (tokens/); o bundler da Fase 3
+   pode remapeá-los conforme a estrutura de build.
+   ============================================================ */
+
+/* ---------- Exo 2 (primária) ---------- */
+@font-face { font-family: 'Exo 2'; font-style: normal; font-weight: 400; font-display: swap;
+  src: url('../fonts/exo-2-v26-latin/exo-2-v26-latin-regular.woff2') format('woff2'); }
+@font-face { font-family: 'Exo 2'; font-style: normal; font-weight: 500; font-display: swap;
+  src: url('../fonts/exo-2-v26-latin/exo-2-v26-latin-500.woff2') format('woff2'); }
+@font-face { font-family: 'Exo 2'; font-style: normal; font-weight: 600; font-display: swap;
+  src: url('../fonts/exo-2-v26-latin/exo-2-v26-latin-600.woff2') format('woff2'); }
+@font-face { font-family: 'Exo 2'; font-style: normal; font-weight: 700; font-display: swap;
+  src: url('../fonts/exo-2-v26-latin/exo-2-v26-latin-700.woff2') format('woff2'); }
+@font-face { font-family: 'Exo 2'; font-style: normal; font-weight: 800; font-display: swap;
+  src: url('../fonts/exo-2-v26-latin/exo-2-v26-latin-800.woff2') format('woff2'); }
+
+/* ---------- Inter (secundária) ---------- */
+@font-face { font-family: 'Inter'; font-style: normal; font-weight: 400; font-display: swap;
+  src: url('../fonts/inter-v20-latin/inter-v20-latin-regular.woff2') format('woff2'); }
+@font-face { font-family: 'Inter'; font-style: normal; font-weight: 500; font-display: swap;
+  src: url('../fonts/inter-v20-latin/inter-v20-latin-500.woff2') format('woff2'); }
+@font-face { font-family: 'Inter'; font-style: normal; font-weight: 600; font-display: swap;
+  src: url('../fonts/inter-v20-latin/inter-v20-latin-600.woff2') format('woff2'); }
+@font-face { font-family: 'Inter'; font-style: normal; font-weight: 700; font-display: swap;
+  src: url('../fonts/inter-v20-latin/inter-v20-latin-700.woff2') format('woff2'); }
+
+/* ---------- JetBrains Mono (complemento Result) ---------- */
+@font-face { font-family: 'JetBrains Mono'; font-style: normal; font-weight: 400; font-display: swap;
+  src: url('../fonts/jetbrains-mono-v24-latin/jetbrains-mono-v24-latin-regular.woff2') format('woff2'); }
+@font-face { font-family: 'JetBrains Mono'; font-style: normal; font-weight: 500; font-display: swap;
+  src: url('../fonts/jetbrains-mono-v24-latin/jetbrains-mono-v24-latin-500.woff2') format('woff2'); }
+
+:root {
+  /* ---------- Famílias ---------- */
+  --font-primary:   'Exo 2', system-ui, 'Segoe UI', sans-serif;        /* cliente: marca/títulos */
+  --font-secondary: 'Inter', system-ui, 'Segoe UI', sans-serif;        /* cliente: UI/captions/dados */
+  --font-mono:      'JetBrains Mono', 'Consolas', ui-monospace, monospace; /* complemento Result */
+
+  /* Aliases de papel */
+  --font-display: var(--font-primary);   /* títulos/marca */
+  --font-ui:      var(--font-secondary); /* interface funcional */
+
+  /* ---------- Pesos (conforme spec do cliente) ---------- */
+  --fw-regular:   400; /* Body */
+  --fw-medium:    500; /* Caps/Label */
+  --fw-semibold:  600; /* H3 */
+  --fw-bold:      700; /* H2 */
+  --fw-extrabold: 800; /* H1 */
+
+  /* ---------- Tamanhos da hierarquia oficial (base 16px) ---------- */
+  --fs-h1:    3rem;      /* 48px */
+  --fs-h2:    1.75rem;   /* 28px */
+  --fs-h3:    1.125rem;  /* 18px */
+  --fs-body:  0.875rem;  /* 14px */
+  --fs-caps:  0.75rem;   /* 12px */
+
+  /* ---------- Entrelinhas da hierarquia oficial (unitless = px/px) ---------- */
+  --lh-h1:    1.167; /* 56/48 */
+  --lh-h2:    1.286; /* 36/28 */
+  --lh-h3:    1.333; /* 24/18 */
+  --lh-body:  1.571; /* 22/14 */
+  --lh-caps:  1.333; /* 16/12 */
+
+  /* ---------- Tamanhos auxiliares (não cobertos pelo cliente; uso no simulador) ---------- */
+  --fs-metric-lg: 2.5rem;  /* 40px — números grandes de HUD */
+  --fs-metric:    2rem;    /* 32px — métricas de destaque */
+  --fs-data:      0.875rem;/* 14px — dados mono */
+  --fs-display:   3.25rem; /* 52px — hero/boot institucional */
+
+  /* ---------- Espaçamento entre letras ---------- */
+  --ls-tight:   -0.01em;
+  --ls-normal:  0;
+  --ls-wide:    0.04em;  /* labels técnicos em caixa alta */
+  --ls-wider:   0.08em;  /* HUD / status em caixa alta */
+}
+
+/* ============================================================
+   Classes utilitárias — hierarquia oficial do cliente
+   ============================================================ */
+
+.gsfs-h1 {
+  font-family: var(--font-primary);
+  font-weight: var(--fw-extrabold);
+  font-size: var(--fs-h1);
+  line-height: var(--lh-h1);
+  letter-spacing: var(--ls-tight);
+}
+
+.gsfs-h2 {
+  font-family: var(--font-primary);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-h2);
+  line-height: var(--lh-h2);
+}
+
+.gsfs-h3 {
+  font-family: var(--font-primary);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-h3);
+  line-height: var(--lh-h3);
+}
+
+.gsfs-body {
+  font-family: var(--font-primary);
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+}
+
+.gsfs-caps {
+  font-family: var(--font-primary);
+  font-weight: var(--fw-medium);
+  font-size: var(--fs-caps);
+  line-height: var(--lh-caps);
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+}
+
+/* ============================================================
+   Camada funcional — Inter (secundária do cliente)
+   ============================================================ */
+
+/* Texto de interface, captions, leituras de dados (HUD, painéis, tabelas) */
+.gsfs-ui {
+  font-family: var(--font-secondary);
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+}
+
+/* Label de UI funcional em caixa alta (HUD/status) */
+.gsfs-ui-label {
+  font-family: var(--font-secondary);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-caps);
+  line-height: var(--lh-caps);
+  letter-spacing: var(--ls-wider);
+  text-transform: uppercase;
+}
+
+/* Métricas numéricas: Inter com numerais tabulares para não "dançar" ao animar */
+.gsfs-metric {
+  font-family: var(--font-secondary);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-metric);
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
+}
+
+/* Strings monoespaçadas (complemento Result): hash hex, coordenadas em coluna */
+.gsfs-data {
+  font-family: var(--font-mono);
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-data);
+  letter-spacing: var(--ls-normal);
+}

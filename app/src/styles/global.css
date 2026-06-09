@@ -1,0 +1,151 @@
+/* ============================================================
+   GSFS Virtual — estilos globais do PORTAL DE REVIEW (hub).
+   NÃO é o visual do produto. O produto (Fase 3) vive em /prototype.
+   O visual de marca (cores, tipografia) é Fase 2 — aqui é neutro.
+   ============================================================ */
+
+:root {
+  --hub-bg: #14161a;
+  --hub-surface: #1d2026;
+  --hub-surface-2: #23272f;
+  --hub-line: #333842;
+  --hub-text: #e6e8ec;
+  --hub-text-dim: #9aa1ab;
+  --hub-text-faint: #6b7280;
+  --hub-accent: #c7ccd4; /* neutro de propósito — sem cor de marca */
+}
+
+* { box-sizing: border-box; }
+
+html, body, #root {
+  margin: 0;
+  min-height: 100%;
+  background: var(--hub-bg);
+  color: var(--hub-text);
+  font-family: ui-sans-serif, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* ---- Layout base do hub ---- */
+.hub {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 64px 32px 96px;
+}
+
+.hub-kicker {
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--hub-text-faint);
+  margin: 0 0 10px;
+}
+.hub-title {
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0 0 8px;
+}
+.hub-sub {
+  font-size: 15px;
+  color: var(--hub-text-dim);
+  margin: 0 0 40px;
+  max-width: 60ch;
+  line-height: 1.5;
+}
+
+.hub-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 18px;
+}
+
+.hub-card {
+  display: block;
+  background: var(--hub-surface);
+  border: 1px solid var(--hub-line);
+  border-radius: 12px;
+  padding: 24px;
+  transition: border-color 120ms ease, transform 120ms ease, background 120ms ease;
+}
+.hub-card:hover {
+  border-color: #4a505c;
+  background: var(--hub-surface-2);
+  transform: translateY(-2px);
+}
+.hub-card[aria-disabled='true'] {
+  opacity: 0.5;
+  pointer-events: none;
+}
+.hub-card-phase {
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--hub-text-faint);
+}
+.hub-card-name {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 8px 0 6px;
+}
+.hub-card-desc {
+  font-size: 14px;
+  color: var(--hub-text-dim);
+  line-height: 1.5;
+}
+.hub-card-tag {
+  display: inline-block;
+  margin-top: 14px;
+  font-size: 12px;
+  color: var(--hub-text-faint);
+  border: 1px solid var(--hub-line);
+  border-radius: 999px;
+  padding: 2px 10px;
+}
+
+.hub-footer {
+  margin-top: 48px;
+  font-size: 12px;
+  color: var(--hub-text-faint);
+}
+
+/* ---- Barra de navegação de review (volta ao hub) ---- */
+.review-bar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 20px;
+  background: var(--hub-surface);
+  border-bottom: 1px solid var(--hub-line);
+  font-size: 13px;
+  color: var(--hub-text-dim);
+}
+.review-bar a.back {
+  color: var(--hub-text);
+  border: 1px solid var(--hub-line);
+  border-radius: 8px;
+  padding: 6px 12px;
+}
+.review-bar a.back:hover { border-color: #4a505c; }
+.review-bar .crumb { color: var(--hub-text-faint); }
+
+/* ---- Page genérica (placeholders ui-kit / prototype) ---- */
+.placeholder {
+  max-width: 720px;
+  margin: 80px auto;
+  padding: 0 32px;
+  text-align: center;
+  color: var(--hub-text-dim);
+}
+.placeholder h1 { color: var(--hub-text); font-size: 26px; margin-bottom: 12px; }
+.placeholder p { line-height: 1.6; }
+
+/* ---- Palco que centraliza o "tablet" do wireframe ---- */
+.tablet-stage {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 28px 16px 64px;
+  background: #0f1013;
+  min-height: calc(100vh - 50px);
+}

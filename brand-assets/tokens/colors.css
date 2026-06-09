@@ -1,0 +1,255 @@
+/* ============================================================
+   GSFS Virtual — Tokens de Cor
+   Versão: 0.2 (proposta Result — sujeito a validação do cliente)
+   Data: 2026-05-26
+
+   Estrutura em 3 camadas:
+   1. PRIMITIVAS  — paleta de marca + escalas tonais (valores absolutos)
+   2. SEMÂNTICAS  — papéis funcionais (bg, texto, primária, status...)
+   3. SIMULADOR   — tokens específicos do GSFS (estados, sensores, confiança)
+
+   NOTA: as 7 cores entregues pelo cliente estão preservadas como
+   --gsfs-* (compatibilidade) e mapeadas para as escalas.
+   ============================================================ */
+
+:root {
+  /* ---------- 1. PRIMITIVAS: marca original (cliente) ---------- */
+  --gsfs-deep-navy:        #0A1324;
+  --gsfs-deep-blue:        #0D1F3A;
+  --gsfs-steel-blue:       #1E3A5F;
+  --gsfs-technical-cyan:   #00B6C8;
+  --gsfs-controlled-green: #7ED321;
+  --gsfs-light-gray:       #E6EAF0;
+  --gsfs-white:            #FFFFFF;
+
+  /* ---------- 1. PRIMITIVAS: escala NAVY (fundos escuros) ---------- */
+  --navy-950: #0A1324; /* = deep-navy  (fundo da aplicação) */
+  --navy-900: #0D1F3A; /* = deep-blue  (superfície) */
+  --navy-800: #14294A; /* superfície elevada */
+  --navy-700: #1E3A5F; /* = steel-blue (bordas/elevações) */
+  --navy-600: #2B4F7E;
+  --navy-500: #3A659E;
+
+  /* ---------- 1. PRIMITIVAS: escala CYAN (primária) ---------- */
+  --cyan-50:  #E0F7FA;
+  --cyan-100: #B8EEF3;
+  --cyan-200: #8AE3EC;
+  --cyan-300: #5AD7E4;
+  --cyan-400: #2BC8D9;
+  --cyan-500: #00B6C8; /* = technical-cyan (marca) */
+  --cyan-600: #0095A4;
+  --cyan-700: #007580;
+  --cyan-800: #00565E;
+  --cyan-900: #00383D;
+
+  /* ---------- 1. PRIMITIVAS: escala GREEN (sucesso/confirmado) ---------- */
+  --green-50:  #F0FBE2;
+  --green-100: #DCF5BD;
+  --green-200: #C2ED90;
+  --green-300: #A6E563;
+  --green-400: #8FDB3D;
+  --green-500: #7ED321; /* = controlled-green (marca) */
+  --green-600: #66B015;
+  --green-700: #4E8A10;
+  --green-800: #3A660C;
+  --green-900: #284807;
+
+  /* ---------- 1. PRIMITIVAS: escala AMBER (alerta/suspeita) — NOVA ---------- */
+  --amber-50:  #FFF6E5;
+  --amber-100: #FFE7B8;
+  --amber-200: #FFD588;
+  --amber-300: #FFC152;
+  --amber-400: #FFB02E;
+  --amber-500: #F5A623; /* proposta de cor de alerta */
+  --amber-600: #D9870D;
+  --amber-700: #AD6A0A;
+  --amber-800: #824F08;
+  --amber-900: #573504;
+
+  /* ---------- 1. PRIMITIVAS: escala RED (erro/crítico/descartado) — NOVA ---------- */
+  --red-50:  #FDECEC;
+  --red-100: #FBD0D0;
+  --red-200: #F7A8A8;
+  --red-300: #F27F7F;
+  --red-400: #ED5A5A;
+  --red-500: #E5484D; /* proposta de cor de erro */
+  --red-600: #C7363B;
+  --red-700: #9E2A2E;
+  --red-800: #761F22;
+  --red-900: #4F1517;
+
+  /* ---------- 1. PRIMITIVAS: escala NEUTRAL (cinzas azulados) ---------- */
+  --neutral-0:   #FFFFFF; /* = white */
+  --neutral-50:  #F5F7FA;
+  --neutral-100: #E6EAF0; /* = light-gray */
+  --neutral-200: #C9D2E0;
+  --neutral-300: #A6B2C6;
+  --neutral-400: #8190A8;
+  --neutral-500: #5F6E88;
+  --neutral-600: #455068;
+  --neutral-700: #303A4E;
+  --neutral-800: #1E2536;
+  --neutral-900: #0E1322;
+
+  /* ============================================================
+     2. SEMÂNTICAS (tema escuro — padrão do GSFS)
+     ============================================================ */
+
+  /* Fundos e superfícies */
+  --color-bg:            var(--navy-950);
+  --color-bg-surface:    var(--navy-900);
+  --color-bg-raised:     var(--navy-800);
+  --color-bg-overlay:    rgba(10, 19, 36, 0.85);
+
+  /* Bordas */
+  --color-border:        var(--navy-700);
+  --color-border-subtle: var(--navy-800);
+  --color-border-strong: var(--cyan-700);
+
+  /* Texto */
+  --color-text:          var(--neutral-100);
+  --color-text-strong:   var(--neutral-0);
+  --color-text-muted:    var(--neutral-400);
+  --color-text-disabled: var(--neutral-500);
+  --color-text-inverse:  var(--navy-950);
+
+  /* Primária (ação/destaque) */
+  --color-primary:        var(--cyan-500);
+  --color-primary-hover:  var(--cyan-400);
+  --color-primary-active: var(--cyan-600);
+  --color-on-primary:     var(--navy-950);
+
+  /* Acento secundário */
+  --color-accent:         var(--green-500);
+
+  /* Feedback / status */
+  --color-success:        var(--green-500);
+  --color-success-bg:     rgba(126, 211, 33, 0.12);
+  --color-warning:        var(--amber-500);
+  --color-warning-bg:     rgba(245, 166, 35, 0.12);
+  --color-danger:         var(--red-500);
+  --color-danger-bg:      rgba(229, 72, 77, 0.12);
+  --color-info:           var(--cyan-500);
+  --color-info-bg:        rgba(0, 182, 200, 0.12);
+
+  /* Foco / acessibilidade */
+  --color-focus-ring:     var(--cyan-400);
+
+  /* ============================================================
+     3. SIMULADOR (mapeamento direto ao Roteiro e ao Teto de Métricas)
+     ============================================================ */
+
+  /* Estados de detecção (Cenário 4 e gerais) */
+  --sim-state-confirmed:  var(--green-500); /* "CONFIRMADO" */
+  --sim-state-suspect:    var(--amber-500); /* "SUSPEITA"   */
+  --sim-state-discarded:  var(--red-500);   /* "DESCARTADO" */
+
+  /* Níveis de confiança */
+  --sim-confidence-high:   var(--green-500);
+  --sim-confidence-medium: var(--amber-500);
+  --sim-confidence-low:    var(--red-400);
+
+  /* Zona de degradação de sinal (Cenário 4) */
+  --sim-degradation:       rgba(229, 72, 77, 0.18); /* preenchimento da faixa */
+  --sim-degradation-edge:  var(--red-600);
+
+  /* Bateria (HUD) */
+  --sim-battery-ok:        var(--green-500);
+  --sim-battery-warn:      var(--amber-500);
+  --sim-battery-critical:  var(--red-500);
+
+  /* Temperatura (HUD) */
+  --sim-temp-normal:       var(--cyan-500);
+  --sim-temp-elevated:     var(--amber-500);
+  --sim-temp-critical:     var(--red-500);
+
+  /* Status de sensor (ON/OFF/ERR) */
+  --sim-sensor-on:         var(--green-500);
+  --sim-sensor-off:        var(--neutral-500);
+  --sim-sensor-err:        var(--red-500);
+
+  /* Status GNSS-RTK */
+  --sim-rtk-fix:           var(--green-500);
+  --sim-rtk-float:         var(--amber-500);
+  --sim-rtk-nofix:         var(--red-500);
+
+  /* Cores de identidade por sensor (painéis) */
+  --sensor-gpr:            var(--cyan-500);
+  --sensor-emi:            var(--amber-400);
+  --sensor-imu:            var(--green-500);
+  --sensor-gnss:           var(--cyan-300);
+
+  /* Gradiente do mapa de calor EMI (frio → quente) */
+  --emi-heat-0:   var(--navy-800);
+  --emi-heat-25:  var(--cyan-600);
+  --emi-heat-50:  var(--green-500);
+  --emi-heat-75:  var(--amber-500);
+  --emi-heat-100: var(--red-500);
+
+  /* ============================================================
+     4. ESTADOS INTERATIVOS (hover / active / disabled / foco)
+     ============================================================ */
+
+  /* Sobreposições genéricas de estado (aplicáveis a qualquer alvo clicável) */
+  --state-hover-overlay:    rgba(255, 255, 255, 0.06);
+  --state-active-overlay:   rgba(255, 255, 255, 0.12);
+  --state-selected-overlay: rgba(0, 182, 200, 0.16); /* ciano translúcido */
+  --state-disabled-opacity: 0.4;
+
+  /* Anel de foco (WCAG 2.4.7 — foco visível) */
+  --focus-ring-color:  var(--color-focus-ring);
+  --focus-ring-width:  2px;
+  --focus-ring-offset: 2px;
+
+  /* Botão primário */
+  --btn-primary-bg:          var(--color-primary);
+  --btn-primary-bg-hover:    var(--color-primary-hover);
+  --btn-primary-bg-active:   var(--color-primary-active);
+  --btn-primary-fg:          var(--color-on-primary);
+  --btn-primary-bg-disabled: var(--navy-700);
+  --btn-primary-fg-disabled: var(--neutral-500);
+
+  /* Botão secundário (contorno) */
+  --btn-secondary-border:    var(--color-border-strong);
+  --btn-secondary-fg:        var(--color-primary);
+  --btn-secondary-bg-hover:  var(--color-info-bg);
+  --btn-secondary-fg-disabled: var(--neutral-500);
+
+  /* Botão fantasma / texto */
+  --btn-ghost-fg:            var(--color-text);
+  --btn-ghost-bg-hover:      var(--state-hover-overlay);
+
+  /* Botão de perigo (ações destrutivas) */
+  --btn-danger-bg:           var(--color-danger);
+  --btn-danger-fg:           var(--neutral-0);
+
+  /* Campos de entrada */
+  --input-bg:            var(--color-bg-raised);
+  --input-border:        var(--color-border);
+  --input-border-hover:  var(--navy-600);
+  --input-border-focus:  var(--color-focus-ring);
+  --input-border-error:  var(--color-danger);
+  --input-fg:            var(--color-text);
+  --input-placeholder:   var(--color-text-muted);
+  --input-bg-disabled:   var(--navy-900);
+
+  /* Seleção de texto */
+  --selection-bg: rgba(0, 182, 200, 0.30);
+  --selection-fg: var(--neutral-0);
+
+  /* ============================================================
+     5. EXPRESSÃO DE MARCA
+     Gradiente oficial do cliente (palette bar, v1.0): navy → cyan → green
+     ============================================================ */
+  --gradient-brand: linear-gradient(90deg,
+    var(--navy-950) 0%,
+    var(--steel-blue, #1E3A5F) 35%,
+    var(--cyan-500) 70%,
+    var(--green-500) 100%);
+
+  /* Variante vertical (para barras laterais / divisores) */
+  --gradient-brand-v: linear-gradient(180deg,
+    var(--navy-950) 0%,
+    var(--cyan-500) 70%,
+    var(--green-500) 100%);
+}

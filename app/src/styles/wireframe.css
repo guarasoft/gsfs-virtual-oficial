@@ -1,0 +1,596 @@
+/* ============================================================
+   MODO WIREFRAME — Fase 1 (baixa fidelidade).
+   Tudo escopado em .wf. CINZA / ESTRUTURAL DE PROPÓSITO:
+   sem cor de marca, sem tipografia final, sem ícones.
+   Cor/tipografia/componentes = Fase 2 (UI Kit).
+
+   Referência: tablet 1280×800 (landscape, 16:10).
+   O .wf-screen usa container queries (cqh/cqw) para escalar
+   proporcionalmente em qualquer tamanho — responsivo de verdade.
+   ============================================================ */
+
+.wf {
+  --bg: #ececee;
+  --panel: #f7f7f8;
+  --row: #fbfbfc;
+  --line: #b7b7bc;
+  --line-2: #cdced2;
+  --text: #2c2c30;
+  --dim: #6c6c72;
+  --faint: #97979d;
+  --chip: #dcdce0;
+  font-family: ui-sans-serif, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* O "tablet" 1280×800 ----------------------------------------- */
+.wf-screen {
+  width: min(1280px, 96vw);
+  aspect-ratio: 16 / 10;
+  container-type: size;
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  box-shadow: 0 0 0 10px #1a1c20, 0 18px 50px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* Overlay de confirmação (modal) dentro da tela */
+.wf-modal-overlay {
+  position: absolute; inset: 0; z-index: 10;
+  background: rgba(20, 22, 26, 0.5);
+  display: grid; place-items: center;
+}
+.wf-modal {
+  width: min(52cqw, 88%);
+  background: var(--bg); border: 1px solid var(--line); border-radius: 10px;
+  padding: 3cqh 2.4cqw; display: flex; flex-direction: column; gap: 1.6cqh;
+  box-shadow: 0 12cqh 30cqh rgba(0, 0, 0, 0.35);
+}
+.wf-modal-h { font-size: 2.2cqh; font-weight: 700; color: var(--text); }
+.wf-modal-body { font-size: 1.6cqh; color: var(--dim); line-height: 1.45; }
+.wf-modal-body strong { color: var(--text); }
+.wf-modal-actions { display: flex; justify-content: flex-end; gap: 1.2cqw; margin-top: 0.6cqh; }
+
+/* Barra superior --------------------------------------------- */
+.wf-topbar {
+  flex: 0 0 auto;
+  height: 11cqh;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 3cqw;
+  background: var(--panel);
+  border-bottom: 1px solid var(--line);
+}
+.wf-brand { display: flex; align-items: center; gap: 1.6cqw; }
+.wf-logo {
+  width: 7cqh; height: 7cqh;
+  display: grid; place-items: center;
+  background: var(--chip);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  font-size: 1.2cqh; font-weight: 700; color: var(--dim);
+}
+.wf-title strong { display: block; font-size: 2.6cqh; font-weight: 700; color: var(--text); letter-spacing: 0.3px; }
+.wf-title small { display: block; font-size: 1.35cqh; color: var(--faint); letter-spacing: 0.4px; }
+.wf-meta { text-align: right; }
+.wf-meta div { font-size: 1.35cqh; color: var(--faint); line-height: 1.5; }
+
+/* Rodapé ----------------------------------------------------- */
+.wf-footer {
+  flex: 0 0 auto;
+  height: 5.2cqh;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 3cqw;
+  background: var(--panel);
+  border-top: 1px solid var(--line);
+  font-size: 1.4cqh;
+  color: var(--faint);
+}
+
+/* Barras de progresso reutilizáveis --------------------------- */
+.wf-bar {
+  position: relative;
+  height: 1.5cqh;
+  background: var(--chip);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.wf-bar > span { position: absolute; left: 0; top: 0; bottom: 0; background: var(--dim); border-radius: 999px; }
+
+/* ====================== E1a — SPLASH ======================== */
+.wf-splash {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2.4cqh;
+  text-align: center;
+}
+.wf-splash-logo {
+  width: 34cqw; height: 19cqh;
+  display: grid; place-items: center;
+  background: var(--chip);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-size: 3.2cqh; font-weight: 700; color: var(--dim);
+}
+.wf-tagline { font-size: 1.8cqh; color: var(--dim); letter-spacing: 1px; }
+.wf-init { font-size: 2cqh; font-weight: 700; letter-spacing: 1.5px; color: var(--text); }
+.wf-splash .wf-bar { width: 42cqw; }
+.wf-caption { font-size: 1.7cqh; color: var(--dim); max-width: 50cqw; }
+
+/* ================== E1b — DIAGNÓSTICO ======================= */
+.wf-diag {
+  flex: 1;
+  display: flex;
+  gap: 2.2cqw;
+  padding: 3cqh 3cqw 1cqh;
+  min-height: 0;
+}
+.wf-panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 2.4cqh 1.8cqw;
+  display: flex;
+  flex-direction: column;
+  gap: 1.6cqh;
+}
+.wf-panel.left { flex: 1.15; }
+.wf-panel.right { flex: 1; align-items: stretch; }
+.wf-panel-h { font-size: 2.3cqh; font-weight: 700; color: var(--text); }
+.wf-panel-sub { font-size: 1.5cqh; color: var(--dim); margin-top: -0.8cqh; }
+
+.wf-cols { display: flex; gap: 1.4cqw; }
+.wf-col { flex: 1; display: flex; flex-direction: column; gap: 1cqh; }
+.wf-item {
+  display: flex; align-items: center; justify-content: space-between; gap: 1cqw;
+  min-height: 6.6cqh;
+  padding: 1cqh 1.2cqw;
+  background: var(--row);
+  border: 1px solid var(--line-2);
+  border-radius: 4px;
+}
+.wf-item .label { font-size: 1.6cqh; color: var(--text); }
+.wf-state { display: flex; align-items: center; gap: 0.8cqw; font-size: 1.45cqh; font-weight: 700; }
+.wf-state.ok { color: var(--text); }
+.wf-state.test { color: var(--dim); }
+.wf-state.wait { color: var(--faint); }
+.wf-mini { width: 4cqw; height: 0.9cqh; }
+
+/* Painel de telemetria */
+.wf-radar {
+  flex: 0 0 auto;
+  height: 26cqh;
+  display: grid; place-items: center;
+  background: #e3e3e6;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font-size: 1.7cqh; color: var(--dim);
+}
+.wf-sensors { text-align: center; font-size: 1.5cqh; font-weight: 700; color: var(--dim); letter-spacing: 0.5px; }
+.wf-tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1cqh 1.4cqw; }
+.wf-tile {
+  display: flex; flex-direction: column; gap: 0.4cqh;
+  padding: 1.2cqh 1.2cqw;
+  background: var(--row);
+  border: 1px solid var(--line-2);
+  border-radius: 4px;
+}
+.wf-tile .t-label { font-size: 1.3cqh; color: var(--faint); }
+.wf-tile .t-value { font-size: 2.2cqh; font-weight: 700; color: var(--text); }
+
+/* Progresso geral (faixa inferior do diagnóstico) */
+.wf-progress-geral { padding: 0 3cqw 2cqh; display: flex; flex-direction: column; gap: 1cqh; }
+.wf-progress-geral .pg-label { font-size: 1.5cqh; font-weight: 700; color: var(--dim); letter-spacing: 0.5px; }
+
+/* ====================== E2 — MENU / INÍCIO ================== */
+.wf-menu {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3cqh;
+  padding: 2cqh 4cqw;
+}
+.wf-menu-logo {
+  width: 22cqw; height: 13cqh;
+  display: grid; place-items: center;
+  background: var(--chip);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-size: 2.4cqh; font-weight: 700; color: var(--dim);
+}
+.wf-welcome { font-size: 2.6cqh; font-weight: 700; color: var(--text); letter-spacing: 0.5px; }
+.wf-welcome-sub { font-size: 1.7cqh; color: var(--dim); margin-top: 0.6cqh; }
+
+.wf-actions { display: flex; gap: 2.4cqw; width: 100%; max-width: 72cqw; }
+.wf-action {
+  flex: 1;
+  display: flex; flex-direction: column; gap: 0.8cqh;
+  padding: 3cqh 2.4cqw;
+  background: var(--row);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+.wf-action-k { font-size: 1.3cqh; letter-spacing: 1.5px; text-transform: uppercase; color: var(--faint); }
+.wf-action-name { font-size: 2.8cqh; font-weight: 700; color: var(--text); }
+.wf-action-desc { font-size: 1.55cqh; color: var(--dim); line-height: 1.4; }
+.wf-action-go { margin-top: 1cqh; font-size: 1.4cqh; color: var(--faint); }
+
+.wf-status {
+  display: flex; gap: 3cqw; align-items: center;
+  padding: 1.4cqh 2.4cqw;
+  background: var(--panel);
+  border: 1px solid var(--line-2);
+  border-radius: 6px;
+}
+.wf-status .dot { font-size: 1.5cqh; color: var(--dim); }
+.wf-status .dot strong { color: var(--text); font-weight: 700; }
+
+/* ====================== E3 — SETUP DE MISSÃO =============== */
+.wf-setup { flex: 1; display: flex; flex-direction: column; gap: 2.2cqh; padding: 2.6cqh 3cqw; min-height: 0; }
+.wf-field { display: flex; flex-direction: column; gap: 0.8cqh; }
+.wf-label { font-size: 1.35cqh; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--faint); }
+.wf-select {
+  font: inherit; font-size: 2cqh; color: var(--text);
+  background: var(--row); border: 1px solid var(--line); border-radius: 6px;
+  padding: 1.3cqh 1.4cqw;
+}
+.wf-setup-cols { display: flex; gap: 2.4cqw; flex: 1; min-height: 0; }
+.wf-setup-col { flex: 1; display: flex; flex-direction: column; gap: 1.8cqh; }
+
+.wf-seg { display: flex; gap: 0.8cqw; }
+.wf-seg .opt {
+  flex: 1; text-align: center; padding: 1.1cqh 0.4cqw;
+  font-family: inherit; font-size: 1.5cqh; color: var(--faint);
+  background: var(--bg); border: 1px solid var(--line-2); border-radius: 6px;
+}
+.wf-seg .opt.active { background: var(--chip); color: var(--text); font-weight: 700; border-color: var(--line); }
+.wf-seg button.opt { cursor: pointer; }
+.wf-seg button.opt:hover { border-color: var(--line); color: var(--text); }
+
+/* Área híbrida (manual): campos livres X × Y + atalhos */
+.wf-area { display: flex; align-items: center; gap: 0.8cqw; }
+.wf-area input {
+  width: 8cqw; font: inherit; font-size: 1.7cqh; text-align: center;
+  padding: 0.9cqh 0.4cqw; background: var(--row);
+  border: 1px solid var(--line); border-radius: 6px; color: var(--text);
+}
+.wf-area .x { font-size: 1.7cqh; color: var(--dim); }
+.wf-area .unit { font-size: 1.5cqh; color: var(--dim); }
+.wf-area-presets { display: flex; gap: 0.6cqw; flex-wrap: wrap; margin-top: 0.8cqh; }
+.wf-area-preset {
+  font: inherit; font-size: 1.3cqh; padding: 0.5cqh 0.9cqw;
+  background: var(--bg); border: 1px solid var(--line-2); border-radius: 999px;
+  color: var(--dim); cursor: pointer;
+}
+.wf-area-preset:hover { border-color: var(--line); color: var(--text); }
+
+.wf-readout {
+  font-size: 1.9cqh; color: var(--text);
+  padding: 1.1cqh 1.2cqw; background: var(--row);
+  border: 1px solid var(--line-2); border-radius: 6px;
+}
+.wf-readout.empty { color: var(--faint); }
+
+.wf-summary {
+  background: var(--panel); border: 1px solid var(--line); border-radius: 8px;
+  padding: 2cqh 1.6cqw; display: flex; flex-direction: column; gap: 1.2cqh; flex: 1;
+}
+.wf-summary-h { font-size: 2cqh; font-weight: 700; color: var(--text); }
+.wf-summary-row { font-size: 1.55cqh; color: var(--dim); }
+.wf-summary-row strong { color: var(--text); }
+.wf-chips { display: flex; flex-wrap: wrap; gap: 0.8cqh 0.8cqw; }
+.wf-chip {
+  font-size: 1.4cqh; color: var(--text);
+  background: var(--chip); border: 1px solid var(--line); border-radius: 999px;
+  padding: 0.5cqh 1cqw;
+}
+.wf-note { font-size: 1.5cqh; color: var(--dim); font-style: italic; line-height: 1.4; }
+
+.wf-ctx { display: flex; flex-direction: column; gap: 0.9cqh; }
+.wf-ctx-row {
+  display: flex; justify-content: space-between; gap: 1cqw;
+  font-size: 1.55cqh; color: var(--dim);
+  border-bottom: 1px solid var(--line-2); padding-bottom: 0.9cqh;
+}
+.wf-ctx-row strong { color: var(--text); font-weight: 700; }
+.wf-ctx-row > span { text-transform: uppercase; letter-spacing: 0.4px; font-size: 1.3cqh; color: var(--faint); }
+.wf-seg-note { font-size: 1.25cqh; color: var(--dim); margin-top: 0.3cqh; }
+.wf-ctx-map {
+  flex: 1; min-height: 13cqh; margin-top: 0.6cqh;
+  display: grid; place-items: center;
+  background: #e3e3e6; border: 1px solid var(--line); border-radius: 6px;
+  font-size: 1.5cqh; color: var(--dim);
+}
+
+.wf-actions-bar { display: flex; justify-content: space-between; align-items: center; gap: 1.4cqw; }
+.wf-btn {
+  font: inherit; font-size: 1.9cqh; font-weight: 700; color: var(--text);
+  background: var(--chip); border: 1px solid var(--line); border-radius: 8px;
+  padding: 1.3cqh 2.4cqw; cursor: pointer;
+}
+.wf-btn[disabled] { opacity: 0.45; cursor: default; }
+.wf-btn-ghost { background: transparent; color: var(--dim); font-weight: 400; }
+
+/* ====================== E4 — VARREDURA ===================== */
+.wf-scan { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+
+/* HUD persistente */
+.wf-hud {
+  display: flex; align-items: center; gap: 4.5cqw;
+  padding: 1.3cqh 3cqw;
+  background: var(--panel); border-bottom: 1px solid var(--line);
+}
+.wf-hud-prog { flex: 1; display: flex; flex-direction: column; gap: 0.6cqh; min-width: 18cqw; }
+.wf-hud-prog .row { display: flex; justify-content: space-between; font-size: 1.3cqh; color: var(--dim); }
+.wf-hud-prog .row strong { color: var(--text); }
+.wf-hud-metrics { display: flex; gap: 2.4cqw; align-items: flex-start; }
+.wf-hud-metric { display: flex; flex-direction: column; gap: 0.3cqh; }
+.wf-hud-metric .lbl { font-size: 1.05cqh; letter-spacing: 0.6px; text-transform: uppercase; color: var(--faint); }
+.wf-hud-metric .val { font-size: 1.55cqh; font-weight: 700; color: var(--text); white-space: nowrap; }
+.wf-hud-sensors { display: flex; gap: 0.7cqw; }
+.wf-sdot {
+  font-size: 1.15cqh; padding: 0.5cqh 0.8cqw;
+  border: 1px solid var(--line-2); border-radius: 999px; color: var(--faint);
+}
+.wf-sdot.on { background: var(--chip); color: var(--text); font-weight: 700; border-color: var(--line); }
+.wf-hud-ops { display: flex; gap: 0.6cqw; margin-left: 0.4cqw; }
+.wf-hud-ops .op {
+  font: inherit; font-size: 1.25cqh; color: var(--text);
+  background: var(--row); border: 1px solid var(--line); border-radius: 6px;
+  padding: 0.5cqh 0.9cqw; cursor: pointer; white-space: nowrap;
+}
+.wf-hud-ops .op:hover { border-color: var(--dim); }
+
+/* Aba flutuante de ações (E4) + sheet lateral */
+.wf-fab {
+  position: absolute; right: 0; top: 50%; transform: translateY(-50%); z-index: 6;
+  writing-mode: vertical-rl;
+  background: var(--chip); color: var(--text);
+  border: 1px solid var(--line); border-right: none; border-radius: 8px 0 0 8px;
+  padding: 2.2cqh 1cqw; cursor: pointer;
+  font: inherit; font-size: 1.4cqh; font-weight: 700; letter-spacing: 1.5px;
+  box-shadow: -1cqh 0 6cqh rgba(0, 0, 0, 0.15);
+}
+.wf-fab:hover { background: var(--line-2); }
+.wf-fab-left {
+  right: auto; left: 0;
+  border: 1px solid var(--line); border-left: none;
+  border-radius: 0 8px 8px 0;
+  box-shadow: 1cqh 0 6cqh rgba(0, 0, 0, 0.15);
+}
+
+.wf-sheet-overlay { position: absolute; inset: 0; z-index: 8; background: rgba(20, 22, 26, 0.4); }
+.wf-sheet {
+  position: absolute; right: 0; top: 0; bottom: 0; z-index: 9;
+  width: min(36cqw, 82%);
+  background: var(--bg); border-left: 1px solid var(--line);
+  box-shadow: -4cqh 0 22cqh rgba(0, 0, 0, 0.3);
+  display: flex; flex-direction: column; gap: 1.6cqh; padding: 3cqh 2cqw;
+}
+.wf-sheet-top { display: flex; justify-content: space-between; align-items: center; }
+.wf-sheet-h { font-size: 2.2cqh; font-weight: 700; color: var(--text); }
+.wf-sheet-close { font: inherit; font-size: 2cqh; background: transparent; border: none; color: var(--dim); cursor: pointer; }
+.wf-sheet-actions { display: flex; flex-direction: column; gap: 1.4cqh; margin-top: 1cqh; }
+.wf-sheet-btn {
+  font: inherit; text-align: left; cursor: pointer;
+  display: flex; flex-direction: column; gap: 0.6cqh;
+  padding: 2.4cqh 1.6cqw; border: 1px solid var(--line); border-radius: 10px;
+  background: var(--row); color: var(--text);
+}
+.wf-sheet-btn .t { font-size: 2.1cqh; font-weight: 700; }
+.wf-sheet-btn small { font-size: 1.45cqh; font-weight: 400; color: var(--dim); }
+.wf-sheet-btn:hover { border-color: var(--dim); }
+
+/* Corpo: grade de sensores + rail */
+.wf-scan-body { flex: 1; display: flex; gap: 1.6cqw; padding: 1.6cqh 3cqw; min-height: 0; }
+.wf-sensor-grid {
+  flex: 2.2; display: grid;
+  grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr;
+  gap: 1.4cqh 1.4cqw; min-height: 0;
+}
+.wf-sensor { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; display: flex; flex-direction: column; min-height: 0; }
+.wf-sensor-h {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0.9cqh 1cqw; border-bottom: 1px solid var(--line-2);
+  font-size: 1.4cqh; font-weight: 700; color: var(--text);
+}
+.wf-sensor-h .tag { font-size: 1.15cqh; font-weight: 400; color: var(--faint); }
+.wf-sensor-body { flex: 1; display: grid; place-items: center; text-align: center; color: var(--dim); font-size: 1.4cqh; padding: 0.6cqh 1cqw; }
+
+.wf-rail { flex: 1; display: flex; flex-direction: column; gap: 1.6cqh; min-height: 0; }
+.wf-rail-panel { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; display: flex; flex-direction: column; min-height: 0; }
+.wf-rail-panel.log { flex: 1; }
+.wf-rail-h { padding: 1cqh 1.2cqw; border-bottom: 1px solid var(--line-2); font-size: 1.35cqh; font-weight: 700; color: var(--text); letter-spacing: 0.5px; }
+.wf-det-item { display: flex; justify-content: space-between; gap: 1cqw; padding: 1cqh 1.2cqw; border-bottom: 1px solid var(--line-2); }
+.wf-det-item .d-name { font-size: 1.5cqh; color: var(--text); font-weight: 700; }
+.wf-det-item .d-meta { font-size: 1.4cqh; color: var(--dim); }
+.wf-det-empty { padding: 1cqh 1.2cqw; font-size: 1.35cqh; color: var(--faint); font-style: italic; }
+.wf-log { padding: 0.9cqh 1.2cqw; display: flex; flex-direction: column; gap: 0.7cqh; overflow: hidden; }
+.wf-log-line { font-size: 1.3cqh; color: var(--dim); }
+.wf-log-line .t { color: var(--faint); margin-right: 0.6cqw; }
+
+/* E4 — estados extras: alerta de detecção, ruído/CA-06, fusão */
+.wf-alert {
+  display: flex; align-items: center; gap: 1.4cqw;
+  padding: 1.2cqh 3cqw;
+  background: var(--chip); border-bottom: 1px solid var(--line);
+}
+.wf-alert .pulse { width: 1.3cqh; height: 1.3cqh; border-radius: 999px; background: var(--dim); flex: 0 0 auto; }
+.wf-alert .lead { font-size: 1.6cqh; font-weight: 700; color: var(--text); letter-spacing: 0.5px; }
+.wf-alert .info { font-size: 1.5cqh; color: var(--dim); }
+.wf-tag {
+  font-size: 1.1cqh; font-weight: 700; letter-spacing: 0.3px;
+  padding: 0.3cqh 0.7cqw; border: 1px solid var(--line); border-radius: 4px;
+  color: var(--text); background: var(--chip);
+}
+.wf-sensor-note { margin-top: 1.2cqh; font-size: 1.25cqh; color: var(--dim); }
+.wf-det-item.discarded .d-name { text-decoration: line-through; color: var(--faint); }
+.wf-det-item.discarded .d-meta { color: var(--faint); }
+.wf-det-item.suspect .d-name { font-style: italic; color: var(--dim); font-weight: 400; }
+.wf-fusao { padding: 1cqh 1.2cqw; font-size: 1.35cqh; color: var(--dim); border-top: 1px solid var(--line-2); }
+.wf-fusao strong { color: var(--text); }
+
+/* ============== E5 — RESULTADO + BLOCO 3D ================= */
+/* Estado: Consolidando (selagem do GSFS_RECORD) */
+.wf-consol {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 2.4cqh; padding: 2cqh 4cqw;
+}
+.wf-consol-h { font-size: 2.4cqh; font-weight: 700; color: var(--text); letter-spacing: 0.5px; }
+.wf-consol-steps { display: flex; flex-direction: column; gap: 1.1cqh; width: min(58cqw, 100%); }
+.wf-consol-step {
+  display: flex; justify-content: space-between;
+  padding: 1.2cqh 1.4cqw; background: var(--row);
+  border: 1px solid var(--line-2); border-radius: 6px; font-size: 1.6cqh; color: var(--text);
+}
+.wf-consol-step .st { font-weight: 700; color: var(--dim); }
+.wf-consol .wf-bar { width: min(48cqw, 100%); }
+.wf-consol-cap { font-size: 1.5cqh; color: var(--dim); }
+
+/* Estado: Resultado (bloco 3D + legenda) */
+.wf-result { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+.wf-result-body { flex: 1; display: flex; gap: 1.6cqw; padding: 1.8cqh 3cqw; min-height: 0; }
+.wf-3d {
+  flex: 2; display: grid; place-items: center; text-align: center;
+  background: #e3e3e6; border: 1px solid var(--line); border-radius: 8px;
+  color: var(--dim); font-size: 1.7cqh; padding: 2cqh;
+}
+.wf-3d small { display: block; margin-top: 1cqh; font-size: 1.3cqh; color: var(--faint); }
+.wf-legend {
+  flex: 1; display: flex; flex-direction: column; gap: 1.1cqh;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 8px;
+  padding: 1.8cqh 1.4cqw; min-height: 0; overflow: hidden;
+}
+.wf-legend-h { font-size: 1.9cqh; font-weight: 700; color: var(--text); }
+.wf-legend-row { display: flex; justify-content: space-between; gap: 1cqw; font-size: 1.5cqh; color: var(--dim); }
+.wf-legend-row strong { color: var(--text); }
+.wf-legend-sub { font-size: 1.3cqh; font-weight: 700; letter-spacing: 0.5px; color: var(--faint); margin-top: 0.6cqh; }
+.wf-asset { display: flex; justify-content: space-between; gap: 1cqw; font-size: 1.45cqh; padding: 0.7cqh 0; border-bottom: 1px solid var(--line-2); }
+.wf-asset .a-name { color: var(--text); font-weight: 700; }
+.wf-asset .a-meta { color: var(--dim); }
+.wf-hash {
+  font-family: ui-monospace, 'JetBrains Mono', Consolas, monospace;
+  font-size: 1.2cqh; color: var(--text); word-break: break-all;
+  background: var(--bg); border: 1px solid var(--line-2); border-radius: 4px; padding: 0.9cqh 1cqw;
+}
+.wf-result-actions { display: flex; justify-content: flex-end; gap: 1.2cqw; padding: 0 3cqw 1.6cqh; }
+.wf-disclaimer { margin-top: auto; font-size: 1.2cqh; color: var(--faint); font-style: italic; line-height: 1.4; }
+
+/* ====================== E6 — EXPORTAÇÃO ==================== */
+.wf-export { flex: 1; display: flex; flex-direction: column; min-height: 0; padding: 2cqh 3cqw 2.4cqh; gap: 1.6cqh; }
+.wf-backlink { align-self: flex-start; font-size: 1.4cqh; color: var(--dim); }
+.wf-backlink:hover { text-decoration: underline; color: var(--text); }
+.wf-export-head { display: flex; justify-content: space-between; align-items: baseline; gap: 2cqw; }
+.wf-export-head .h { font-size: 2.2cqh; font-weight: 700; color: var(--text); }
+.wf-export-head .sub { font-size: 1.4cqh; color: var(--dim); }
+
+.wf-export-cards { display: flex; gap: 2cqw; flex: 1; min-height: 0; }
+.wf-export-card {
+  flex: 1; display: flex; flex-direction: column; gap: 1.2cqh;
+  padding: 2.2cqh 1.8cqw; background: var(--row);
+  border: 1px solid var(--line); border-radius: 8px;
+}
+.wf-export-card .icon {
+  height: 13cqh; display: grid; place-items: center;
+  background: var(--chip); border: 1px solid var(--line-2); border-radius: 6px;
+  font-size: 2.6cqh; font-weight: 700; color: var(--dim);
+}
+.wf-export-card .name { font-size: 2cqh; font-weight: 700; color: var(--text); }
+.wf-export-card .desc { font-size: 1.45cqh; color: var(--dim); flex: 1; line-height: 1.4; }
+.wf-export-note { font-size: 1.4cqh; color: var(--faint); font-style: italic; }
+
+/* PDF — pré-visualização das 5 páginas */
+.wf-pdf { flex: 1; display: flex; flex-direction: column; gap: 1.4cqh; min-height: 0; }
+.wf-pdf-pages { display: flex; gap: 1.2cqw; flex: 1; min-height: 0; }
+.wf-pdf-page { flex: 1; display: flex; flex-direction: column; gap: 0.6cqh; min-height: 0; }
+.wf-pdf-thumb {
+  flex: 1; background: #fff; border: 1px solid var(--line); border-radius: 4px;
+  padding: 1cqh 0.8cqw; display: flex; flex-direction: column; gap: 0.55cqh; min-height: 0; overflow: hidden;
+}
+.wf-pdf-thumb .wm { font-size: 0.85cqh; letter-spacing: 0.2px; color: var(--faint); text-align: center; }
+.wf-pdf-thumb .tt { font-size: 1cqh; font-weight: 700; color: var(--text); }
+.wf-pdf-thumb .ln { height: 0.7cqh; background: var(--line-2); border-radius: 2px; }
+.wf-pdf-thumb .ln.short { width: 55%; }
+.wf-pdf-cap { font-size: 1.2cqh; color: var(--dim); text-align: center; }
+
+/* GIS / BIM — pacote (árvore de arquivos + metadados) */
+.wf-pkg { flex: 1; display: flex; gap: 1.6cqw; min-height: 0; }
+.wf-pkg-tree {
+  flex: 1.2; background: var(--bg); border: 1px solid var(--line); border-radius: 6px;
+  padding: 1.4cqh 1.4cqw; font-family: ui-monospace, 'JetBrains Mono', Consolas, monospace;
+  font-size: 1.3cqh; color: var(--text); white-space: pre; overflow: auto;
+}
+.wf-pkg-meta {
+  flex: 1; display: flex; flex-direction: column; gap: 1cqh;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 1.6cqh 1.4cqw;
+}
+
+.wf-export-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 1cqw; }
+
+/* ====================== E7 — REPLAY ======================== */
+/* Listagem de gravações */
+.wf-reclist { flex: 1; display: flex; flex-direction: column; min-height: 0; padding: 2.4cqh 3cqw; gap: 1.3cqh; }
+.wf-reclist-h { font-size: 2.2cqh; font-weight: 700; color: var(--text); }
+.wf-reclist-sub { font-size: 1.4cqh; color: var(--dim); margin-top: 0.7cqh; }
+.wf-rec {
+  display: flex; align-items: center; gap: 1.6cqw;
+  padding: 1.4cqh 1.6cqw; background: var(--row);
+  border: 1px solid var(--line); border-radius: 6px;
+}
+.wf-rec .main { flex: 1.6; font-size: 1.6cqh; font-weight: 700; color: var(--text); }
+.wf-rec .col { flex: 1; font-size: 1.4cqh; color: var(--dim); }
+.wf-rec .col.id { font-family: ui-monospace, Consolas, monospace; font-size: 1.2cqh; color: var(--faint); }
+.wf-rec .acts { display: flex; gap: 0.8cqw; }
+.wf-rec .acts .wf-btn { font-size: 1.45cqh; padding: 0.9cqh 1.4cqw; }
+
+/* Selo MODO REPLAY */
+.wf-replay-banner {
+  display: flex; align-items: center; gap: 1.4cqw;
+  padding: 1.1cqh 3cqw; background: var(--chip); border-bottom: 1px solid var(--line);
+}
+.wf-replay-banner .pulse { width: 1.3cqh; height: 1.3cqh; border-radius: 999px; background: var(--dim); flex: 0 0 auto; }
+.wf-replay-banner .seal { font-size: 1.5cqh; font-weight: 700; letter-spacing: 1px; color: var(--text); }
+.wf-replay-banner .info { font-size: 1.4cqh; color: var(--dim); }
+
+/* Barra de controle de reprodução */
+.wf-playback {
+  display: flex; align-items: center; gap: 1.4cqw;
+  padding: 1.3cqh 3cqw; background: var(--panel); border-top: 1px solid var(--line);
+}
+.wf-playback .ctrl {
+  font: inherit; font-size: 1.7cqh; font-weight: 700; color: var(--text);
+  background: var(--row); border: 1px solid var(--line); border-radius: 6px; padding: 0.5cqh 1.2cqw;
+}
+.wf-playback .scrub { flex: 1; }
+.wf-playback .time { font-size: 1.4cqh; color: var(--dim); font-variant-numeric: tabular-nums; }
+.wf-playback .speed { font-size: 1.4cqh; font-weight: 700; color: var(--text); border: 1px solid var(--line-2); border-radius: 6px; padding: 0.5cqh 0.9cqw; }
+
+/* ====================== Controles de review ================= */
+.wf-phasebar {
+  display: flex; align-items: center; gap: 10px;
+  margin-left: auto;
+}
+.wf-phasebar span { color: var(--hub-text-faint); font-size: 12px; }
+.wf-phasebar button {
+  font: inherit; font-size: 13px;
+  color: var(--hub-text);
+  background: transparent;
+  border: 1px solid var(--hub-line);
+  border-radius: 8px;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+.wf-phasebar button.active { background: var(--hub-surface-2); border-color: #4a505c; }

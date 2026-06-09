@@ -1,0 +1,191 @@
+// ============================================================
+// GSFS Virtual — Tokens de Cor (SCSS)
+// Versão: 0.2 (proposta Result — sujeito a validação do cliente)
+// Data: 2026-05-26
+// ============================================================
+
+// ---------- PRIMITIVAS: marca original (cliente) ----------
+$gsfs-deep-navy:        #0A1324;
+$gsfs-deep-blue:        #0D1F3A;
+$gsfs-steel-blue:       #1E3A5F;
+$gsfs-technical-cyan:   #00B6C8;
+$gsfs-controlled-green: #7ED321;
+$gsfs-light-gray:       #E6EAF0;
+$gsfs-white:            #FFFFFF;
+
+// ---------- PRIMITIVAS: escala NAVY ----------
+$navy-950: #0A1324;
+$navy-900: #0D1F3A;
+$navy-800: #14294A;
+$navy-700: #1E3A5F;
+$navy-600: #2B4F7E;
+$navy-500: #3A659E;
+
+// ---------- PRIMITIVAS: escala CYAN (primária) ----------
+$cyan-50:  #E0F7FA;
+$cyan-100: #B8EEF3;
+$cyan-200: #8AE3EC;
+$cyan-300: #5AD7E4;
+$cyan-400: #2BC8D9;
+$cyan-500: #00B6C8;
+$cyan-600: #0095A4;
+$cyan-700: #007580;
+$cyan-800: #00565E;
+$cyan-900: #00383D;
+
+// ---------- PRIMITIVAS: escala GREEN (sucesso) ----------
+$green-50:  #F0FBE2;
+$green-100: #DCF5BD;
+$green-200: #C2ED90;
+$green-300: #A6E563;
+$green-400: #8FDB3D;
+$green-500: #7ED321;
+$green-600: #66B015;
+$green-700: #4E8A10;
+$green-800: #3A660C;
+$green-900: #284807;
+
+// ---------- PRIMITIVAS: escala AMBER (alerta) — NOVA ----------
+$amber-50:  #FFF6E5;
+$amber-100: #FFE7B8;
+$amber-200: #FFD588;
+$amber-300: #FFC152;
+$amber-400: #FFB02E;
+$amber-500: #F5A623;
+$amber-600: #D9870D;
+$amber-700: #AD6A0A;
+$amber-800: #824F08;
+$amber-900: #573504;
+
+// ---------- PRIMITIVAS: escala RED (erro/crítico) — NOVA ----------
+$red-50:  #FDECEC;
+$red-100: #FBD0D0;
+$red-200: #F7A8A8;
+$red-300: #F27F7F;
+$red-400: #ED5A5A;
+$red-500: #E5484D;
+$red-600: #C7363B;
+$red-700: #9E2A2E;
+$red-800: #761F22;
+$red-900: #4F1517;
+
+// ---------- PRIMITIVAS: escala NEUTRAL ----------
+$neutral-0:   #FFFFFF;
+$neutral-50:  #F5F7FA;
+$neutral-100: #E6EAF0;
+$neutral-200: #C9D2E0;
+$neutral-300: #A6B2C6;
+$neutral-400: #8190A8;
+$neutral-500: #5F6E88;
+$neutral-600: #455068;
+$neutral-700: #303A4E;
+$neutral-800: #1E2536;
+$neutral-900: #0E1322;
+
+// ============================================================
+// SEMÂNTICAS (tema escuro — padrão)
+// ============================================================
+$color-bg:            $navy-950;
+$color-bg-surface:    $navy-900;
+$color-bg-raised:     $navy-800;
+$color-bg-overlay:    rgba(10, 19, 36, 0.85);
+
+$color-border:        $navy-700;
+$color-border-subtle: $navy-800;
+$color-border-strong: $cyan-700;
+
+$color-text:          $neutral-100;
+$color-text-strong:   $neutral-0;
+$color-text-muted:    $neutral-400;
+$color-text-disabled: $neutral-500;
+$color-text-inverse:  $navy-950;
+
+$color-primary:        $cyan-500;
+$color-primary-hover:  $cyan-400;
+$color-primary-active: $cyan-600;
+$color-on-primary:     $navy-950;
+
+$color-accent:         $green-500;
+
+$color-success:        $green-500;
+$color-warning:        $amber-500;
+$color-danger:         $red-500;
+$color-info:           $cyan-500;
+
+$color-focus-ring:     $cyan-400;
+
+// ============================================================
+// SIMULADOR (Roteiro + Teto de Métricas)
+// ============================================================
+$sim-state-confirmed:  $green-500;
+$sim-state-suspect:    $amber-500;
+$sim-state-discarded:  $red-500;
+
+$sim-confidence-high:   $green-500;
+$sim-confidence-medium: $amber-500;
+$sim-confidence-low:    $red-400;
+
+$sim-degradation:       rgba(229, 72, 77, 0.18);
+$sim-degradation-edge:  $red-600;
+
+$sim-battery-ok:        $green-500;
+$sim-battery-warn:      $amber-500;
+$sim-battery-critical:  $red-500;
+
+$sim-temp-normal:       $cyan-500;
+$sim-temp-elevated:     $amber-500;
+$sim-temp-critical:     $red-500;
+
+$sim-sensor-on:         $green-500;
+$sim-sensor-off:        $neutral-500;
+$sim-sensor-err:        $red-500;
+
+$sim-rtk-fix:           $green-500;
+$sim-rtk-float:         $amber-500;
+$sim-rtk-nofix:         $red-500;
+
+$sensor-gpr:            $cyan-500;
+$sensor-emi:            $amber-400;
+$sensor-imu:            $green-500;
+$sensor-gnss:           $cyan-300;
+
+// ============================================================
+// ESTADOS INTERATIVOS (hover / active / disabled / foco)
+// ============================================================
+$state-hover-overlay:    rgba(255, 255, 255, 0.06);
+$state-active-overlay:   rgba(255, 255, 255, 0.12);
+$state-selected-overlay: rgba(0, 182, 200, 0.16);
+$state-disabled-opacity: 0.4;
+
+$focus-ring-color:  $cyan-400;
+$focus-ring-width:  2px;
+$focus-ring-offset: 2px;
+
+$btn-primary-bg:          $cyan-500;
+$btn-primary-bg-hover:    $cyan-400;
+$btn-primary-bg-active:   $cyan-600;
+$btn-primary-fg:          $navy-950;
+$btn-primary-bg-disabled: $navy-700;
+$btn-primary-fg-disabled: $neutral-500;
+
+$btn-secondary-border:   $cyan-700;
+$btn-secondary-fg:       $cyan-500;
+$btn-ghost-fg:           $neutral-100;
+$btn-ghost-bg-hover:     $state-hover-overlay;
+$btn-danger-bg:          $red-500;
+$btn-danger-fg:          $neutral-0;
+
+$input-bg:           $navy-800;
+$input-border:       $navy-700;
+$input-border-hover: $navy-600;
+$input-border-focus: $cyan-400;
+$input-border-error: $red-500;
+$input-fg:           $neutral-100;
+$input-placeholder:  $neutral-400;
+$input-bg-disabled:  $navy-900;
+
+// ============================================================
+// EXPRESSÃO DE MARCA — gradiente oficial do cliente (v1.0)
+// ============================================================
+$gradient-brand:   linear-gradient(90deg, $navy-950 0%, $steel-blue 35%, $cyan-500 70%, $green-500 100%);
+$gradient-brand-v: linear-gradient(180deg, $navy-950 0%, $cyan-500 70%, $green-500 100%);
