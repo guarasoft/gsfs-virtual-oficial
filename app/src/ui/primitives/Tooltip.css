@@ -1,0 +1,8 @@
+.gsfs-tooltip { position: relative; display: inline-flex; }
+.gsfs-tooltip-bubble {
+  position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%);
+  background: var(--color-bg-raised); color: var(--color-text); border: 1px solid var(--color-border);
+  border-radius: var(--radius-md); padding: 6px 10px; font-size: 0.75rem; white-space: nowrap;
+  opacity: 0; pointer-events: none; transition: opacity 120ms ease;
+}
+.gsfs-tooltip:hover .gsfs-tooltip-bubble, .gsfs-tooltip:focus-within .gsfs-tooltip-bubble { opacity: 1; }

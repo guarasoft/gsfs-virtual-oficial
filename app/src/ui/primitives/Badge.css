@@ -1,0 +1,12 @@
+.gsfs-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--font-secondary); font-weight: 600; font-size: 0.75rem;
+  letter-spacing: 0.04em; text-transform: uppercase;
+  padding: 4px 10px; border-radius: var(--radius-sm); border: 1px solid transparent;
+}
+.gsfs-badge--pill { border-radius: var(--radius-pill); }
+.gsfs-badge--neutral { background: var(--color-bg-raised); color: var(--color-text-muted); border-color: var(--color-border); }
+.gsfs-badge--info { background: var(--color-info-bg); color: var(--color-info); border-color: var(--color-info); }
+.gsfs-badge--success { background: var(--color-success-bg); color: var(--color-success); border-color: var(--color-success); }
+.gsfs-badge--warning { background: var(--color-warning-bg); color: var(--color-warning); border-color: var(--color-warning); }
+.gsfs-badge--danger { background: var(--color-danger-bg); color: var(--color-danger); border-color: var(--color-danger); }

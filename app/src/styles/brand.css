@@ -1,0 +1,33 @@
+/* Ponte para os tokens canônicos de brand-assets/ (single source of truth).
+   Importa cores + tipografia (as fontes .woff2 resolvem relativas a tokens/).
+   Acrescenta tokens de radius/spacing que só existiam em tokens.json
+   e o escopo de tema escuro da galeria/produto. */
+@import '../../../brand-assets/tokens/colors.css';
+@import '../../../brand-assets/tokens/typography.css';
+
+:root {
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-pill: 999px;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+}
+
+/* Tema escuro da marca: aplicado só ao container da galeria/produto,
+   para não afetar o chrome neutro do hub. */
+.brand-dark {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-secondary);
+}
+.brand-dark ::selection {
+  background: var(--selection-bg);
+  color: var(--selection-fg);
+}

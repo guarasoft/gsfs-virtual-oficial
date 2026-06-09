@@ -1,0 +1,5 @@
+.gsfs-tabs { display: inline-flex; gap: 2px; background: var(--color-bg-raised); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 3px; }
+.gsfs-tab { font-family: var(--font-secondary); font-size: 0.875rem; font-weight: 600; color: var(--color-text-muted); background: transparent; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; }
+.gsfs-tab:hover { color: var(--color-text); }
+.gsfs-tab.is-active { background: var(--color-primary); color: var(--color-on-primary); }
+.gsfs-tab:focus-visible { outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: var(--focus-ring-offset); }

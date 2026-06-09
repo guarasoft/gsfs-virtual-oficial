@@ -1,0 +1,22 @@
+.sim-chip {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--font-secondary); font-weight: 600; font-size: 0.75rem;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 6px 12px; border-radius: var(--radius-sm);
+  border: 1px solid currentColor; background: var(--color-bg-raised);
+}
+.sim-dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; flex: none; }
+
+.sim-meter { display: flex; align-items: center; gap: 10px; font-family: var(--font-secondary); }
+.sim-meter-track { width: 120px; height: 8px; border-radius: var(--radius-pill); background: var(--color-bg-raised); border: 1px solid var(--color-border); overflow: hidden; }
+.sim-meter-fill { height: 100%; }
+.sim-meter-label { font-size: 0.75rem; color: var(--color-text-muted); font-variant-numeric: tabular-nums; }
+
+.sim-gauge { display: flex; align-items: center; gap: 8px; font-family: var(--font-secondary); font-variant-numeric: tabular-nums; color: var(--color-text); }
+.sim-gauge .sim-gauge-value { font-weight: 600; }
+
+.sim-sensor { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 16px; border-radius: var(--radius-md); border: 1px solid var(--color-border); background: var(--color-bg-raised); width: 220px; }
+.sim-sensor-name { display: flex; align-items: center; gap: 10px; font-family: var(--font-secondary); font-weight: 600; }
+.sim-sensor-state { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-secondary); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; }
+
+.sim-statusbar { display: flex; align-items: center; gap: 20px; padding: 10px 16px; border-radius: var(--radius-md); background: var(--color-bg-surface); border: 1px solid var(--color-border); width: fit-content; }
