@@ -7,6 +7,10 @@ dist/
 **/dist/
 *.tsbuildinfo
 
+# Saídas do tsc a partir de vite.config.ts (geradas)
+app/vite.config.js
+app/vite.config.d.ts
+
 # Screenshots de verificação visual do UI Kit (geradas)
 app/shots/kit/
 
