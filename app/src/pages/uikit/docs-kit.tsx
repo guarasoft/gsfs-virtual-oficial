@@ -36,12 +36,15 @@ export function TokenTag({ children }: { children: ReactNode }) {
 }
 
 // Amostra de cor. `value` é uma string CSS (ex.: 'var(--color-primary)').
+// Layout de célula uniforme: chip fixo no topo + nome com altura reservada
+// (2 linhas) + token, de modo que os chips fiquem sempre alinhados em grade
+// independentemente do tamanho do nome/token.
 export function Swatch({ name, value, token }: { name: string; value: string; token?: string }) {
   return (
-    <div className="doc-cell">
-      <div style={{ width: 96, height: 56, borderRadius: 8, background: value, border: '1px solid var(--color-border)' }} />
-      <span className="doc-cell-label">{name}</span>
-      {token && <TokenTag>{token}</TokenTag>}
+    <div className="swatch">
+      <div className="swatch-chip" style={{ background: value }} />
+      <span className="swatch-name">{name}</span>
+      {token && <code className="swatch-token">{token}</code>}
     </div>
   )
 }

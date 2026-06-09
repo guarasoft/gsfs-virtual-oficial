@@ -1,13 +1,15 @@
 import { DocSection, DocBlock, Swatch } from '../docs-kit'
 
+// Cores de marca puxadas das variáveis canônicas (colors.css), não hex direto,
+// para nunca divergirem da fonte aprovada (guideline B.2).
 const BRAND = [
-  ['Deep Navy', '#0A1324', '--gsfs-deep-navy'],
-  ['Deep Blue', '#0D1F3A', '--gsfs-deep-blue'],
-  ['Steel Blue', '#1E3A5F', '--gsfs-steel-blue'],
-  ['Technical Cyan', '#00B6C8', '--gsfs-technical-cyan'],
-  ['Controlled Green', '#7ED321', '--gsfs-controlled-green'],
-  ['Light Gray', '#E6EAF0', '--gsfs-light-gray'],
-  ['White', '#FFFFFF', '--gsfs-white'],
+  ['Deep Navy', 'var(--gsfs-deep-navy)', '--gsfs-deep-navy'],
+  ['Deep Blue', 'var(--gsfs-deep-blue)', '--gsfs-deep-blue'],
+  ['Steel Blue', 'var(--gsfs-steel-blue)', '--gsfs-steel-blue'],
+  ['Technical Cyan', 'var(--gsfs-technical-cyan)', '--gsfs-technical-cyan'],
+  ['Controlled Green', 'var(--gsfs-controlled-green)', '--gsfs-controlled-green'],
+  ['Light Gray', 'var(--gsfs-light-gray)', '--gsfs-light-gray'],
+  ['White', 'var(--gsfs-white)', '--gsfs-white'],
 ] as const
 
 const STEPS = ['50', '100', '200', '300', '400', '500', '600', '700', '800', '900'] as const
