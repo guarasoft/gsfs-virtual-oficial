@@ -1,2 +1,8 @@
 export { Button } from './primitives/Button'
 export type { ButtonProps, ButtonVariant } from './primitives/Button'
+export { Input } from './primitives/Input'
+export type { InputProps } from './primitives/Input'
+export { Select } from './primitives/Select'
+export { Textarea } from './primitives/Textarea'
+export { Toggle } from './primitives/Toggle'
+export type { ToggleProps } from './primitives/Toggle'

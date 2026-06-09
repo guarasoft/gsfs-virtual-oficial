@@ -1,0 +1,19 @@
+.gsfs-field {
+  font-family: var(--font-secondary);
+  font-size: 0.875rem;
+  color: var(--input-fg);
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: var(--radius-md);
+  padding: 10px 12px;
+  width: 220px;
+  transition: border-color 120ms ease;
+}
+.gsfs-field::placeholder { color: var(--input-placeholder); }
+.gsfs-field:hover:not(:disabled) { border-color: var(--input-border-hover); }
+.gsfs-field:focus-visible { outline: none; border-color: var(--input-border-focus); box-shadow: 0 0 0 2px var(--state-selected-overlay); }
+.gsfs-field:disabled { background: var(--input-bg-disabled); opacity: var(--state-disabled-opacity); cursor: not-allowed; }
+.gsfs-field--error { border-color: var(--input-border-error); }
+.gsfs-field-label { display: block; margin-bottom: 6px; color: var(--color-text-muted); }
+.gsfs-field-msg { margin-top: 6px; font-size: 0.75rem; color: var(--color-danger); }
+textarea.gsfs-field { width: 320px; min-height: 80px; resize: vertical; }
