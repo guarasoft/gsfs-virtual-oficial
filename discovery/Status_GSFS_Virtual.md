@@ -2,7 +2,7 @@
 
 **Projeto:** GSFS Virtual — Simulador Técnico-Institucional
 **Documento:** Radar/dashboard do projeto (documento vivo)
-**Última atualização:** 2026-06-05
+**Última atualização:** 2026-06-09
 **Responsável Técnico:** Jonathan — Result
 
 ---
@@ -11,11 +11,11 @@
 
 | Campo | Valor |
 |---|---|
-| **Fase atual** | **Fase 2 — Design visual e UI Kit** (a iniciar). Fase 1 ✅ **aprovada pelo cliente em 05/06** |
+| **Fase atual** | **Fase 2 — Design visual e UI Kit.** UI Kit **entregue e aprovado internamente (09/06)**; 🟡 **aguardando validação do cliente** para fechar a fase |
 | **Saúde da fase** | 🟢 Verde |
-| **Próximo marco** | UI Kit da Fase 2 — aplicar a identidade aprovada sobre os wireframes (`/ui-kit` → `/prototype`) |
+| **Próximo marco** | **Validação do cliente sobre o UI Kit.** Após o aval: iniciar a Fase 3 (vestir os wireframes em alta fidelidade, `/ui-kit` → `/prototype`), incorporando [D-017] (replay E7) e as 4 notas de continuidade |
 | **Próxima fase** | Fase 3 — Telas em alta fidelidade (código) |
-| **Bloqueios ativos** | **Nenhum.** Fase 1 aprovada pelo cliente (05/06); [D-015] e [D-016] validados/consolidados. A incorporar na Fase 2: **[D-017]** replay com dados da missão (E7) e as 4 notas de continuidade (identidade, C5 premium, Teto, exportação simbólica). |
+| **Bloqueios ativos** | **Nenhum.** Aguardando apenas o retorno do cliente sobre o UI Kit (não bloqueia trabalho interno de preparação da Fase 3). [D-017] e as 4 notas (identidade, C5 premium, Teto, exportação simbólica) serão incorporados ao vestir os wireframes na Fase 3. |
 
 ---
 
@@ -25,7 +25,7 @@
 |---|---|---|---|---|
 | **Fase 0** — Cenários e desbloqueio de pendências | 3 dias | ✅ Concluída | 2026-05-26 | 2026-06-02 |
 | Fase 1 — Arquitetura de informação e fluxos | 1 semana | ✅ Concluída (aprovada pelo cliente em 05/06) | 2026-06-02 | 2026-06-05 |
-| Fase 2 — Design visual e UI Kit | 1 semana | 🟡 A iniciar | 2026-06-05 | — |
+| Fase 2 — Design visual e UI Kit | 1 semana | 🟡 UI Kit entregue (09/06) — aguardando validação do cliente | 2026-06-05 | — |
 | Fase 3 — Telas em alta fidelidade (código) | 3 semanas | ⚪ Não iniciada | — | — |
 | Fase 4 — Integração das peças 3D | 1 semana | ⚪ Não iniciada | — | — |
 | Fase 5 — Testes e polimento | 1 semana | ⚪ Não iniciada | — | — |
@@ -82,24 +82,34 @@ Conforme cronograma + item 7 derivado da decisão de stack ([D-001](Decisoes_GSF
 | 2026-06-02 | **Fase 1 em código (D-014):** app `app/` (React+Vite+TS+Router) — Hub + rotas wireframe/ui-kit/prototype; **E1 (Boot/Autoteste)** portada em modo wireframe (splash + diagnóstico/telemetria), referência tablet 1280×800 | [D-014](Decisoes_GSFS_Virtual.md#d-014--prototipar-a-fase-1-em-codigo-portal-de-review-em-vez-de-wireframes-no-figma) |
 | 2026-06-03 | **Fase 1 concluída (interno):** wireframes das **7 etapas** (E1…E7) no protótipo `app/`, revisados e aprovados internamente. **Documento de Arquitetura de Informação da Fase 1** escrito. Decisões [D-015] (abortar/reiniciar) e [D-016] (jornada 7 etapas) registradas | [Arquitetura_Informacao_Fase1_GSFS_Virtual.md](Arquitetura_Informacao_Fase1_GSFS_Virtual.md) |
 | 2026-06-05 | **Fase 1 APROVADA pelo cliente** ("aprovada para continuidade"). [D-015] (abortar/reiniciar) validado; cliente reforçou confirmação antes de encerrar/reiniciar. Nova **[D-017]** — replay (E7) com dados da missão (timeline, cenário, sensores, timestamps, detecções, falsos positivos, GSFS_RECORD/hash). 4 notas de continuidade registradas para a Fase 2 | [D-017](Decisoes_GSFS_Virtual.md#d-017--replay-enriquecido-com-dados-da-missao-feedback-do-cliente) · [Arquitetura_Informacao_Fase1_GSFS_Virtual.md](Arquitetura_Informacao_Fase1_GSFS_Virtual.md) |
+| 2026-06-09 | **UI Kit da Fase 2 entregue (interno).** Página `/ui-kit` como galeria de design system (menu lateral + detalhe, rotas próprias por item) consumindo os tokens validados de `brand-assets/` (sem duplicação). **Biblioteca de 20 componentes reais** em `app/src/ui/`: 12 base (Button, Field, Input, Select acessível, Textarea, Toggle, Badge, Chip, Card, Panel, Table, Tabs, Progress, Tooltip) + 8 de simulador (DetectionBadge, ConfidenceMeter, BatteryGauge, TempGauge, SensorPanel, RtkStatus, HudMetric, StatusBar). Fundamentos documentados (cores, tipografia, logo, espaçamento, iconografia Lucide). Hub vestido com a marca; acessibilidade dos campos (rótulos, erro texto+ícone, foco) atendendo WCAG. **Aprovado internamente; aguardando validação do cliente.** | [Status](Status_GSFS_Virtual.md) · `app/src/ui/` |
 
 ---
 
 ## ➡️ Próximos passos
 
-### Imediatos (esta semana)
+### Imediatos (aguardando cliente)
 
 1. ✅ **Fase 1 concluída e aprovada pelo cliente** (05/06) — wireframes das 7 etapas + documento de IA.
-2. **Incorporar [D-017]** — enriquecer o wireframe da E7 (Replay) com os dados da missão (timeline, cenário, sensores ativos, timestamps, detecções confirmadas, falsos positivos descartados, GSFS_RECORD/hash).
-3. **Iniciar a Fase 2 (UI Kit)** aplicando a identidade aprovada, observando as 4 notas de continuidade do cliente (identidade, C5 premium, Teto de Métricas, exportação simbólica).
+2. ✅ **UI Kit da Fase 2 entregue e aprovado internamente** (09/06) — galeria de design system + biblioteca de 20 componentes.
+3. 🟡 **Aguardar a validação do cliente sobre o UI Kit** para fechar formalmente a Fase 2 (como nas Fases 0 e 1).
+4. **Preparo da Fase 3 (não bloqueado):** revisar com o cliente, em paralelo, as 4 notas de continuidade (identidade, C5 premium, Teto de Métricas, exportação simbólica) e o escopo do replay enriquecido [D-017] (E7).
 
-### Fase 2 — Design visual e UI Kit (em andamento)
+### Fase 2 — Design visual e UI Kit (entregue, aguardando validação)
 
-- Estudo de referências (ruggedized UI) e sistema de cores aplicando a identidade.
-- UI Kit: tipografia, componentes base, HUD, painéis de sensor, iconografia.
-- Vestir os wireframes da Fase 1 com a linguagem visual (sobre `/ui-kit` e depois `/prototype`), já contemplando o replay enriquecido (D-017).
+Entregue:
 
-A identidade está 100% validada (logo, paleta, tipografia, tema escuro), então a Fase 2 não tem bloqueio de insumo.
+- Sistema de cores, tipografia, logo, espaçamento/elevação e iconografia documentados na página `/ui-kit`, fiéis aos tokens validados em `brand-assets/`.
+- Biblioteca de componentes reais e reutilizáveis em `app/src/ui/` (12 base + 8 de simulador/HUD), pronta para a Fase 3 importar.
+- Acessibilidade dos campos (rótulos associados, erro texto+ícone, foco visível) atendendo WCAG.
+- Hub/portal de review vestido com a paleta da marca.
+
+### Fase 3 — Telas em alta fidelidade (após validação)
+
+- Vestir os wireframes da Fase 1 com a linguagem visual, importando a biblioteca `app/src/ui/` (sobre `/ui-kit` e depois `/prototype`).
+- Incorporar o replay enriquecido [D-017] (E7) e as 4 notas de continuidade.
+
+A identidade está 100% validada e o UI Kit está pronto, então a Fase 3 não terá bloqueio de insumo de design.
 
 ---
 
@@ -147,6 +157,12 @@ A identidade está 100% validada (logo, paleta, tipografia, tema escuro), então
 
 - [Arquitetura_Informacao_Fase1_GSFS_Virtual.md](Arquitetura_Informacao_Fase1_GSFS_Virtual.md) — **Arquitetura de informação, fluxos e wireframes (marco da Fase 1)**
 - `app/` — protótipo navegável dos wireframes (React+Vite+TS); `npm run dev --prefix app` → http://localhost:5173
+
+### Documentos da Fase 2 (entregáveis)
+
+- **UI Kit navegável** — rota `/ui-kit` no app (`npm run dev --prefix app` → http://localhost:5173/ui-kit): galeria de design system com fundamentos (cores, tipografia, logo, espaçamento, iconografia) e todos os componentes com variações/estados. **Marco da Fase 2.**
+- `app/src/ui/` — **biblioteca de componentes reais reutilizáveis** (12 base + 8 de simulador) que a Fase 3 importa para vestir os wireframes.
+- Specs internas: [2026-06-09-ui-kit-fase2-design.md](../docs/superpowers/specs/2026-06-09-ui-kit-fase2-design.md) (design) · [2026-06-09-ui-kit-fase2.md](../docs/superpowers/plans/2026-06-09-ui-kit-fase2.md) (plano de implementação).
 
 ### Identidade visual (Item 3)
 
