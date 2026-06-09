@@ -24,9 +24,9 @@ const cards: Card[] = [
     to: '/ui-kit',
     phase: 'Fase 2',
     name: 'UI Kit',
-    desc: 'Linguagem visual e componentes (cores, tipografia, HUD, painéis de sensor). A construir.',
-    tag: 'Em breve',
-    enabled: false,
+    desc: 'Linguagem visual e componentes (cores, tipografia, HUD, painéis de sensor).',
+    tag: 'Em andamento',
+    enabled: true,
   },
   {
     to: '/prototype',
