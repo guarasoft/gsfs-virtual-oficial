@@ -13,7 +13,38 @@
 .gsfs-field:hover:not(:disabled) { border-color: var(--input-border-hover); }
 .gsfs-field:focus-visible { outline: none; border-color: var(--input-border-focus); box-shadow: 0 0 0 2px var(--state-selected-overlay); }
 .gsfs-field:disabled { background: var(--input-bg-disabled); opacity: var(--state-disabled-opacity); cursor: not-allowed; }
-.gsfs-field--error { border-color: var(--input-border-error); }
+.gsfs-field--error,
+.gsfs-field[aria-invalid='true'] { border-color: var(--input-border-error); }
 .gsfs-field-label { display: block; margin-bottom: 6px; color: var(--color-text-muted); }
 .gsfs-field-msg { margin-top: 6px; font-size: 0.75rem; color: var(--color-danger); }
 textarea.gsfs-field { width: 320px; min-height: 80px; resize: vertical; }
+
+/* ---- Field: rótulo + controle + mensagem ---- */
+.gsfs-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: fit-content;
+}
+.gsfs-field-grouplabel {
+  font-family: var(--font-secondary);
+  font-weight: 600;
+  font-size: 0.8125rem;
+  color: var(--color-text);
+}
+.gsfs-field-hint {
+  font-family: var(--font-secondary);
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+.gsfs-field-error {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-secondary);
+  font-size: 0.75rem;
+  color: var(--color-danger);
+}
+.gsfs-field-error svg { flex: none; }
+
+.gsfs-switch-row { display: inline-flex; align-items: center; gap: 10px; }
