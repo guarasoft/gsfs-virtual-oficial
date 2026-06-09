@@ -70,6 +70,14 @@
   padding: 2px 6px;
 }
 
+/* ---- Demo de espaçamento/raio/elevação: separa a caixa do token ---- */
+.spec-demo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  align-items: flex-start;
+}
+
 /* ---- Tipografia: espécimes empilhados em coluna ---- */
 .type-group-title { margin: 0 0 var(--space-4); color: var(--color-text-strong); }
 .type-panel {

@@ -13,24 +13,30 @@ export default function Espacamento() {
       <DocBlock title="Espaçamento">
         {SPACE.map(([k, v]) => (
           <Cell key={k} label={v}>
-            <div style={{ width: v, height: v, background: 'var(--color-primary)', borderRadius: 2 }} />
-            <TokenTag>--space-{k}</TokenTag>
+            <div className="spec-demo">
+              <div style={{ width: v, height: v, background: 'var(--color-primary)', borderRadius: 2 }} />
+              <TokenTag>--space-{k}</TokenTag>
+            </div>
           </Cell>
         ))}
       </DocBlock>
       <DocBlock title="Raios">
         {RADIUS.map(([k, v]) => (
           <Cell key={k} label={v}>
-            <div style={{ width: 72, height: 48, background: 'var(--color-bg-raised)', border: '1px solid var(--color-border-strong)', borderRadius: v }} />
-            <TokenTag>--radius-{k}</TokenTag>
+            <div className="spec-demo">
+              <div style={{ width: 72, height: 48, background: 'var(--color-bg-raised)', border: '1px solid var(--color-border-strong)', borderRadius: v }} />
+              <TokenTag>--radius-{k}</TokenTag>
+            </div>
           </Cell>
         ))}
       </DocBlock>
       <DocBlock title="Superfícies / elevação">
         {SURFACES.map(([n, t]) => (
           <Cell key={t} label={n}>
-            <div style={{ width: 120, height: 64, background: `var(${t})`, border: '1px solid var(--color-border)', borderRadius: 8 }} />
-            <TokenTag>{t}</TokenTag>
+            <div className="spec-demo">
+              <div style={{ width: 120, height: 64, background: `var(${t})`, border: '1px solid var(--color-border)', borderRadius: 8 }} />
+              <TokenTag>{t}</TokenTag>
+            </div>
           </Cell>
         ))}
       </DocBlock>
