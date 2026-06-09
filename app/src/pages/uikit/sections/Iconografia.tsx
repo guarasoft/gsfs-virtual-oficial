@@ -1,5 +1,5 @@
 import { Radar, Magnet, Move3d, Satellite, BatteryFull, Thermometer, MapPin, TriangleAlert, Check, X, Play, FileDown, Activity, Crosshair } from 'lucide-react'
-import { DocSection, DocBlock, Cell } from '../docs-kit'
+import { DocSection, DocBlock } from '../docs-kit'
 
 const ICONS = [
   [Radar, 'GPR'], [Magnet, 'EMI'], [Move3d, 'IMU'], [Satellite, 'GNSS'],
@@ -16,9 +16,10 @@ export default function Iconografia() {
     >
       <DocBlock title="Conjunto base (20px)">
         {ICONS.map(([Icon, label]) => (
-          <Cell key={label} label={label}>
+          <div className="icon-cell" key={label}>
             <Icon size={20} color="var(--color-text)" strokeWidth={1.75} />
-          </Cell>
+            <span className="doc-cell-label">{label}</span>
+          </div>
         ))}
       </DocBlock>
     </DocSection>
