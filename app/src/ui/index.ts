@@ -16,3 +16,9 @@ export { Tabs } from './primitives/Tabs'
 export type { TabItem } from './primitives/Tabs'
 export { Progress } from './primitives/Progress'
 export { Tooltip } from './primitives/Tooltip'
+
+// Simulador (HUD)
+export { DetectionBadge } from './sim/DetectionBadge'
+export type { DetectionState } from './sim/DetectionBadge'
+export { ConfidenceMeter } from './sim/ConfidenceMeter'
+export type { ConfidenceLevel } from './sim/ConfidenceMeter'
