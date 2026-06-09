@@ -1,0 +1,68 @@
+.kit-root { min-height: 100vh; }
+
+.kit-body {
+  display: grid;
+  grid-template-columns: 248px 1fr;
+  min-height: calc(100vh - 49px); /* desconta a review-bar */
+}
+
+.kit-sidebar {
+  border-right: 1px solid var(--color-border);
+  padding: var(--space-6) var(--space-3);
+  background: var(--color-bg-surface);
+  position: sticky;
+  top: 0;
+  align-self: start;
+  height: calc(100vh - 49px);
+  overflow-y: auto;
+}
+.kit-group { margin-bottom: var(--space-6); }
+.kit-group-title { color: var(--color-text-muted); margin: 0 0 var(--space-2) var(--space-3); }
+.kit-link {
+  display: block;
+  padding: 8px 12px;
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  font-family: var(--font-secondary);
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+.kit-link:hover { background: var(--state-hover-overlay); }
+.kit-link.is-active {
+  background: var(--state-selected-overlay);
+  color: var(--color-text-strong);
+}
+
+.kit-detail {
+  padding: var(--space-12) var(--space-12) 96px;
+  max-width: 960px;
+  overflow-x: hidden;
+}
+
+/* ---- Blocos de apresentação (docs-kit) ---- */
+.doc-section > header { margin-bottom: var(--space-8); }
+.doc-section h1 { margin: 0 0 var(--space-2); color: var(--color-text-strong); }
+.doc-section .doc-desc { color: var(--color-text-muted); max-width: 64ch; margin: 0; }
+.doc-block { margin-bottom: var(--space-12); }
+.doc-block h2 { margin: 0 0 var(--space-4); color: var(--color-text-strong); }
+.doc-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-6);
+  align-items: flex-start;
+  padding: var(--space-6);
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+.doc-cell { display: flex; flex-direction: column; gap: var(--space-2); align-items: flex-start; }
+.doc-cell-label { color: var(--color-text-muted); font-family: var(--font-secondary); font-size: 0.75rem; }
+.token-tag {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  background: var(--color-bg-raised);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 2px 6px;
+}
