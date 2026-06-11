@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- GSFS symbol isolated from the primary horizontal lockup (vector), mono white. For dark backgrounds / photo. -->
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="92px" height="112px" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+viewBox="0 0 9.15 11.13"
+ xmlns:xlink="http://www.w3.org/1999/xlink"
+ xmlns:xodm="http://www.corel.com/coreldraw/odm/2003">
+ <defs>
+  <style type="text/css">
+   <![CDATA[
+    .fil0 {fill:white}
+   ]]>
+  </style>
+ </defs>
+ <g id="Symbol">
+  <polygon class="fil0" points="3.71,11.13 4.14,10.31 4.58,9.49 5.01,10.31 5.44,11.13 4.58,10.77 "/>
+  <g>
+   <g>
+    <polygon class="fil0" points="4.1,6.07 4,5.7 4.33,5.9 "/>
+    <polygon class="fil0" points="5.03,6.07 5.13,5.7 4.8,5.9 "/>
+   </g>
+   <ellipse class="fil0" cx="4.56" cy="6.05" rx="0.47" ry="0.21"/>
+  </g>
+  <polygon class="fil0" points="0,5.94 0,6.85 1.62,7.62 1.62,6.58 0.15,5.87 0,5.8 "/>
+  <polygon class="fil0" points="2,6.76 2,7.81 3.89,8.71 3.89,7.66 "/>
+  <polygon class="fil0" points="7.15,6.76 5.26,7.66 5.26,8.71 7.15,7.81 "/>
+  <polygon class="fil0" points="7.53,6.58 7.53,7.62 9.15,6.85 9.15,5.94 9.15,5.8 9,5.87 "/>
+  <polygon class="fil0" points="0,4.37 0,5.28 1.62,6.05 1.62,5.01 0.15,4.3 0,4.23 "/>
+  <polygon class="fil0" points="2,5.19 2,6.23 3.89,7.14 3.89,6.09 "/>
+  <polygon class="fil0" points="7.15,5.19 5.26,6.09 5.26,7.14 7.15,6.23 "/>
+  <polygon class="fil0" points="7.53,5.01 7.53,6.05 9.15,5.28 9.15,4.37 9.15,4.23 9,4.3 "/>
+  <polygon class="fil0" points="0.89,4.13 1.62,4.48 1.62,3.78 1.62,3.46 1.19,3.25 1.62,3.05 2,2.87 2.85,2.46 2,2.04 1.79,1.95 1.62,2.03 0,2.8 0,3.71 "/>
+  <path class="fil0" d="M7.53 3.78l0 0.7 0.73 -0.35 0.89 -0.42 0 -0.91 -1.62 -0.77 -0.17 -0.08 -0.21 0.09 -0.85 0.42 0.85 0.41 0.38 0.18 0.43 0.2 -0.43 0.21 0 0.32zm-5.91 5.42l0 -1.05 -1.47 -0.71 -0.15 -0.07 0 0.14 0 0.91 1.62 0.78zm2.27 0.04l-1.89 -0.91 0 1.05 1.68 0.8 0.21 -0.41 0 -0.53zm3.26 -0.91l-1.89 0.91 0 0.53 0.21 0.41 1.68 -0.8 0 -1.05zm0.38 -0.18l0 1.05 1.62 -0.78 0 -0.91 0 -0.14 -0.15 0.07 -1.47 0.71zm-4.24 -5.9l0.6 -0.29 0 -1.02 -1.66 0.8 1.06 0.51zm-1.29 2.37l0 0.04 1.89 0.91 0 -1.02 -0.87 -0.42 0.87 -0.41 0 -1.03 -1.89 0.91 0 0.04 0 0.98zm3.26 -0.07l0 1.02 1.89 -0.91 0 -0.04 0 -0.98 0 -0.04 -1.89 -0.91 0 1.03 0.87 0.41 0 0 -0.87 0.42zm0 -2.59l0.6 0.29 1.07 -0.51 -1.67 -0.8 0 1.02z"/>
+  <g>
+   <g>
+    <polygon class="fil0" points="4.1,7.64 4,7.27 4.33,7.47 "/>
+    <polygon class="fil0" points="5.03,7.64 5.13,7.27 4.8,7.47 "/>
+   </g>
+   <ellipse class="fil0" cx="4.56" cy="7.62" rx="0.47" ry="0.21"/>
+  </g>
+  <polygon class="fil0" points="4.4,0 4.75,0 4.75,8.8 4.58,8.48 4.4,8.8 "/>
+ </g>
+</svg>

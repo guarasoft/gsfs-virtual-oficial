@@ -3,7 +3,7 @@
 **Projeto:** GSFS Virtual — Simulador Técnico-Institucional
 **Documento:** Registro central de decisões (Decision Log / ADR)
 **Tipo:** Documento vivo
-**Última atualização:** 2026-06-05
+**Última atualização:** 2026-06-11
 **Responsável Técnico:** Jonathan — Result
 
 ---
@@ -84,6 +84,7 @@ Sempre que uma decisão for tomada ou revisada:
 | [D-015](#d-015--abortar--reiniciar-a-varredura-com-confirmacao-proposta-result) | Abortar / Reiniciar a varredura com confirmação (proposta Result) | Active | 2026-06-03 |
 | [D-016](#d-016--jornada-de-7-etapas-fusao-resultado--bloco-3d-e-setup-com-manual-demonstrativo) | Jornada de 7 etapas: fusão Resultado + Bloco 3D, e setup com manual demonstrativo | Active | 2026-06-03 |
 | [D-017](#d-017--replay-enriquecido-com-dados-da-missao-feedback-do-cliente) | Replay enriquecido com dados da missão, não só imagens (feedback do cliente) | Active | 2026-06-05 |
+| [D-018](#d-018--simbolo-isolado-reintroduzido-como-ativo-oficial-para-usos-compactos-pedido-do-cliente) | Símbolo isolado reintroduzido como ativo oficial para usos compactos (pedido do cliente) | Active | 2026-06-11 |
 
 ---
 
@@ -282,7 +283,7 @@ Sempre que uma decisão for tomada ou revisada:
 
 ### D-012 — Logo: único lockup horizontal validado; CL-01 resolvido; vertical e ícone descartados
 
-- **Status:** Active
+- **Status:** Active — a cláusula **(b) "ícone descartado"** foi **superada por [D-018]** em 2026-06-11 (símbolo isolado reintroduzido como ativo oficial, a pedido do cliente). O restante permanece em vigor: lockup horizontal como único principal, **lockup vertical segue descartado**, CL-01 resolvido.
 - **Data:** 2026-06-02
 - **Contexto:** O cliente validou as logos efetivamente entregues. Na prática, **só existe o lockup horizontal** — em três tratamentos (cores/RGB, mono preto, mono branco). A matriz canônica 3×3 (horizontal + vertical + ícone × 3 tratamentos) proposta na curadoria Result ([D-010], ID-V5) não corresponde mais ao material real: não há lockup vertical nem ícone por ora. O cliente confirmou ainda que os arquivos entregues atendem **CL-01** (alta-res/vetor).
 - **Decisão:**
@@ -402,6 +403,31 @@ Sempre que uma decisão for tomada ou revisada:
 - **Documentos afetados:**
   - [Arquitetura_Informacao_Fase1_GSFS_Virtual.md](Arquitetura_Informacao_Fase1_GSFS_Virtual.md) (E7)
   - `app/` (E7 — overlay de metadados da missão no replay)
+
+---
+
+### D-018 — Símbolo isolado reintroduzido como ativo oficial para usos compactos (pedido do cliente)
+
+- **Status:** Active
+- **Data:** 2026-06-11
+- **Contexto:** Na validação da Fase 2 (UI Kit), o cliente pediu — entre seus 6 pontos de alinhamento — que, mesmo sendo o lockup horizontal a aplicação principal, o **símbolo isolado** (cubo facetado + eixo de varredura, sem o wordmark) seja mantido como **ativo oficial** para usos compactos da interface: ícone, splash, favicon, botões reduzidos e estados de sistema. Isso reverte a cláusula (b) da [D-012], que havia descartado o lockup ícone e removido a pasta `logos/icon/`. A própria D-012 previa este cenário ("se no futuro houver necessidade de marca em formato quadrado... terá de ser solicitado ao cliente") — o pedido do cliente o concretiza.
+- **Decisão:**
+  - (a) O **símbolo isolado** passa a ser **ativo oficial**, nos três tratamentos: cor (RGB), mono branco e mono preto.
+  - (b) Os ativos foram **extraídos em vetor real do lockup horizontal validado** (não do PNG raster antigo em `source/`): isolou-se o grupo do símbolo e recortou-se o `viewBox` para `0 0 9.15 11.13`, preservando geometria, gradiente de marca e facetas. O corte foi conferido por renderização contra o lockup original. Salvos em `brand-assets/logos/icon/` como `GSFS_Logo_Icon_RGB.svg` · `_Mono_White.svg` · `_Mono_Black.svg`, e espelhados em `app/public/logos/`.
+  - (c) Exibidos na galeria do UI Kit (seção Logo) nos 3 tratamentos + amostras em tamanhos reduzidos (48/32/20 px) para aferição de legibilidade.
+  - (d) **Supera apenas a cláusula (b) "ícone descartado" da [D-012]**; o restante da D-012 segue em vigor (lockup horizontal como único principal; **lockup vertical permanece descartado**; CL-01 resolvido).
+  - (e) **Favicons:** os atuais (derivados do símbolo em raster) permanecem válidos; uma regeneração a partir do novo vetor fica como tarefa Result opcional, condicionada à definição do enquadramento em canvas quadrado (o símbolo é portrait ≈9,15×11,13).
+- **Consequências:**
+  - (+) Atende o pedido do cliente e cobre os usos compactos da UI (ícone/splash/favicon/botões/estados) que o lockup horizontal não serve bem.
+  - (+) Por vir do vetor do lockup, o símbolo é fiel à arte aprovada e totalmente escalável.
+  - (+) `logos/icon/` volta a existir como ativo canônico.
+  - (−) Reabre uma micro-validação de identidade (o cliente confirmar visualmente o símbolo isolado como arte oficial). Aprovado internamente em 11/06; a confirmação do cliente entra junto das respostas aos 6 pontos da Fase 2.
+  - (−) Símbolo portrait exige enquadramento em canvas quadrado para favicon/usos quadrados — respiro a definir na (eventual) regeneração dos favicons.
+- **Documentos afetados:**
+  - [Identidade_Visual_GSFS_Virtual.md](../brand-assets/guidelines/Identidade_Visual_GSFS_Virtual.md) (A.3, B.1, B.5, B.6, B.8)
+  - `brand-assets/logos/icon/` (recriada — 3 SVGs) e `app/public/logos/`
+  - `app/src/pages/uikit/sections/Logo.tsx` (galeria do UI Kit)
+  - [Status_GSFS_Virtual.md](Status_GSFS_Virtual.md)
 
 ---
 

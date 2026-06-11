@@ -2,8 +2,8 @@
 
 **Projeto:** GSFS Virtual — Simulador Técnico-Institucional
 **Documento:** Identidade de marca (referência do cliente) + tradução para Design System (Result)
-**Versão:** 0.8 (logo único lockup horizontal validado; CL-01 resolvido — identidade 100% validada — D-012)
-**Data:** 02/06/2026
+**Versão:** 0.9 (símbolo isolado reintroduzido como ativo oficial para usos compactos, a pedido do cliente — D-018)
+**Data:** 11/06/2026
 **Responsável Técnico:** Jonathan — Result
 **Fonte da identidade:** GSFS Visual Identity System **v1.0 — Maio/2025** (cliente)
 **Referências normativas:** PRD GSFS Virtual v0.3 (seções 2.4.6, 8.1); Roteiro Técnico v0.1; Teto de Métricas v0.1
@@ -50,7 +50,7 @@ O logo combina: símbolo (cubo isométrico em camadas — topo branco, bandas te
 2. **Vertical empilhado** — símbolo acima, wordmark + tagline abaixo.
 3. **Ícone (símbolo)** — cubo isolado.
 
-> **Em uso no projeto (D-012, 02/06):** apenas o **lockup horizontal** foi efetivamente entregue e validado pelo cliente (RGB + mono branco + mono preto). Os lockups vertical e ícone **não existem por ora** e foram retirados do repositório. Ver B.5.
+> **Em uso no projeto (D-012, 02/06; atualizado por D-018, 11/06):** o **lockup horizontal** é a aplicação principal (RGB + mono branco + mono preto). O **símbolo isolado (ícone)** foi **reintroduzido como ativo oficial** para usos compactos, a pedido do cliente (D-018) — ver B.5. O **lockup vertical** segue inexistente/descartado.
 
 ## A.4. Paleta oficial
 
@@ -114,7 +114,7 @@ A identidade v1.0 é excelente como **referência**, mas para **implementar** o 
 | Tipografia | Exo 2 + Inter, hierarquia | Tokens/classes implementáveis + mono para hash | ✅ Implementado (B.3) |
 | Estados de UI | — | Tokens de hover/active/disabled/foco, inputs, botões | ✅ Implementado (B.4) |
 | Acessibilidade | — | Contraste WCAG medido + anel de foco | ✅ Implementado (B.2 / B.4) |
-| Logo | 1 lockup horizontal (cores/mono), validado | Pasta canônica + favicons | ✅ Resolvido (B.5) — **CL-01 atendido** (alta-res/vetor entregue); vertical e ícone descartados (D-012) |
+| Logo | 1 lockup horizontal (cores/mono), validado | Pasta canônica + **símbolo isolado (ícone)** + favicons | ✅ Resolvido (B.5) — **CL-01 atendido** (alta-res/vetor entregue); símbolo isolado reintroduzido como ativo oficial (D-018); vertical descartado (D-012) |
 
 > **Cores de status** eram a maior lacuna funcional: o sistema do cliente só tem verde. O Cenário 4 (suspeita/descartado) e o Teto de Métricas (crítico) exigem **âmbar e vermelho** — implementados na seção B.2 e **aprovados pelo cliente em 28/05 (ID-V1)**.
 
@@ -185,25 +185,28 @@ Tokens em [`colors.css`](../tokens/colors.css) (seção 4) e [`tokens.json`](../
 
 **Decisão [D-012] (02/06):** o cliente validou as logos efetivamente entregues. Na prática **existe um único lockup — o horizontal** — em três tratamentos. A matriz 3×3 antes proposta por [D-010]/ID-V5 (horizontal + vertical + ícone) **não corresponde ao material real** e foi descartada.
 
-### Conjunto oficial (3 ativos)
+**Atualização [D-018] (11/06):** na validação da Fase 2, o cliente pediu que o **símbolo isolado (ícone)** seja mantido como **ativo oficial** para usos compactos (ícone, splash, favicon, botões reduzidos, estados de sistema). O símbolo foi **extraído em vetor real do lockup horizontal** (não do raster antigo), nos 3 tratamentos, e a pasta `logos/icon/` foi recriada. Isso supera a cláusula "ícone descartado" da D-012; o **lockup vertical permanece descartado**.
+
+### Conjunto oficial (2 lockups × 3 tratamentos)
 
 | Lockup | Cor cheia (fundo escuro) | Branco mono (fundo escuro) | Preto mono (fundo claro) |
 |---|---|---|---|
-| **Horizontal (único oficial)** | ✅ `..._RGB` | ✅ `..._Mono_White` | ✅ `..._Mono_Black` |
+| **Horizontal** (aplicação principal) | ✅ `GSFS_Logo_Primary_Horizontal_RGB` | ✅ `..._Mono_White` | ✅ `..._Mono_Black` |
+| **Símbolo isolado** (usos compactos — D-018) | ✅ `GSFS_Logo_Icon_RGB` | ✅ `GSFS_Logo_Icon_Mono_White` | ✅ `GSFS_Logo_Icon_Mono_Black` |
+
+> **Uso do símbolo isolado:** ícone de app, splash, favicon, botões reduzidos e estados de sistema — contextos em que o lockup horizontal fica ilegível. Para identidade plena (cabeçalhos, capa de relatório, telas amplas), usar o **lockup horizontal**.
 
 ### Descartado / inexistente
 
-- **Lockup vertical empilhado** — não entregue; pasta `logos/vertical/` **removida**.
-- **Lockup ícone (símbolo isolado)** — não entregue; pasta `logos/icon/` **removida**.
+- **Lockup vertical empilhado** — não entregue; pasta `logos/vertical/` **removida**. Se for preciso no futuro (selo, watermark de vídeo, formato empilhado), terá de ser solicitado ao cliente.
 - Variações soltas com artefato ("ACKED/ACKBD", grunge, distorção, baixa-res) — nunca foram ativos.
-
-> Se no futuro houver necessidade de marca em formato quadrado/empilhado (selo, watermark de vídeo, etc.), o lockup correspondente terá de ser solicitado ao cliente — não existe hoje.
 
 ### Estado atual em disco
 
 - **Lockup horizontal validado** ✅ — RGB + Mono_White + Mono_Black em `logos/horizontal/`, em **SVG vetor real** (CorelDRAW 2021; `viewBox` em unidades, escalável; sem raster embutido). **CL-01 atendido**: são os arquivos definitivos — ver B.8. *(Não há mais PNGs; exports raster podem ser gerados sob demanda a partir do SVG, se necessário.)*
-- `logos/favicon/`: 7 tamanhos gerados (16→256px) — **mantidos** como ativo funcional do app web (ícone de aba do navegador), derivados do símbolo do logo.
-- `logos/source/`: originais do cliente, mantidos como arquivo de proveniência.
+- **Símbolo isolado** ✅ (D-018) — RGB + Mono_White + Mono_Black em `logos/icon/`, **SVG vetor** recortado do lockup horizontal (`viewBox 0 0 9.15 11.13`, gradiente e facetas preservados). Espelhado em `app/public/logos/` para a galeria do UI Kit.
+- `logos/favicon/`: 7 tamanhos (16→256px) + `favicon.ico` + `apple-touch-icon` — **mantidos** como ativo funcional do app web, derivados do símbolo (raster). Regeneração a partir do novo vetor é tarefa Result opcional (ver B.8), condicionada ao enquadramento em canvas quadrado.
+- `logos/source/`: originais do cliente, mantidos como arquivo de proveniência (inclui o ícone em raster, agora superado pelo vetor de `logos/icon/`).
 
 ## B.6. Estrutura de pastas (`brand-assets/`)
 
@@ -211,7 +214,8 @@ Tokens em [`colors.css`](../tokens/colors.css) (seção 4) e [`tokens.json`](../
 brand-assets/
 ├── logos/
 │   ├── source/        # Originais do cliente, intocados
-│   ├── horizontal/    # Único lockup oficial — RGB + Mono_White + Mono_Black ✅
+│   ├── horizontal/    # Lockup principal — RGB + Mono_White + Mono_Black ✅
+│   ├── icon/          # Símbolo isolado (D-018) — RGB + Mono_White + Mono_Black ✅
 │   └── favicon/       # 16→256px (gerados) ✅
 ├── tokens/
 │   ├── colors.css / colors.scss   # cores (primitivas, semânticas, simulador, estados, gradiente)
@@ -223,7 +227,8 @@ brand-assets/
 ```
 
 **Convenção de nome** (tratamento no sufixo): `GSFS_Logo_<Lockup>_<Treatment>.<ext>`. Nomes reais em disco:
-- Horizontal (único): `GSFS_Logo_Primary_Horizontal_RGB.svg` · `_Mono_White.svg` · `_Mono_Black.svg` (SVG vetor)
+- Horizontal (principal): `GSFS_Logo_Primary_Horizontal_RGB.svg` · `_Mono_White.svg` · `_Mono_Black.svg` (SVG vetor)
+- Símbolo isolado (D-018): `GSFS_Logo_Icon_RGB.svg` · `GSFS_Logo_Icon_Mono_White.svg` · `GSFS_Logo_Icon_Mono_Black.svg` (SVG vetor)
 
 **Princípio:** `brand-assets/` é a fonte única da identidade; na Fase 3 o `tailwind.config` importa `tokens/tokens.json`.
 
@@ -245,7 +250,7 @@ brand-assets/
 - [x] **Estados interativos** (hover/active/disabled/foco, botões, inputs) — implementados.
 - [x] **Acessibilidade** — contraste WCAG medido + anel de foco.
 - [x] **Tipografia** — tokens/classes Exo 2 + Inter + mono.
-- [x] **Logo oficial** — lockup horizontal validado pelo cliente (RGB/mono-branco/mono-preto); vertical e ícone descartados (D-012). Matriz 3×3 antiga superada.
+- [x] **Logo oficial** — lockup horizontal validado pelo cliente (RGB/mono-branco/mono-preto); matriz 3×3 antiga superada. **Símbolo isolado (ícone) reintroduzido como ativo oficial em vetor (D-018, 11/06)**; vertical segue descartado (D-012).
 - [x] **Favicons** — 7 tamanhos gerados (16→256px).
 - [x] **Imagens de apoio** — 5 motivos salvos em `reference/`.
 - [x] **Gradiente de marca** — token implementado.
@@ -258,7 +263,7 @@ brand-assets/
 - [x] **CL-01:** ✅ **Resolvido em 02/06** — o cliente entregou os logos definitivos (alta-res/vetor) do lockup horizontal, validados. Não há mais pendência de insumo do cliente na identidade (D-012).
 
 ### Tarefa Result (a fazer)
-- Nenhuma. Todas as tarefas Result da identidade estão concluídas e a identidade está **100% validada**.
+- **(Opcional) Regenerar os favicons a partir do novo vetor do símbolo** (`logos/icon/`), para ganho de nitidez sobre os atuais (derivados do raster). Condicionada à definição do enquadramento em canvas quadrado (o símbolo é portrait). Os favicons atuais permanecem válidos até lá.
 
 ### Validações com o cliente — ✅ todas aprovadas (ID-V1…ID-V5)
 - [x] **ID-V1:** Aprovação das **cores de status** (âmbar `#F5A623`, vermelho `#E5484D`) — única lacuna da paleta, já implementada.
@@ -266,7 +271,8 @@ brand-assets/
 - [x] **ID-V3:** Confirmação do **tema escuro** como padrão e dos **estados interativos** derivados da paleta.
 - [x] **ID-V4:** ✅ **Atendido em 02/06** — CL-01 resolvido (logos definitivos em alta-res/vetor entregues).
 - [x] **ID-V5:** Curadoria de logos — **revista por [D-012]**: passou de matriz 3×3 para **único lockup horizontal** validado; vertical e ícone descartados.
+- [ ] **ID-V6:** **Símbolo isolado** reintroduzido como ativo oficial (D-018), a pedido do cliente. Aprovado internamente em 11/06; **confirmação visual do cliente pendente**, a entrar junto das respostas aos 6 pontos da Fase 2.
 
 ---
 
-*Sistema de identidade **100% validado e sem pendências** (ID-V1…ID-V5; CL-01 resolvido em 02/06 — D-012). Único lockup oficial: horizontal (cores/mono). Referência normativa para o UI Kit (Fase 2) e a implementação das telas (Fase 3).*
+*Sistema de identidade validado (ID-V1…ID-V5; CL-01 resolvido em 02/06 — D-012). Lockups oficiais: **horizontal** (aplicação principal) e **símbolo isolado** para usos compactos (D-018 — pendente apenas a confirmação visual do cliente, ID-V6). Referência normativa para o UI Kit (Fase 2) e a implementação das telas (Fase 3).*
