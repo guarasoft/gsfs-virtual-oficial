@@ -1,5 +1,7 @@
 export { Button } from './primitives/Button'
 export type { ButtonProps, ButtonVariant } from './primitives/Button'
+export { EdgeTab } from './primitives/EdgeTab'
+export type { EdgeTabProps, EdgeTabSide } from './primitives/EdgeTab'
 export { Field } from './primitives/Field'
 export type { FieldProps } from './primitives/Field'
 export { Input } from './primitives/Input'

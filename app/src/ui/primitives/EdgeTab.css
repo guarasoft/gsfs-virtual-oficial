@@ -1,0 +1,37 @@
+.gsfs-edge-tab {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 6;
+  writing-mode: vertical-rl;
+  display: inline-flex;
+  align-items: center;
+  background: var(--color-bg-raised);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  padding: 14px 7px;
+  cursor: pointer;
+  font-family: var(--font-secondary);
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 1.5px;
+  transition: background 120ms ease, color 120ms ease, border-color 120ms ease;
+}
+.gsfs-edge-tab:hover { background: var(--color-bg-surface); }
+.gsfs-edge-tab:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.gsfs-edge-tab--right {
+  right: 0;
+  border-right: none;
+  border-radius: 8px 0 0 8px;
+  box-shadow: -2px 0 14px rgba(0, 0, 0, 0.2);
+}
+.gsfs-edge-tab--left {
+  left: 0;
+  border-left: none;
+  border-radius: 0 8px 8px 0;
+  box-shadow: 2px 0 14px rgba(0, 0, 0, 0.2);
+}
