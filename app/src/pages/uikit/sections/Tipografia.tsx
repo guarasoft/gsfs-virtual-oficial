@@ -3,7 +3,7 @@ import { DocSection } from '../docs-kit'
 
 // Frase única repetida em cada exemplo de texto, para comparar a aplicação
 // da tipografia entre os estilos.
-const FRASE = 'O GSFS revela cabos e dutos sob a superfície.'
+const FRASE = 'O GSFS transforma dados subsuperficiais em inteligência operacional.'
 
 function Specimen({ spec, children }: { spec: string; children: ReactNode }) {
   return (
