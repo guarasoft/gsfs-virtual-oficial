@@ -18,7 +18,7 @@ const cards: Card[] = [
     to: '/wireframe',
     phase: 'Fase 1',
     name: 'Wireframes',
-    desc: 'Arquitetura de informação e fluxos em baixa fidelidade (cinza/estrutural). Jornada em 8 etapas.',
+    desc: 'Arquitetura de informação e fluxos em baixa fidelidade (cinza/estrutural). Jornada em 7 etapas.',
     tag: 'Aprovada',
     tone: 'approved',
     enabled: true,
