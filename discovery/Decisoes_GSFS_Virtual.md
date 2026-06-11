@@ -85,6 +85,7 @@ Sempre que uma decisão for tomada ou revisada:
 | [D-016](#d-016--jornada-de-7-etapas-fusao-resultado--bloco-3d-e-setup-com-manual-demonstrativo) | Jornada de 7 etapas: fusão Resultado + Bloco 3D, e setup com manual demonstrativo | Active | 2026-06-03 |
 | [D-017](#d-017--replay-enriquecido-com-dados-da-missao-feedback-do-cliente) | Replay enriquecido com dados da missão, não só imagens (feedback do cliente) | Active | 2026-06-05 |
 | [D-018](#d-018--simbolo-isolado-reintroduzido-como-ativo-oficial-para-usos-compactos-pedido-do-cliente) | Símbolo isolado reintroduzido como ativo oficial para usos compactos (pedido do cliente) | Active | 2026-06-11 |
+| [D-019](#d-019--governanca-da-fase-2-pacote-documental-em-vez-de-acesso-ao-repositorio) | Governança da Fase 2: pacote documental ao cliente em vez de acesso ao repositório | Active | 2026-06-11 |
 
 ---
 
@@ -427,6 +428,22 @@ Sempre que uma decisão for tomada ou revisada:
   - [Identidade_Visual_GSFS_Virtual.md](../brand-assets/guidelines/Identidade_Visual_GSFS_Virtual.md) (A.3, B.1, B.5, B.6, B.8)
   - `brand-assets/logos/icon/` (recriada — 3 SVGs) e `app/public/logos/`
   - `app/src/pages/uikit/sections/Logo.tsx` (galeria do UI Kit)
+  - [Status_GSFS_Virtual.md](Status_GSFS_Virtual.md)
+
+---
+
+### D-019 — Governança da Fase 2: pacote documental em vez de acesso ao repositório
+
+- **Status:** Active
+- **Data:** 2026-06-11
+- **Contexto:** Ao aprovar a direção da Fase 2 / UI Kit para continuidade, o cliente pediu que, no fechamento da etapa, ficasse garantida **"a entrega ou acesso organizado ao repositório/versionamento"** — com a estrutura dos tokens, componentes, rota `/ui-kit` e instruções básicas de visualização/execução — para manter **rastreabilidade e governança**. O pedido oferece a alternativa explícita: **entrega OU acesso**.
+- **Decisão:** Atender o pedido por um **pacote documental autocontido** (a "entrega"), reservando o **acesso direto ao repositório de código para a entrega final** do projeto, como praxe das fases anteriores. O pacote vive em `entrega-fase2-cliente/` e cobre: índice/LEIA-ME, Fechamento da Fase 2, Catálogo do UI Kit (tokens + 23 componentes), Mapa do Repositório (árvore comentada, sem o código-fonte), Instruções de Execução e Extrato de Versionamento (histórico Git), além de `screenshots/` com as 12 seções da rota `/ui-kit` renderizadas (1280×800, 2×).
+- **Consequências:**
+  - (+) Satisfaz literalmente o pedido do cliente (rastreabilidade/governança) sem antecipar o código-fonte vivo.
+  - (+) Material reaproveitável como base do fechamento documental das próximas fases.
+  - (−) Exige manter o pacote em sintonia com o repo a cada fechamento (catálogo e versionamento).
+- **Documentos afetados:**
+  - `entrega-fase2-cliente/` (pacote — 6 documentos + screenshots)
   - [Status_GSFS_Virtual.md](Status_GSFS_Virtual.md)
 
 ---

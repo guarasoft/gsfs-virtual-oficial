@@ -11,11 +11,11 @@
 
 | Campo | Valor |
 |---|---|
-| **Fase atual** | **Fase 2 — Design visual e UI Kit.** UI Kit entregue (09/06); **feedback do cliente (6 pontos de alinhamento) incorporado (11/06)**; 🟡 **aguardando nova validação do cliente após os ajustes** para fechar a fase |
+| **Fase atual** | **Fase 2 — Design visual e UI Kit. ✅ APROVADA PARA CONTINUIDADE pelo cliente (11/06).** UI Kit entregue (09/06); feedback do cliente (6 pontos de alinhamento) incorporado (11/06); **pacote documental de fechamento/governança entregue** (`entrega-fase2-cliente/`, [D-019]) |
 | **Saúde da fase** | 🟢 Verde |
-| **Próximo marco** | **Validação do cliente sobre o UI Kit ajustado.** Após o aval: iniciar a Fase 3 (vestir os wireframes em alta fidelidade, `/ui-kit` → `/prototype`), incorporando [D-017] (replay E7) e as 4 notas de continuidade |
+| **Próximo marco** | **Iniciar a Fase 3** — vestir os wireframes em alta fidelidade (`/ui-kit` → `/prototype`), incorporando [D-017] (replay E7) e as 4 notas de continuidade. (Acesso ao repositório reservado para a entrega final — D-019.) |
 | **Próxima fase** | Fase 3 — Telas em alta fidelidade (código) |
-| **Bloqueios ativos** | **Nenhum.** Aguardando o retorno do cliente sobre o UI Kit ajustado (não bloqueia trabalho interno de preparação da Fase 3). [D-017] e as 4 notas (identidade, C5 premium, Teto, exportação simbólica) serão incorporados ao vestir os wireframes na Fase 3. |
+| **Bloqueios ativos** | **Nenhum.** Fase 2 aprovada; [D-017] e as 4 notas (identidade, C5 premium, Teto, exportação simbólica) serão incorporados ao vestir os wireframes na Fase 3. |
 
 ---
 
@@ -25,8 +25,8 @@
 |---|---|---|---|---|
 | **Fase 0** — Cenários e desbloqueio de pendências | 3 dias | ✅ Concluída | 2026-05-26 | 2026-06-02 |
 | Fase 1 — Arquitetura de informação e fluxos | 1 semana | ✅ Concluída (aprovada pelo cliente em 05/06) | 2026-06-02 | 2026-06-05 |
-| Fase 2 — Design visual e UI Kit | 1 semana | 🟡 UI Kit entregue (09/06); feedback do cliente incorporado (11/06) — aguardando validação após ajustes | 2026-06-05 | — |
-| Fase 3 — Telas em alta fidelidade (código) | 3 semanas | ⚪ Não iniciada | — | — |
+| Fase 2 — Design visual e UI Kit | 1 semana | ✅ Aprovada para continuidade pelo cliente (11/06); pacote de fechamento entregue (D-019) | 2026-06-05 | 2026-06-11 |
+| Fase 3 — Telas em alta fidelidade (código) | 3 semanas | ⚪ Não iniciada (próxima) | — | — |
 | Fase 4 — Integração das peças 3D | 1 semana | ⚪ Não iniciada | — | — |
 | Fase 5 — Testes e polimento | 1 semana | ⚪ Não iniciada | — | — |
 
@@ -83,20 +83,21 @@ Conforme cronograma + item 7 derivado da decisão de stack ([D-001](Decisoes_GSF
 | 2026-06-03 | **Fase 1 concluída (interno):** wireframes das **7 etapas** (E1…E7) no protótipo `app/`, revisados e aprovados internamente. **Documento de Arquitetura de Informação da Fase 1** escrito. Decisões [D-015] (abortar/reiniciar) e [D-016] (jornada 7 etapas) registradas | [Arquitetura_Informacao_Fase1_GSFS_Virtual.md](Arquitetura_Informacao_Fase1_GSFS_Virtual.md) |
 | 2026-06-05 | **Fase 1 APROVADA pelo cliente** ("aprovada para continuidade"). [D-015] (abortar/reiniciar) validado; cliente reforçou confirmação antes de encerrar/reiniciar. Nova **[D-017]** — replay (E7) com dados da missão (timeline, cenário, sensores, timestamps, detecções, falsos positivos, GSFS_RECORD/hash). 4 notas de continuidade registradas para a Fase 2 | [D-017](Decisoes_GSFS_Virtual.md#d-017--replay-enriquecido-com-dados-da-missao-feedback-do-cliente) · [Arquitetura_Informacao_Fase1_GSFS_Virtual.md](Arquitetura_Informacao_Fase1_GSFS_Virtual.md) |
 | 2026-06-09 | **UI Kit da Fase 2 entregue (interno).** Página `/ui-kit` como galeria de design system (menu lateral + detalhe, rotas próprias por item) consumindo os tokens validados de `brand-assets/` (sem duplicação). **Biblioteca de 20 componentes reais** em `app/src/ui/`: 12 base (Button, Field, Input, Select acessível, Textarea, Toggle, Badge, Chip, Card, Panel, Table, Tabs, Progress, Tooltip) + 8 de simulador (DetectionBadge, ConfidenceMeter, BatteryGauge, TempGauge, SensorPanel, RtkStatus, HudMetric, StatusBar). Fundamentos documentados (cores, tipografia, logo, espaçamento, iconografia Lucide). Hub vestido com a marca; acessibilidade dos campos (rótulos, erro texto+ícone, foco) atendendo WCAG. **Aprovado internamente; aguardando validação do cliente.** | [Status](Status_GSFS_Virtual.md) · `app/src/ui/` |
+| 2026-06-11 | **Fase 2 APROVADA PARA CONTINUIDADE pelo cliente.** Cliente validou a direção do UI Kit (frase institucional, controles laterais Voltar/Ações, replay, métricas, GSFS_RECORD, Teto de Métricas). Pedido associado ao fechamento: garantia de entrega/acesso organizado ao versionamento → atendido por **pacote documental** (`entrega-fase2-cliente/`): Fechamento da Fase 2, Catálogo do UI Kit, Mapa do Repositório, Instruções de Execução, Extrato de Versionamento + 12 screenshots da rota `/ui-kit`. Acesso ao repo reservado para a entrega final | [D-019](Decisoes_GSFS_Virtual.md#d-019--governanca-da-fase-2-pacote-documental-em-vez-de-acesso-ao-repositorio) · `entrega-fase2-cliente/` |
 | 2026-06-11 | **Feedback do cliente na Fase 2 — 6 pontos de alinhamento incorporados.** **(1)** fontes editáveis — esclarecido (entregável já é código/tokens). **(2)** frase de amostra da Tipografia reescrita para versão institucional. **(3)** **símbolo isolado da marca reintroduzido como ativo oficial** nos 3 tratamentos (RGB/mono-branco/mono-preto), extraído em vetor do lockup horizontal e exposto no UI Kit — [D-018]. **(4)** **abas laterais "Voltar"/"Ações"** desenhadas no UI Kit como componente `EdgeTab` (seção Botões) — sem alterar a IA da Fase 1. **(5)** replay — esclarecido (já espelha toda a varredura, D-017). **(6)** Teto de Métricas — reafirmado (política vigente, D-009). | [D-018](Decisoes_GSFS_Virtual.md#d-018--simbolo-isolado-reintroduzido-como-ativo-oficial-para-usos-compactos-pedido-do-cliente) · [Identidade](../brand-assets/guidelines/Identidade_Visual_GSFS_Virtual.md) · `app/src/ui/` |
 
 ---
 
 ## ➡️ Próximos passos
 
-### Imediatos (aguardando cliente)
+### Imediatos
 
 1. ✅ **Fase 1 concluída e aprovada pelo cliente** (05/06) — wireframes das 7 etapas + documento de IA.
-2. ✅ **UI Kit da Fase 2 entregue e aprovado internamente** (09/06) — galeria de design system + biblioteca de 20 componentes.
-3. 🟡 **Aguardar a validação do cliente sobre o UI Kit** para fechar formalmente a Fase 2 (como nas Fases 0 e 1).
-4. **Preparo da Fase 3 (não bloqueado):** revisar com o cliente, em paralelo, as 4 notas de continuidade (identidade, C5 premium, Teto de Métricas, exportação simbólica) e o escopo do replay enriquecido [D-017] (E7).
+2. ✅ **UI Kit da Fase 2 entregue** (09/06) — galeria de design system + biblioteca de 23 componentes.
+3. ✅ **Fase 2 aprovada para continuidade pelo cliente** (11/06); **pacote documental de fechamento/governança entregue** (`entrega-fase2-cliente/`, [D-019]).
+4. ➡️ **Iniciar a Fase 3:** vestir os wireframes em alta fidelidade importando `app/src/ui/`, incorporando o replay enriquecido [D-017] (E7) e as 4 notas de continuidade (identidade, C5 premium, Teto de Métricas, exportação simbólica).
 
-### Fase 2 — Design visual e UI Kit (entregue, aguardando validação)
+### Fase 2 — Design visual e UI Kit (✅ aprovada para continuidade)
 
 Entregue:
 
@@ -105,7 +106,7 @@ Entregue:
 - Acessibilidade dos campos (rótulos associados, erro texto+ícone, foco visível) atendendo WCAG.
 - Hub/portal de review vestido com a paleta da marca.
 
-### Fase 3 — Telas em alta fidelidade (após validação)
+### Fase 3 — Telas em alta fidelidade (próxima)
 
 - Vestir os wireframes da Fase 1 com a linguagem visual, importando a biblioteca `app/src/ui/` (sobre `/ui-kit` e depois `/prototype`).
 - Incorporar o replay enriquecido [D-017] (E7) e as 4 notas de continuidade.
@@ -164,6 +165,7 @@ A identidade está 100% validada e o UI Kit está pronto, então a Fase 3 não t
 - **UI Kit navegável** — rota `/ui-kit` no app (`npm run dev --prefix app` → http://localhost:5173/ui-kit): galeria de design system com fundamentos (cores, tipografia, logo, espaçamento, iconografia) e todos os componentes com variações/estados. **Marco da Fase 2.**
 - `app/src/ui/` — **biblioteca de componentes reais reutilizáveis** (13 base + 8 de simulador; inclui a `EdgeTab` — abas laterais Voltar/Ações, add. 11/06) que a Fase 3 importa para vestir os wireframes.
 - Specs internas: [2026-06-09-ui-kit-fase2-design.md](../docs/superpowers/specs/2026-06-09-ui-kit-fase2-design.md) (design) · [2026-06-09-ui-kit-fase2.md](../docs/superpowers/plans/2026-06-09-ui-kit-fase2.md) (plano de implementação).
+- **Pacote de fechamento/governança ao cliente** — `entrega-fase2-cliente/` ([D-019]): LEIA-ME, Fechamento da Fase 2, Catálogo do UI Kit (tokens + 23 componentes), Mapa do Repositório, Instruções de Execução, Extrato de Versionamento e `screenshots/` (12 seções da rota `/ui-kit`). Documental e autocontido; acesso ao repo reservado para a entrega final.
 
 ### Identidade visual (Item 3)
 

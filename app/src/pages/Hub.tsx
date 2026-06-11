@@ -28,8 +28,8 @@ const cards: Card[] = [
     phase: 'Fase 2',
     name: 'UI Kit',
     desc: 'Linguagem visual e componentes (cores, tipografia, HUD, painéis de sensor).',
-    tag: 'Aguardando validação',
-    tone: 'pending',
+    tag: 'Aprovada',
+    tone: 'approved',
     enabled: true,
   },
   {
