@@ -10,7 +10,7 @@ describe('Simulator (máquina de estados)', () => {
   it('renderiza a etapa atual lida do store', () => {
     useSimulator.setState({ step: 'e2-menu' })
     render(<Simulator />)
-    expect(screen.getByText(/E2 — Menu/)).toBeTruthy()
+    expect(screen.getByText('MENU PRINCIPAL')).toBeTruthy()
   })
 
   it('reage à troca de etapa no store', () => {

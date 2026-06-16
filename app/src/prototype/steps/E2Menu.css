@@ -1,0 +1,144 @@
+/* E2 — Menu Principal — estilos hi-fi */
+
+/* ---- Contentor central da tela ---- */
+.e2-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: var(--space-8);
+}
+
+/* ---- Logo GSFS ---- */
+.e2-logo {
+  font-size: 56px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  background: var(--color-primary);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  line-height: 1;
+  font-family: var(--font-primary, 'Exo 2', sans-serif);
+}
+
+/* ---- Bloco de boas-vindas ---- */
+.e2-welcome {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.e2-welcome-title {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--color-text);
+  font-family: var(--font-primary, 'Exo 2', sans-serif);
+  text-transform: uppercase;
+}
+
+.e2-welcome-sub {
+  font-size: 14px;
+  color: var(--color-text-muted);
+  letter-spacing: 0.04em;
+}
+
+/* ---- Grade de cards de ação ---- */
+.e2-actions {
+  display: grid;
+  grid-template-columns: repeat(2, 360px);
+  gap: var(--space-6);
+}
+
+/* ---- Card de ação ---- */
+.e2-action {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-8);
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: border-color 140ms ease, background 140ms ease, transform 140ms ease;
+  text-align: left;
+  user-select: none;
+  min-height: 160px;
+  justify-content: center;
+}
+
+.e2-action:hover {
+  border-color: var(--color-primary);
+  background: var(--color-bg-raised);
+  transform: translateY(-2px);
+}
+
+.e2-action:active {
+  transform: translateY(0);
+}
+
+/* número da ação */
+.e2-action-k {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: var(--color-primary);
+  font-family: var(--font-secondary, 'JetBrains Mono', monospace);
+  text-transform: uppercase;
+}
+
+/* nome da ação */
+.e2-action-name {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--color-text);
+  font-family: var(--font-primary, 'Exo 2', sans-serif);
+  text-transform: uppercase;
+  line-height: 1.1;
+}
+
+/* descrição da ação */
+.e2-action-desc {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+}
+
+/* ---- Barra de status inferior ---- */
+.e2-status {
+  display: flex;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.e2-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  font-size: 11px;
+  font-family: var(--font-secondary, 'JetBrains Mono', monospace);
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+}
+
+.e2-status-pill strong {
+  color: var(--color-success);
+  font-weight: 700;
+}
+
+.e2-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-success);
+  flex-shrink: 0;
+}

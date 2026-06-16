@@ -1,16 +1,72 @@
-import { Button } from '../../ui'
 import { Screen } from '../shell/Screen'
 import { useSimulator } from '../store'
+import './E2Menu.css'
+
+const actions = [
+  {
+    k: '01',
+    name: 'NOVA OPERAÇÃO',
+    desc: 'Configurar solo, área, modalidade e cenário, e iniciar a varredura.',
+    step: 'e3-setup' as const,
+  },
+  {
+    k: '02',
+    name: 'REPLAY',
+    desc: 'Reproduzir uma sessão de varredura já gravada (GSFS_RECORD).',
+    step: 'e7-replay' as const,
+  },
+]
+
+const statusItems: [string, string][] = [
+  ['SISTEMA', 'PRONTO'],
+  ['BATERIA', '98%'],
+  ['SENSORES', '4 / 4 OK'],
+  ['GNSS', 'FIX'],
+]
 
 export function E2Menu() {
   const goTo = useSimulator((s) => s.goTo)
+
   return (
-    <Screen title="MENU" subtitle="GROUND SCANNING FUSION SYSTEM" meta={['ETAPA: E2 · Menu']}>
-      <div className="pt-placeholder">
-        <p>E2 — Menu (placeholder)</p>
-        <div className="pt-placeholder-actions">
-          <Button onClick={() => goTo('e3-setup')}>Nova Operação →</Button>
-          <Button variant="ghost" onClick={() => goTo('e7-replay')}>Replay</Button>
+    <Screen
+      title="MENU PRINCIPAL"
+      subtitle="GROUND SCANNING FUSION SYSTEM"
+      meta={['MODO: PRONTO', 'GNSS: FIX']}
+    >
+      <div className="e2-body">
+        {/* Logo */}
+        <div className="e2-logo" aria-label="GSFS">GSFS</div>
+
+        {/* Boas-vindas */}
+        <div className="e2-welcome">
+          <div className="e2-welcome-title">GSFS VIRTUAL</div>
+          <div className="e2-welcome-sub">Selecione uma ação para começar</div>
+        </div>
+
+        {/* Cards de ação */}
+        <div className="e2-actions">
+          {actions.map((a) => (
+            <button
+              key={a.k}
+              className="e2-action"
+              onClick={() => goTo(a.step)}
+              type="button"
+            >
+              <span className="e2-action-k">{a.k}</span>
+              <span className="e2-action-name">{a.name}</span>
+              <span className="e2-action-desc">{a.desc}</span>
+            </button>
+          ))}
+        </div>
+
+        {/* Status inferior */}
+        <div className="e2-status">
+          {statusItems.map(([label, value]) => (
+            <span className="e2-status-pill" key={label}>
+              <span className="e2-status-dot" aria-hidden="true" />
+              {label}: <strong>{value}</strong>
+            </span>
+          ))}
         </div>
       </div>
     </Screen>
