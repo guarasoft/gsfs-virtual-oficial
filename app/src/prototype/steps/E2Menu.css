@@ -12,15 +12,9 @@
 
 /* ---- Logo GSFS ---- */
 .e2-logo {
-  font-size: 56px;
-  font-weight: 800;
-  letter-spacing: 0.1em;
-  background: var(--color-primary);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  line-height: 1;
-  font-family: var(--font-primary, 'Exo 2', sans-serif);
+  height: clamp(72px, 12vh, 104px);
+  width: auto;
+  display: block;
 }
 
 /* ---- Bloco de boas-vindas ---- */
