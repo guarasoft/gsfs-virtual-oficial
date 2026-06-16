@@ -54,4 +54,48 @@ describe('timeline-core', () => {
     const r = advance(s, 1.5, sorted, 5) // 2 → 3.5
     expect(r.fired.map((e) => e.label)).toEqual(['b'])
   })
+
+  it('eventos com mesmo t disparam juntos no mesmo tick', () => {
+    const co: TimelineEvent[] = [
+      { t: 2, kind: 'phase', label: 'x' },
+      { t: 2, kind: 'detection', label: 'y' },
+    ]
+    const sorted = sortEvents(co)
+    const r = advance(initTimeline(), 2, sorted, 10)
+    expect(r.fired.map((e) => e.label)).toEqual(['x', 'y'])
+  })
+
+  it('deltaSec zero ou negativo não avança o relógio', () => {
+    const sorted = sortEvents(evs)
+    const r0 = advance(initTimeline(), 0, sorted, 5)
+    expect(r0.state.elapsed).toBe(0)
+    expect(r0.fired).toEqual([])
+    const rNeg = advance(initTimeline(), -3, sorted, 5)
+    expect(rNeg.state.elapsed).toBe(0)
+  })
+
+  it('advance com lista de eventos vazia só avança o relógio', () => {
+    const r = advance(initTimeline(), 2, [], 10)
+    expect(r.state.elapsed).toBe(2)
+    expect(r.fired).toEqual([])
+    expect(r.completed).toBe(false)
+  })
+
+  it('seekTo com t negativo satura em 0', () => {
+    const s = seekTo(-5, [], 10)
+    expect(s.elapsed).toBe(0)
+    expect(s.nextIdx).toBe(0)
+    expect(s.done).toBe(false)
+  })
+
+  it('seekTo em t == durationSec marca done', () => {
+    const sorted = sortEvents(evs)
+    const s = seekTo(5, sorted, 5)
+    expect(s.elapsed).toBe(5)
+    expect(s.done).toBe(true)
+  })
+
+  it('progressOf retorna 100 quando durationSec é 0', () => {
+    expect(progressOf(0, 0)).toBe(100)
+  })
 })

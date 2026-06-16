@@ -1,7 +1,7 @@
 import type { TimelineEvent } from '../data/timeline'
 
 export interface TimelineState {
-  elapsed: number   // segundos lógicos
+  elapsed: number   // segundos lógicos (acumulação progressiva de deltaSec; adequada p/ eventos com granularidade ≥ 0,1 s)
   nextIdx: number   // índice do próximo evento (sobre a lista ordenada)
   done: boolean
 }
@@ -11,7 +11,12 @@ export function initTimeline(): TimelineState {
 }
 
 export function sortEvents(events: TimelineEvent[]): TimelineEvent[] {
-  return [...events].sort((a, b) => a.t - b.t)
+  // Desempate estável por índice original: eventos com o mesmo t mantêm a
+  // ordem de inserção em qualquer engine, garantindo determinismo (CA-05/07).
+  return events
+    .map((e, i) => ({ e, i }))
+    .sort((a, b) => a.e.t - b.e.t || a.i - b.i)
+    .map(({ e }) => e)
 }
 
 export interface AdvanceResult {
