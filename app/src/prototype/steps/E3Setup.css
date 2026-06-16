@@ -8,24 +8,18 @@
 .e3-setup {
   display: flex;
   flex-direction: column;
+  gap: var(--space-6);
   height: 100%;
 }
 
-/* corpo: centraliza o bloco das colunas verticalmente no espaço disponível */
-.e3-body {
-  flex: 1;
-  min-height: 0;
-  display: flex;
-  align-items: center;
-}
-
-/* ---- duas colunas (alinhadas no topo entre si) ---- */
+/* ---- duas colunas (alinhadas no topo) ---- */
 .e3-cols {
-  width: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--space-6);
   align-items: start;
+  flex: 1;
+  min-height: 0;
 }
 
 .e3-col {
@@ -34,8 +28,10 @@
   gap: var(--space-4);
 }
 
-/* coluna do formulário: respiro consistente entre os Fields */
+/* coluna do formulário: respiro consistente + campos ocupam a largura toda */
 .e3-col-form { gap: var(--space-5); }
+.e3-col-form .gsfs-field-group { width: 100%; }   /* override do fit-content global */
+.e3-col-form .gsfs-select { width: 100%; }        /* trigger + lista acompanham a coluna */
 
 /* ---- área de varredura (Segmented e NumberField vêm do UI Kit) ---- */
 .e3-area-hybrid {
@@ -167,7 +163,5 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-top: var(--space-4);
-  border-top: 1px solid var(--color-border);
   margin-top: auto;
 }

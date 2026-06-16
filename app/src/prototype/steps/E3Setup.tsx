@@ -115,8 +115,6 @@ export function E3Setup() {
     >
       <div className="e3-setup">
 
-        {/* ---- corpo centralizado verticalmente ---- */}
-        <div className="e3-body">
         {/* ---- Two-column body (colunas alinhadas no topo) ---- */}
         <div className="e3-cols">
 
@@ -214,11 +212,10 @@ export function E3Setup() {
             </div>
           </div>
         </div>
-        </div>
 
         {/* ---- Actions bar ---- */}
         <div className="e3-actions-bar">
-          <Button variant="ghost" onClick={() => goTo('e2-menu')}>
+          <Button variant="secondary" onClick={() => goTo('e2-menu')}>
             ← Voltar ao menu
           </Button>
           <Button
