@@ -16,6 +16,6 @@ describe('Simulator (máquina de estados)', () => {
   it('reage à troca de etapa no store', () => {
     useSimulator.setState({ step: 'e6-export' })
     render(<Simulator />)
-    expect(screen.getByText(/E6 — Exportação/)).toBeTruthy()
+    expect(screen.getByText('EXPORTAÇÃO')).toBeTruthy()
   })
 })

@@ -1,0 +1,244 @@
+/* E6 — Exportação (hi-fi) ------------------------------------------------- */
+
+.e6-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  height: 100%;
+}
+
+/* Cabeçalho da seção */
+.e6-section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.e6-section-title {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--color-text-strong);
+  text-transform: uppercase;
+}
+
+.e6-preview-badge {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--color-warning);
+  border: 1px solid var(--color-warning);
+  border-radius: var(--radius-pill);
+  padding: 3px 10px;
+  font-family: var(--font-secondary);
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+/* Cards de formato */
+.e6-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+  flex: 1;
+}
+
+.e6-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.e6-card > .gsfs-card {
+  flex: 1;
+}
+
+.e6-card-inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  height: 100%;
+}
+
+.e6-card-top {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.e6-card-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-text-strong);
+  letter-spacing: 0.01em;
+}
+
+.e6-card-desc {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  line-height: 1.55;
+  margin: 0;
+  flex: 1;
+}
+
+/* Preview de PDF */
+.e6-preview {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  flex: 1;
+  overflow: auto;
+}
+
+.e6-pdf-pages {
+  display: flex;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.e6-pdf-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+.e6-pdf-thumb {
+  width: 100px;
+  height: 136px;
+  background: var(--color-bg-raised);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px;
+  position: relative;
+  overflow: hidden;
+}
+
+.e6-pdf-watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-35deg);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--color-border-strong);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.e6-pdf-page-title {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  letter-spacing: 0.05em;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.e6-pdf-line {
+  width: 72px;
+  height: 3px;
+  background: var(--color-border);
+  border-radius: 2px;
+  position: relative;
+  z-index: 1;
+}
+
+.e6-pdf-line--short {
+  width: 48px;
+}
+
+.e6-pdf-caption {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  text-align: center;
+  max-width: 110px;
+  line-height: 1.4;
+}
+
+/* Pacote GIS/BIM */
+.e6-pkg {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--space-6);
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+}
+
+.e6-pkg-tree pre {
+  margin: 0;
+  font-family: var(--font-secondary);
+  font-size: 12px;
+  color: var(--color-text-muted);
+  line-height: 1.7;
+  white-space: pre;
+}
+
+.e6-pkg-meta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-width: 220px;
+  padding-left: var(--space-6);
+  border-left: 1px solid var(--color-border);
+}
+
+.e6-meta-label {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  font-weight: 700;
+  margin-bottom: var(--space-1);
+}
+
+.e6-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  font-size: 12px;
+}
+
+.e6-meta-row span {
+  color: var(--color-text-muted);
+}
+
+.e6-meta-row strong {
+  color: var(--color-text-strong);
+  font-weight: 600;
+  font-family: var(--font-secondary);
+}
+
+/* Disclaimer CA-08 */
+.e6-disclaimer {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border);
+  border-left: 3px solid var(--color-warning);
+  border-radius: var(--radius-sm);
+  padding: var(--space-3) var(--space-4);
+  line-height: 1.55;
+  background: var(--color-bg-surface);
+  margin-top: var(--space-3);
+}
+
+/* Barra de ações */
+.e6-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border);
+  margin-top: auto;
+}
