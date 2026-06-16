@@ -143,11 +143,13 @@
 .pt-boot-state {
   display: inline-flex;
   align-items: center;
-  padding: 2px 7px;
+  justify-content: center;
+  min-width: 68px;          /* largura consistente entre OK / WAIT / TEST */
+  padding: 6px 14px;
   border-radius: var(--radius-full, 999px);
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   white-space: nowrap;
   flex-shrink: 0;
 }
