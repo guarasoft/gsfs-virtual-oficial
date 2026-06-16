@@ -1,0 +1,147 @@
+import type { ReactNode } from 'react'
+import { Progress, HudMetric, SensorPanel, DetectionBadge } from '../../ui'
+import type { SensorKind } from '../../ui'
+import type { ScanState } from './useScan'
+import './ScanView.css'
+
+// ---------------------------------------------------------------------------
+// Internal: full sensor panel with visualization placeholder
+// ---------------------------------------------------------------------------
+
+function getVizLabel(kind: SensorKind): string {
+  switch (kind) {
+    case 'gpr': return '[ radargrama — eco / reflexão por profundidade ]'
+    case 'emi': return '[ mapa de calor — matriz de intensidade ]'
+    case 'imu': return '[ vetor de orientação — roll / pitch ]'
+    case 'gnss': return '[ trajetória de varredura no mapa ]'
+  }
+}
+
+function SensorPanelFull({
+  kind,
+  title,
+  tag,
+  note,
+}: {
+  kind: SensorKind
+  title: string
+  tag: string
+  note?: string
+}) {
+  return (
+    <div className="sv-panel">
+      <div className="sv-panel-hdr">
+        <span className="sv-panel-title">{title}</span>
+        <span className="sv-panel-tag">{tag}</span>
+      </div>
+      <div className="sv-panel-body">
+        <div className="sv-panel-viz">
+          <span className="sv-panel-viz-label">{getVizLabel(kind)}</span>
+        </div>
+        {note && <div className="sv-panel-note">{note}</div>}
+      </div>
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Props
+// ---------------------------------------------------------------------------
+
+export interface ScanViewProps {
+  state: ScanState
+  banner?: ReactNode
+  controls?: ReactNode
+}
+
+// ---------------------------------------------------------------------------
+// ScanView — presentational
+// ---------------------------------------------------------------------------
+
+export function ScanView({ state, banner, controls }: ScanViewProps) {
+  const confirmedDetections = state.detections.filter((d) => d.state === 'confirmed')
+
+  return (
+    <div className="sv-root">
+      {banner}
+
+      {/* HUD */}
+      <div className="sv-hud">
+        <div className="sv-hud-progress">
+          <div className="sv-hud-progress-row">
+            <span className="sv-hud-progress-label">PROGRESSO DA VARREDURA</span>
+            <strong className="sv-hud-progress-pct">{state.progress}%</strong>
+          </div>
+          <Progress value={state.progress} label="Progresso da varredura" />
+        </div>
+        <div className="sv-hud-metrics">
+          <HudMetric label="Relógio" value={state.clock} />
+          <HudMetric label="Bateria" value={`${state.battery}%`} />
+          <HudMetric label="Temp." value={`${state.temp}°C`} />
+          <HudMetric label="GNSS" value={state.gnss} />
+        </div>
+        <div className="sv-hud-sensors">
+          <SensorPanel kind="gpr" state="on" />
+          <SensorPanel kind="emi" state="on" />
+          <SensorPanel kind="imu" state="on" />
+          <SensorPanel kind="gnss" state={state.gnss === 'FIX' ? 'on' : 'err'} />
+        </div>
+      </div>
+
+      {/* Alert row */}
+      {confirmedDetections.length > 0 && (
+        <div className="sv-alert">
+          <span className="sv-alert-pulse" />
+          <span className="sv-alert-lead">DETECÇÃO CONFIRMADA</span>
+          <span className="sv-alert-info">
+            {confirmedDetections.map((d) => `${d.label} · ${d.meta}`).join(' | ')}
+          </span>
+        </div>
+      )}
+
+      {/* Body */}
+      <div className="sv-body">
+        {/* 4-panel sensor grid */}
+        <div className="sv-sensor-grid">
+          <SensorPanelFull kind="gpr" title="GPR" tag="eco / reflexão" note={state.sensorNotes.gpr} />
+          <SensorPanelFull kind="emi" title="EMI" tag="condutividade" note={state.sensorNotes.emi} />
+          <SensorPanelFull kind="imu" title="IMU" tag="orientação 6 eixos" note={state.sensorNotes.imu} />
+          <SensorPanelFull kind="gnss" title="GNSS / RTK" tag="posicionamento" note={state.sensorNotes.gnss} />
+        </div>
+
+        {/* Right rail */}
+        <div className="sv-rail">
+          <div className="sv-rail-panel">
+            <div className="sv-rail-h">DETECÇÕES</div>
+            {state.detections.length === 0 && (
+              <div className="sv-rail-empty">varrendo… aguardando anomalia</div>
+            )}
+            {state.detections.map((d, i) => (
+              <div key={i} className="sv-det-item">
+                <div className="sv-det-name">{d.label}</div>
+                <div className="sv-det-meta">{d.meta}</div>
+                <DetectionBadge state={d.state} />
+              </div>
+            ))}
+            {state.fusionNote && (
+              <div className="sv-fusao">FUSÃO: {state.fusionNote}</div>
+            )}
+          </div>
+          <div className="sv-rail-panel">
+            <div className="sv-rail-h">LOG DE MISSÃO</div>
+            <div className="sv-log">
+              {state.log.map(([t, msg], i) => (
+                <div key={i} className="sv-log-line">
+                  <span className="sv-log-t">{t}</span>
+                  <span>{msg}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {controls}
+    </div>
+  )
+}
