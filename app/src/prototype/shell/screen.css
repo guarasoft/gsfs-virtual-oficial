@@ -31,7 +31,9 @@
 .pt-boot-splash { text-align: center; display: flex; flex-direction: column; gap: 12px; }
 .pt-boot-logo {
   font-size: 64px; font-weight: 800; letter-spacing: 0.08em;
-  background: var(--color-primary); -webkit-background-clip: text; background-clip: text; color: transparent;
+  color: var(--color-primary); /* fallback se background-clip:text não for suportado */
+  background: var(--color-primary); -webkit-background-clip: text; background-clip: text;
+  color: transparent;
 }
 .pt-boot-tagline { font-size: 14px; letter-spacing: 0.18em; color: var(--color-text-muted); }
 .pt-boot-fw { font-size: 12px; color: var(--color-text-muted); }

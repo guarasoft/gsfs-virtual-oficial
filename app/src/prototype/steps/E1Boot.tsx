@@ -34,7 +34,9 @@ export function E1Boot() {
     durationSec: 6,
     events: BOOT_EVENTS,
     autostart: true,
-    onEvent: (e) => setOk((prev) => ({ ...prev, [e.label as string]: true })),
+    onEvent: (e) => {
+      if (e.label) setOk((prev) => ({ ...prev, [e.label!]: true }))
+    },
     onComplete: () => goTo('e2-menu'),
   })
 
