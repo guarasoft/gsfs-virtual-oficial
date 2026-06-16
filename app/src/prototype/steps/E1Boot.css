@@ -172,19 +172,48 @@
   border: 1px solid color-mix(in srgb, var(--color-text-muted, #6b7280) 20%, transparent);
 }
 
-/* ── Painel direito: telemetria ── */
-.pt-boot-scope {
-  height: 120px;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm, 4px);
-  background: var(--color-bg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 11px;
-  color: var(--color-text-muted);
-  letter-spacing: 0.06em;
-  flex-shrink: 0;
+/* ── Painel direito: telemetria — radar ── */
+.pt-boot-radar-wrap {
+  flex: 1;                 /* radar é o elemento dominante; cresce p/ preencher */
+  min-height: 0;
+  display: grid;
+  place-items: center;
+}
+.pt-boot-radar {
+  position: relative;
+  height: 100%;
+  max-height: 240px;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--radius-full, 999px);
+  background:
+    radial-gradient(circle at 50% 50%,
+      color-mix(in srgb, var(--color-primary) 9%, transparent) 0%,
+      transparent 70%),
+    var(--color-bg);
+  overflow: hidden;
+}
+.pt-boot-radar-svg { width: 100%; height: 100%; display: block; }
+.pt-boot-radar-rings circle { fill: none; stroke: color-mix(in srgb, var(--color-primary) 28%, transparent); stroke-width: 1; }
+.pt-boot-radar-rings line { stroke: color-mix(in srgb, var(--color-primary) 16%, transparent); stroke-width: 1; }
+.pt-boot-radar-blip { stroke: none; }
+.pt-boot-radar-blip.a { fill: var(--color-primary); }
+.pt-boot-radar-blip.b { fill: var(--color-success); }
+.pt-boot-radar-blip.c { fill: var(--color-warning); }
+.pt-boot-radar-sweep {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    color-mix(in srgb, var(--color-primary) 38%, transparent) 38deg,
+    transparent 64deg
+  );
+  animation: pt-radar-spin 3.6s linear infinite;
+}
+@keyframes pt-radar-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .pt-boot-radar-sweep { animation: none; }
 }
 
 .pt-boot-sensors {
@@ -192,34 +221,37 @@
   letter-spacing: 0.1em;
   color: var(--color-text-muted);
   flex-shrink: 0;
+  text-align: center;
 }
 
+/* ── Tiles de telemetria — compactos (abaixo do radar) ── */
 .pt-boot-tiles {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--space-2, 8px);
-  flex: 1;
+  flex-shrink: 0;
 }
 
 .pt-boot-tile {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm, 4px);
-  padding: 8px 10px;
+  padding: 5px 9px;
   background: var(--color-bg);
   display: flex;
-  flex-direction: column;
-  gap: 2px;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
 }
 
 .pt-boot-tile-label {
   font-size: 9px;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   color: var(--color-text-muted);
   text-transform: uppercase;
 }
 
 .pt-boot-tile-value {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 700;
   color: var(--color-primary);
   letter-spacing: 0.04em;

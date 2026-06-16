@@ -180,7 +180,27 @@ export function E1Boot() {
           {/* Painel direito: telemetria */}
           <div className="pt-boot-panel">
             <div className="pt-boot-panel-title">TELEMETRIA DE BOOT</div>
-            <div className="pt-boot-scope">[ radar / scope de varredura ]</div>
+            <div className="pt-boot-radar-wrap">
+              <div className="pt-boot-radar" role="img" aria-label="Radar de varredura">
+                <svg className="pt-boot-radar-svg" viewBox="0 0 200 200">
+                  <g className="pt-boot-radar-rings">
+                    <circle cx="100" cy="100" r="94" />
+                    <circle cx="100" cy="100" r="64" />
+                    <circle cx="100" cy="100" r="34" />
+                    <line x1="100" y1="6" x2="100" y2="194" />
+                    <line x1="6" y1="100" x2="194" y2="100" />
+                  </g>
+                  <g>
+                    <circle className="pt-boot-radar-blip a" cx="142" cy="70" r="3.6" />
+                    <circle className="pt-boot-radar-blip b" cx="78" cy="124" r="3" />
+                    <circle className="pt-boot-radar-blip a" cx="120" cy="146" r="2.6" />
+                    <circle className="pt-boot-radar-blip b" cx="62" cy="82" r="2.6" />
+                    <circle className="pt-boot-radar-blip c" cx="150" cy="120" r="2.2" />
+                  </g>
+                </svg>
+                <div className="pt-boot-radar-sweep" />
+              </div>
+            </div>
             <div className="pt-boot-sensors">SENSORES:&nbsp;&nbsp;GPR • EMI • IMU • GNSS</div>
             <div className="pt-boot-tiles">
               {TILES.map(([label, value]) => (
