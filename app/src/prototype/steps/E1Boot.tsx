@@ -141,18 +141,24 @@ export function E1Boot() {
     }
   }, [phase, goTo])
 
-  // ── Concluído ───────────────────────────────────────────────
+  // ── Testes concluídos (header/footer permanecem; só o conteúdo muda) ──
   if (phase === 'done') {
     return (
-      <Screen bare>
-        <div className="pt-boot-done">
-          <div className="pt-boot-done-check" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="40" height="40">
-              <path d="M5 13l4 4L19 7" fill="none" stroke="currentColor" strokeWidth="2.4"
-                strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+      <Screen
+        title="AUTOTESTE INICIAL"
+        subtitle="GROUND SCANNING FUSION SYSTEM • SEQUÊNCIA DE BOOT"
+        meta={['VERSÃO: GSFS-BOOT 1.0', 'MODO: OPERATIONAL STANDBY', 'HASH: A9F2-C71D']}
+      >
+        <div className="pt-boot-done-wrap">
+          <div className="pt-boot-done">
+            <div className="pt-boot-done-check" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="40" height="40">
+                <path d="M5 13l4 4L19 7" fill="none" stroke="currentColor" strokeWidth="2.4"
+                  strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </div>
+            <div className="pt-boot-done-label">Testes concluídos</div>
           </div>
-          <div className="pt-boot-done-label">Concluído</div>
         </div>
       </Screen>
     )
