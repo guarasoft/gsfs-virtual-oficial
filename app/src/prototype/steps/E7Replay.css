@@ -1,0 +1,452 @@
+/* E7 — Replay — estilos hi-fi */
+
+/* ---- Layout raiz ---- */
+.e7-root {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ================================================================
+   LISTAGEM
+   ================================================================ */
+
+.e7-list-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-4) 0;
+}
+
+.e7-list-intro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.e7-list-intro-title {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-strong);
+}
+
+.e7-list-intro-sub {
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+
+/* Tabela / lista de gravações */
+.e7-records {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.e7-rec {
+  display: grid;
+  grid-template-columns: 1fr 140px 72px 150px 180px auto;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  transition: border-color 100ms ease;
+}
+
+.e7-rec:hover {
+  border-color: var(--color-primary);
+}
+
+.e7-rec-cenario {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-strong);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.e7-rec-col {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  font-family: var(--font-secondary, 'JetBrains Mono', monospace);
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+
+.e7-rec-id {
+  font-size: 11px;
+}
+
+.e7-rec-actions {
+  display: flex;
+  gap: var(--space-2);
+  justify-content: flex-end;
+}
+
+/* Footer bar */
+.e7-list-footer {
+  display: flex;
+  align-items: center;
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border);
+  margin-top: auto;
+}
+
+/* ================================================================
+   BANNER MODO REPLAY
+   ================================================================ */
+
+.e7-banner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 8px 16px;
+  background: rgba(var(--color-primary-rgb, 0, 200, 100), 0.07);
+  border-bottom: 1px solid rgba(var(--color-primary-rgb, 0, 200, 100), 0.25);
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+.e7-banner-pulse {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  animation: e7-pulse 1.2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+@keyframes e7-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.4; transform: scale(1.4); }
+}
+
+.e7-banner-seal {
+  font-family: var(--font-secondary, 'JetBrains Mono', monospace);
+  font-weight: 700;
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  color: var(--color-primary);
+  border: 1px solid var(--color-primary);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm, 4px);
+  white-space: nowrap;
+}
+
+.e7-banner-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
+  flex: 1;
+}
+
+.e7-banner-item {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  font-family: var(--font-secondary, 'JetBrains Mono', monospace);
+  letter-spacing: 0.03em;
+}
+
+.e7-banner-item strong {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+/* ================================================================
+   BARRA DE PLAYBACK
+   ================================================================ */
+
+.e7-playback {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 10px 16px;
+  background: var(--color-bg-raised);
+  border-top: 1px solid var(--color-border);
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+.e7-pb-ctrl {
+  background: none;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm, 4px);
+  color: var(--color-text);
+  font-size: 14px;
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 100ms ease, border-color 100ms ease;
+  padding: 0;
+  line-height: 1;
+}
+
+.e7-pb-ctrl:hover {
+  background: var(--color-bg-surface);
+  border-color: var(--color-primary);
+}
+
+.e7-pb-scrub {
+  flex: 1;
+  min-width: 100px;
+  accent-color: var(--color-primary);
+  cursor: pointer;
+  height: 4px;
+}
+
+.e7-pb-time {
+  font-family: var(--font-secondary, 'JetBrains Mono', monospace);
+  font-size: 12px;
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  letter-spacing: 0.04em;
+}
+
+.e7-pb-rate {
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm, 4px);
+  color: var(--color-text);
+  font-family: var(--font-secondary, 'JetBrains Mono', monospace);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 8px;
+  cursor: pointer;
+  letter-spacing: 0.06em;
+  transition: border-color 100ms ease;
+}
+
+.e7-pb-rate:hover {
+  border-color: var(--color-primary);
+}
+
+/* ================================================================
+   BLOCO DE RESULTADO FINAL — D-020 (espelha E5)
+   ================================================================ */
+
+.e7-result-overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--color-bg);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.e7-result-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 12px 20px;
+  background: var(--color-bg-raised);
+  border-bottom: 1px solid var(--color-border);
+  flex-shrink: 0;
+}
+
+.e7-result-header-title {
+  font-family: var(--font-secondary, 'JetBrains Mono', monospace);
+  font-weight: 700;
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+
+.e7-result-header-sub {
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+
+.e7-result-body {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: var(--space-6);
+  flex: 1;
+  min-height: 0;
+  padding: var(--space-5);
+}
+
+/* Bloco 3D replicado de E5 */
+.e7-3d-block {
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.e7-3d-block::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--color-border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-border) 1px, transparent 1px);
+  background-size: 40px 40px;
+  opacity: 0.3;
+}
+
+.e7-3d-block::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 40%, var(--color-bg-surface) 100%);
+}
+
+.e7-3d-inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  text-align: center;
+  padding: var(--space-6);
+}
+
+.e7-3d-label {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--color-text-muted);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-4) var(--space-6);
+  background: var(--color-bg);
+}
+
+.e7-3d-caption {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  letter-spacing: 0.03em;
+  opacity: 0.7;
+}
+
+/* Legenda lateral (espelho E5) */
+.e7-legend {
+  min-height: 0;
+  overflow: auto;
+}
+
+.e7-legend-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.e7-legend-rows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.e7-legend-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2);
+  font-size: 13px;
+}
+
+.e7-legend-key {
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+}
+
+.e7-legend-val {
+  color: var(--color-text);
+  font-weight: 700;
+  text-align: right;
+  word-break: break-all;
+}
+
+.e7-legend-val--mono {
+  font-family: var(--font-secondary, 'JetBrains Mono', monospace);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+}
+
+.e7-legend-section {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: var(--space-1);
+  margin-top: var(--space-2);
+}
+
+.e7-assets {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.e7-assets .gsfs-card {
+  padding: var(--space-3) var(--space-4);
+}
+
+.e7-asset {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.e7-asset-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-strong);
+}
+
+.e7-asset-meta {
+  font-size: 12px;
+  font-family: var(--font-secondary, 'JetBrains Mono', monospace);
+  color: var(--color-text-muted);
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+
+.e7-hash {
+  font-family: var(--font-secondary, 'JetBrains Mono', monospace);
+  font-size: 10px;
+  color: var(--color-text-muted);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-3);
+  word-break: break-all;
+  letter-spacing: 0.04em;
+  line-height: 1.6;
+}
+
+/* Footer de ações do resultado */
+.e7-result-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  border-top: 1px solid var(--color-border);
+  flex-shrink: 0;
+}
