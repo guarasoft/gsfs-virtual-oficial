@@ -1,11 +1,5 @@
-/* Palco: centraliza o quadro 1280×800 do protótipo na viewport (ambos eixos). */
-.pt-stage {
-  min-height: 100vh;
-  display: grid;
-  place-items: center;
-  background: var(--color-bg);
-}
-
+/* Casca do simulador hi-fi — preenche a viewport (tablet/notebook):
+   header no topo, conteúdo no meio (rola se preciso), footer no rodapé. */
 .pt-screen {
   /* Tokens complementares usados pelas telas do protótipo e ausentes do set
      canônico — preenchem a escala/derivados sem alterar os tokens globais. */
@@ -13,9 +7,9 @@
   --radius-full: 999px;       /* equivalente a --radius-pill, p/ dots/elementos circulares */
   --color-primary-rgb: 0, 182, 200;  /* RGB de --color-primary (#00B6C8) p/ rgba() */
 
-  width: 1280px;
-  height: 800px;
-  margin: 0 auto;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
   display: flex;
   flex-direction: column;
   background: var(--color-bg);
@@ -23,22 +17,64 @@
   position: relative;
   overflow: hidden;
 }
+
+/* Header (topo) */
 .pt-screen-top {
+  flex: 0 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 24px;
+  gap: 24px;
+  padding: 12px 24px;
   border-bottom: 1px solid var(--color-border);
 }
+.pt-screen-brand { display: flex; align-items: center; gap: 14px; min-width: 0; }
+.pt-screen-logo { height: 34px; width: auto; display: block; flex: 0 0 auto; }
 .pt-screen-title h1 { font-size: 18px; margin: 0; letter-spacing: 0.02em; }
 .pt-screen-sub { font-size: 12px; color: var(--color-text-muted); }
-.pt-screen-meta { display: flex; gap: 16px; font-size: 12px; color: var(--color-text-muted); }
-.pt-screen-body { flex: 1; min-height: 0; padding: 24px; overflow: auto; }
+.pt-screen-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--color-text-muted);
+  text-align: right;
+}
 
-/* placeholders das etapas E2–E7 */
+/* Conteúdo (meio) */
+.pt-screen-body { flex: 1 1 auto; min-height: 0; padding: 24px; overflow: auto; }
+
+/* Footer — barra de status institucional (rodapé) */
+.pt-screen-foot {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 8px 24px;
+  border-top: 1px solid var(--color-border);
+  background: var(--color-bg-surface);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+.pt-foot-id-sub { opacity: 0.7; }
+.pt-foot-status { display: flex; align-items: center; gap: 14px; }
+.pt-foot-dot {
+  width: 7px; height: 7px;
+  border-radius: var(--radius-full);
+  background: var(--color-success);
+  display: inline-block;
+}
+.pt-foot-clock { color: var(--color-text); font-variant-numeric: tabular-nums; letter-spacing: 0.06em; }
+
+/* placeholders das etapas E2–E7 (legado — serão substituídos pelas telas reais) */
 .pt-placeholder { display: flex; flex-direction: column; gap: 24px; align-items: flex-start; }
 .pt-placeholder p { font-size: 16px; color: var(--color-text-muted); }
 .pt-placeholder-actions { display: flex; gap: 12px; flex-wrap: wrap; }
 
-/* E1 — Boot (shell-level: bare centering only; resto em E1Boot.css) */
+/* Splash (bare): sem header/footer; conteúdo centralizado na viewport */
 .pt-screen--bare .pt-screen-body { display: grid; place-items: center; }
