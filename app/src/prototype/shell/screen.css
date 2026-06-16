@@ -1,4 +1,10 @@
 .pt-screen {
+  /* Tokens complementares usados pelas telas do protótipo e ausentes do set
+     canônico — preenchem a escala/derivados sem alterar os tokens globais. */
+  --space-5: 20px;            /* preenche o vão entre --space-4 (16) e --space-6 (24) */
+  --radius-full: 999px;       /* equivalente a --radius-pill, p/ dots/elementos circulares */
+  --color-primary-rgb: 0, 182, 200;  /* RGB de --color-primary (#00B6C8) p/ rgba() */
+
   width: 1280px;
   height: 800px;
   margin: 0 auto;
