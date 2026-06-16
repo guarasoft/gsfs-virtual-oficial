@@ -17,6 +17,9 @@ import Espacamento from './pages/uikit/sections/Espacamento'
 import Iconografia from './pages/uikit/sections/Iconografia'
 import ButtonDoc from './pages/uikit/sections/ButtonDoc'
 import FieldsDoc from './pages/uikit/sections/FieldsDoc'
+import ControlsDoc from './pages/uikit/sections/ControlsDoc'
+import ActionCardDoc from './pages/uikit/sections/ActionCardDoc'
+import GnssDoc from './pages/uikit/sections/GnssDoc'
 import BadgeDoc from './pages/uikit/sections/BadgeDoc'
 import DataDoc from './pages/uikit/sections/DataDoc'
 import DetectionDoc from './pages/uikit/sections/DetectionDoc'
@@ -51,14 +54,17 @@ export default function App() {
         <Route path="iconografia" element={<Iconografia />} />
         <Route path="button" element={<ButtonDoc />} />
         <Route path="campos" element={<FieldsDoc />} />
+        <Route path="controles" element={<ControlsDoc />} />
+        <Route path="acao" element={<ActionCardDoc />} />
         <Route path="badge" element={<BadgeDoc />} />
         <Route path="dados" element={<DataDoc />} />
         <Route path="deteccao" element={<DetectionDoc />} />
         <Route path="medidores" element={<GaugesDoc />} />
         <Route path="sensores" element={<SensorDoc />} />
+        <Route path="gnss" element={<GnssDoc />} />
       </Route>
 
-      {/* Fase 3 — protótipo de alta fidelidade (placeholder por ora) */}
+      {/* Fase 3 — protótipo de alta fidelidade (simulador navegável) */}
       <Route path="/prototype" element={<Prototype />} />
     </Routes>
   )
