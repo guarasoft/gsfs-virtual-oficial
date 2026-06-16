@@ -191,8 +191,8 @@ describe('E3Setup — tela de Setup hi-fi', () => {
     render(<E3Setup />)
     selectCenario('Cenário 2 — Levantamento de Massa Magnetítica')
     expect(screen.getByText('Operação')).toBeTruthy()
-    // application value of c2
-    expect(screen.getByText('mineracao')).toBeTruthy()
+    // application label of c2 (mineracao → rótulo legível)
+    expect(screen.getByText('Prospecção mineral')).toBeTruthy()
   })
 
   // ---- Navegação -------------------------------------------------------

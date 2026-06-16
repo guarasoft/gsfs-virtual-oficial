@@ -3,10 +3,16 @@ import { Button, Field, Select } from '../../ui'
 import { Screen } from '../shell/Screen'
 import { useSimulator } from '../store'
 import { SCENARIOS, getScenario } from '../data/scenarios'
-import type { ScenarioId, Soil, Modality } from '../data/types'
+import type { ScenarioId, Soil, Modality, Application } from '../data/types'
 import './E3Setup.css'
 
 // ---- display-label maps ------------------------------------------------
+
+const APPLICATION_LABEL: Record<Application, string> = {
+  mineracao: 'Prospecção mineral',
+  'defesa-civil': 'Defesa Civil / Geotecnia',
+  institucional: 'Demonstração institucional GSFS',
+}
 
 const SOLOS: { key: Soil; label: string }[] = [
   { key: 'rochoso', label: 'Rochoso' },
@@ -252,7 +258,7 @@ export function E3Setup() {
                 {!isManual && scenario && (
                   <div className="e3-ctx-row">
                     <span className="e3-ctx-row-label">Operação</span>
-                    <strong className="e3-ctx-row-value">{scenario.application}</strong>
+                    <strong className="e3-ctx-row-value">{APPLICATION_LABEL[scenario.application]}</strong>
                   </div>
                 )}
               </div>
