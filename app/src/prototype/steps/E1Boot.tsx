@@ -130,8 +130,11 @@ export function E1Boot() {
     return (
       <Screen bare>
         <div className="pt-boot-splash">
-          <div className="pt-boot-logo">GSFS</div>
-          <div className="pt-boot-tagline">GROUND SCANNING FUSION SYSTEM</div>
+          <img
+            className="pt-boot-logo"
+            src="/logos/GSFS_Logo_Primary_Horizontal_RGB.svg"
+            alt="GSFS — Ground Scanning Fusion System"
+          />
           <div className="pt-boot-init">INICIALIZANDO NÚCLEO GSFS</div>
           <div className="pt-boot-bar">
             <div className="pt-boot-bar-fill" style={{ width: `${splashProgress}%` }} />

@@ -14,13 +14,10 @@
 }
 
 .pt-boot-logo {
-  font-size: 64px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  background: var(--color-primary);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  /* logo oficial (lockup horizontal RGB) — sobre fundo escuro */
+  width: clamp(280px, 38vw, 460px);
+  height: auto;
+  display: block;
 }
 
 .pt-boot-tagline {

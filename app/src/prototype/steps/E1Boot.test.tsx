@@ -9,9 +9,11 @@ describe('E1 Boot', () => {
   it('mostra a splash com a marca no início (elapsed 0)', () => {
     render(<E1Boot />)
     // O componente inicia no estado "splash" (elapsed = 0 < SPLASH_UNTIL)
-    expect(screen.getByText('GSFS')).toBeTruthy()
-    expect(screen.getByText('GROUND SCANNING FUSION SYSTEM')).toBeTruthy()
-    // Tagline e caption da splash também devem aparecer
+    // Logo oficial (imagem) na splash
+    const logo = screen.getByAltText(/GSFS/i)
+    expect(logo).toBeTruthy()
+    expect(logo.getAttribute('src')).toContain('GSFS_Logo_Primary_Horizontal_RGB.svg')
+    // Caption e estado de carregamento da splash
     expect(screen.getByText('INICIALIZANDO NÚCLEO GSFS')).toBeTruthy()
     expect(screen.getByText(/Carregando módulos de varredura/)).toBeTruthy()
   })
