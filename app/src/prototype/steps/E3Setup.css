@@ -12,26 +12,12 @@
   height: 100%;
 }
 
-/* ---- seletor de cenário ---- */
-.e3-cenario-field {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-}
-
-.e3-field-label {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--color-text-muted);
-}
-
-/* ---- duas colunas ---- */
+/* ---- duas colunas (alinhadas no topo) ---- */
 .e3-cols {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--space-6);
+  align-items: stretch;
   flex: 1;
   min-height: 0;
 }
@@ -42,12 +28,8 @@
   gap: var(--space-4);
 }
 
-/* ---- group de campo genérico ---- */
-.e3-field {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-}
+/* coluna do formulário: respiro consistente entre os Fields */
+.e3-col-form { gap: var(--space-5); }
 
 /* ---- segmented control (solo / modalidade) ---- */
 .e3-seg {
@@ -99,13 +81,6 @@
   background: var(--color-bg-surface);
   border-color: var(--color-border);
   color: var(--color-text-disabled);
-}
-
-.e3-seg-note {
-  font-size: 12px;
-  color: var(--color-text-muted);
-  margin-top: var(--space-1);
-  font-style: italic;
 }
 
 /* ---- área de varredura ---- */

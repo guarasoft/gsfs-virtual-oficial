@@ -149,45 +149,38 @@ export function E3Setup() {
     >
       <div className="e3-setup">
 
-        {/* ---- Cenário select ---- */}
-        <div className="e3-cenario-field">
-          <Field label="Cenário">
-            <Select
-              options={SCENARIO_OPTIONS}
-              value={selValue}
-              onChange={handleScenarioChange}
-            />
-          </Field>
-        </div>
-
-        {/* ---- Two-column body ---- */}
+        {/* ---- Two-column body (desde o topo) ---- */}
         <div className="e3-cols">
 
-          {/* LEFT: Solo / Modalidade / Área */}
-          <div className="e3-col">
-            <div className="e3-field">
-              <span className="e3-field-label">Tipo de solo</span>
+          {/* LEFT: Cenário / Solo / Modalidade / Área — tudo via Field */}
+          <div className="e3-col e3-col-form">
+            <Field label="Cenário">
+              <Select
+                options={SCENARIO_OPTIONS}
+                value={selValue}
+                onChange={handleScenarioChange}
+              />
+            </Field>
+
+            <Field label="Tipo de solo" hint={note ?? undefined}>
               <SegControl
                 options={SOLOS}
                 activeKeys={activeSoilKeys}
                 locked={!isManual}
                 onSelect={handleSoloSelect}
               />
-              {note && <div className="e3-seg-note">{note}</div>}
-            </div>
+            </Field>
 
-            <div className="e3-field">
-              <span className="e3-field-label">Modalidade</span>
+            <Field label="Modalidade">
               <SegControl
                 options={MODALIDADES}
                 activeKeys={activeModalKeys}
                 locked={!isManual}
                 onSelect={handleModalSelect}
               />
-            </div>
+            </Field>
 
-            <div className="e3-field">
-              <span className="e3-field-label">Área de varredura</span>
+            <Field label="Área de varredura">
               {isManual ? (
                 <div className="e3-area-hybrid">
                   <div className="e3-area-inputs">
@@ -229,7 +222,7 @@ export function E3Setup() {
                   {areaDisplay}
                 </div>
               )}
-            </div>
+            </Field>
           </div>
 
           {/* RIGHT: Contexto + mapa */}
