@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Button, Field, Select, Segmented, NumberField } from '../../ui'
+import { Button, Field, Select, Segmented, NumberField, GnssMap } from '../../ui'
 import { Screen } from '../shell/Screen'
 import { useSimulator } from '../store'
 import { SCENARIOS, getScenario } from '../data/scenarios'
@@ -206,8 +206,8 @@ export function E3Setup() {
                   </div>
                 )}
               </div>
-              <div className="e3-map-placeholder" aria-label="Mapa de posição GNSS">
-                mapa · posição atual (GNSS)
+              <div className="e3-ctx-map">
+                <GnssMap lat="−23,5489°" lng="−46,6388°" satellites={12} fix="FIX" />
               </div>
             </div>
           </div>
