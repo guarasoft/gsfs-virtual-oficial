@@ -14,9 +14,9 @@
 }
 
 .pt-boot-logo {
-  /* símbolo oficial (RGB) — herói da splash; tagline vem como texto nítido abaixo */
-  height: clamp(120px, 22vh, 184px);
-  width: auto;
+  /* logo oficial (lockup horizontal RGB) — sobre fundo escuro */
+  width: clamp(360px, 46vw, 560px);
+  height: auto;
   display: block;
 }
 

@@ -7,7 +7,7 @@ import type { TimelineEvent } from '../data/timeline'
 import './E1Boot.css'
 
 // ── Constantes ──────────────────────────────────────────────
-const SPLASH_UNTIL = 1.5 // segundos
+const SPLASH_UNTIL = 2.0 // segundos
 
 // Todos os 12 itens de diagnóstico (ordem de ativação = ordem do array)
 type DiagId =
@@ -126,16 +126,15 @@ export function E1Boot() {
 
   // ── Splash ──────────────────────────────────────────────────
   if (tl.elapsed < SPLASH_UNTIL) {
-    const splashProgress = Math.round((tl.elapsed / SPLASH_UNTIL) * 40) // 0–40%
+    const splashProgress = Math.min(100, Math.round((tl.elapsed / SPLASH_UNTIL) * 100)) // 0–100%
     return (
       <Screen bare>
         <div className="pt-boot-splash">
           <img
             className="pt-boot-logo"
-            src="/logos/GSFS_Logo_Icon_RGB.svg"
-            alt="GSFS"
+            src="/logos/GSFS_Logo_Primary_Horizontal_RGB.svg"
+            alt="GSFS — Ground Scanning Fusion System"
           />
-          <div className="pt-boot-tagline">GROUND SCANNING FUSION SYSTEM</div>
           <div className="pt-boot-init">INICIALIZANDO NÚCLEO GSFS</div>
           <div className="pt-boot-bar">
             <div className="pt-boot-bar-fill" style={{ width: `${splashProgress}%` }} />
