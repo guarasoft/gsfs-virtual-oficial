@@ -86,6 +86,7 @@ Sempre que uma decisão for tomada ou revisada:
 | [D-017](#d-017--replay-enriquecido-com-dados-da-missao-feedback-do-cliente) | Replay enriquecido com dados da missão, não só imagens (feedback do cliente) | Active | 2026-06-05 |
 | [D-018](#d-018--simbolo-isolado-reintroduzido-como-ativo-oficial-para-usos-compactos-pedido-do-cliente) | Símbolo isolado reintroduzido como ativo oficial para usos compactos (pedido do cliente) | Active | 2026-06-11 |
 | [D-019](#d-019--governanca-da-fase-2-pacote-documental-em-vez-de-acesso-ao-repositorio) | Governança da Fase 2: pacote documental ao cliente em vez de acesso ao repositório | Active | 2026-06-11 |
+| [D-020](#d-020--videos-3d-aplicados-no-fechamento-e5-arquitetura-da-fase-1-mantida) | Vídeos 3D aplicados no fechamento (E5); arquitetura da Fase 1 mantida | Active | 2026-06-15 |
 
 ---
 
@@ -445,6 +446,30 @@ Sempre que uma decisão for tomada ou revisada:
 - **Documentos afetados:**
   - `entrega-fase2-cliente/` (pacote — 6 documentos + screenshots)
   - [Status_GSFS_Virtual.md](Status_GSFS_Virtual.md)
+
+---
+
+### D-020 — Vídeos 3D aplicados no fechamento (E5); arquitetura da Fase 1 mantida
+
+- **Status:** Active
+- **Data:** 2026-06-15
+- **Contexto:** O cliente enviou o **briefing complementar de produção dos vídeos 3D** (insumo da Fase 4, produção Guarasoft/Daniel — [D-013](#d-013--producao-dos-videos-3d-pela-guarasoft-daniel-fase-1-nao-aguarda-as-specs)). A conferência contra Matriz, Roteiro Técnico e Teto de Métricas apontou **alta aderência de conteúdo** (alvos, profundidades, ângulos e ordem das detecções conferem nos 5 cenários; CA-06 íntegro no C4; regras visuais respeitam o Teto e o CA-08). O único ponto estrutural era que o briefing pressupunha o vídeo 3D rodando **durante a varredura** (como janela contínua) **e** no replay — o que divergia da IA validada na Fase 1, onde o 3D vive **só no fechamento (E5)** e a E4/E7 são a varredura 2D (`ScanView`). Pontos menores: proporção (briefing sugeria 16:9) e preservação do painel showcase do C5.
+- **Decisão:** **Manter a arquitetura validada na Fase 1**, confirmada pelo cliente:
+  - (a) Durante a varredura (E4) permanecem os **4 gráficos de sensor, HUD, timeline e eventos em 2D**; o **bloco/vídeo 3D entra no fechamento (E5 · Resultado)**, mostrando o terreno e os achados consolidados. O **replay (E7) segue espelhando a varredura 2D** ([D-016](#d-016--jornada-de-7-etapas-fusao-resultado--bloco-3d-e-setup-com-manual-demonstrativo)/[D-017](#d-017--replay-enriquecido-com-dados-da-missao-feedback-do-cliente) inalterados).
+  - (b) O vídeo **mantém a sensação visual de percurso/varredura e momentos de revelação dos ativos**, mas sua aplicação na experiência é no resultado/fechamento — não como janela contínua durante a missão.
+  - (c) **Proporção 16:10** (tablet 1280×800), com **área segura** para HUD e sobreposições da UI.
+  - (d) **C5:** o vídeo reserva tempo e **área visual segura para o painel institucional dos 5 atributos GSFS** (fusão multimodal, inteligência subsuperficial, interpretação integrada, rastreabilidade, apoio à decisão); o vídeo pode mostrar os 4 alvos em composição volumétrica, mas o caráter showcase é **reforçado pela UI** com esse painel ([D-011](#d-011--cenario-5-reforcado-como-showcase-institucional-gsfs-feedback-do-cliente), Roteiro §7.3 / VR-05 preservados).
+  - O **nome validado do C5** permanece "Inteligência Subsuperficial Integrada — Demonstração GSFS" (o título alternativo do briefing é tratado como rótulo de trabalho do vídeo).
+- **Consequências:**
+  - (+) **Zero retrabalho** na Fase 1 — nenhuma alteração de IA (E4/E5/E7) decorre do briefing.
+  - (+) Briefing de produção alinhado às fontes normativas; destrava a produção dos vídeos para a Fase 4 sem ambiguidade de integração.
+  - (+) Durações-base sugeridas pelo cliente (24-38s C1-C4; 42-50s C5) são compatíveis: sincronizadas à timeline oficial (90s/135s — [D-005](#d-005--duracao-dos-cenarios-90s-c1-c4-e-135s-c5)) por cortes/loops/mapeamento proporcional, preservada a ordem dos eventos.
+  - (−) Os vídeos seguem como dependência da Fase 4, não-bloqueante para a Fase 3 (integração com placeholders).
+- **Atualização (2026-06-15):** o cliente **reemitiu o briefing complementar ajustado**, incorporando os 4 pontos: 3D restrito ao fechamento E5 (sem janela contínua na varredura), proporção 16:10 (UI 1280×800; master 2560×1600 / 3840×2400; 30fps; sem áudio), e C5 reservando tempo/área segura para o painel dos 5 atributos pela UI. Conferência da Result: **aderente às fontes normativas** (alvos/profundidades/ângulos/ordem conferem; CA-06 íntegro; Teto/CA-08 respeitados). **Briefing aprovado do lado da Result — produção destravada.** Dois detalhes mínimos, sem ação do produtor, **resolvidos pela Result em 15/06**: (1) o **nome validado do C5** ("Inteligência Subsuperficial Integrada — Demonstração GSFS") **permanece no app**, sendo o título do briefing um rótulo de trabalho do vídeo; (2) **composição da E7 (Replay)**: a E7 replica a varredura 2D (`ScanView`, CA-07) + dados (D-017) **e, ao final, apresenta o mesmo bloco 3D de resultado da E5** — reaproveitando o ativo (nenhum vídeo novo) e atendendo ao pedido do cliente de rever o 3D no Replay. Anotado na IA da Fase 1 (E7) como refinamento da Fase 3.
+- **Documentos afetados:**
+  - [Status_GSFS_Virtual.md](Status_GSFS_Virtual.md) (bloqueios/riscos EXT-02; próximos passos)
+  - [Arquitetura_Informacao_Fase1_GSFS_Virtual.md](Arquitetura_Informacao_Fase1_GSFS_Virtual.md) (E5 — confirmação do ponto de aplicação do vídeo; E7 — composição do replay a confirmar na Fase 3; sem alteração estrutural)
+  - Briefing complementar ajustado de vídeos 3D do cliente (externo — insumo da Fase 4)
 
 ---
 

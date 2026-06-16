@@ -131,6 +131,7 @@ Para cada etapa: rota, origem no PRD, propósito, blocos, **estados/variações*
   - **Listagem:** 5 gravações (cenário · data/hora · duração · nº de alvos · ID) com **Reproduzir** / **Exportar**; botão grande **← Voltar ao menu** (→ E2).
   - **Replay:** **espelha a tela de varredura** (mesmo `ScanView`) + selo **"MODO REPLAY"** + **barra de controle** (⏮ ⏸ ⏭ · scrubber · tempo · 1×). Aba flutuante **"VOLTAR"** na borda **esquerda** → volta à listagem.
 - **Dados da missão no replay ([D-017], feedback do cliente):** o replay não é "apenas imagens" — expõe explicitamente **linha do tempo, cenário executado, sensores ativos, timestamps, detecções confirmadas, falsos positivos descartados** (quando houver) e **referência ao GSFS_RECORD / hash**. Reforça rastreabilidade, repetibilidade e credibilidade institucional (CA-07 / Pilar 4). Os metadados (cenário, GSFS_RECORD/hash, linha do tempo) entram como overlay sobre o `ScanView`; comportamento dinâmico do scrubber é Fase 3.
+- **Bloco 3D ao final do replay ([D-020], Fase 3):** ao concluir a reprodução da varredura, a E7 **apresenta o mesmo bloco/vídeo 3D de resultado da E5**, espelhando o fluxo da missão real (varredura → resultado 3D). Reaproveita o ativo da E5 (nenhum vídeo novo) e atende ao pedido do cliente de rever o 3D no Replay, sem ferir o CA-07 (a varredura segue reproduzida de forma determinística e idêntica).
 
 ---
 
