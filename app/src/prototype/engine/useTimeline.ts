@@ -23,7 +23,7 @@ export interface UseTimelineOpts {
 export function useTimeline(opts: UseTimelineOpts): TimelineController {
   const { durationSec, events = [], autostart = false, onEvent, onComplete } = opts
 
-  const sortedRef = useRef<TimelineEvent[]>(sortEvents(events))
+  const sortedRef = useRef<TimelineEvent[]>(sortEvents(events)) // eventos são fixados na montagem; mudanças em 'events' após o mount não têm efeito
   const stateRef = useRef<TimelineState>(initTimeline())
   const rateRef = useRef(1)
   const lastRef = useRef<number | null>(null)
@@ -33,7 +33,7 @@ export function useTimeline(opts: UseTimelineOpts): TimelineController {
   onCompleteRef.current = onComplete
 
   const [elapsed, setElapsed] = useState(0)
-  const [playing, setPlaying] = useState(autostart)
+  const [playing, setPlaying] = useState(autostart) // autostart é só o estado inicial; controle com play()/pause()
 
   useEffect(() => {
     if (!playing) {
@@ -71,6 +71,7 @@ export function useTimeline(opts: UseTimelineOpts): TimelineController {
     (t: number) => {
       stateRef.current = seekTo(t, sortedRef.current, durationSec)
       setElapsed(stateRef.current.elapsed)
+      if (stateRef.current.done) setPlaying(false)
     },
     [durationSec],
   )

@@ -22,4 +22,22 @@ describe('useTimeline', () => {
     act(() => result.current.play())
     expect(result.current.playing).toBe(true)
   })
+
+  it('pause desliga o playing', () => {
+    const { result } = renderHook(() => useTimeline({ durationSec: 10 }))
+    act(() => result.current.play())
+    expect(result.current.playing).toBe(true)
+    act(() => result.current.pause())
+    expect(result.current.playing).toBe(false)
+  })
+
+  it('seek até o fim para a reprodução', () => {
+    const { result } = renderHook(() => useTimeline({ durationSec: 10 }))
+    act(() => {
+      result.current.play()
+      result.current.seek(10)
+    })
+    expect(result.current.elapsed).toBe(10)
+    expect(result.current.playing).toBe(false)
+  })
 })
