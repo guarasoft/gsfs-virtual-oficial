@@ -1,0 +1,67 @@
+/* E2 — Menu Principal — estilos hi-fi */
+
+/* ---- Contentor central da tela ---- */
+.e2-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: var(--space-8);
+}
+
+/* ---- Logo GSFS ---- */
+.e2-logo {
+  height: clamp(72px, 12vh, 104px);
+  width: auto;
+  display: block;
+}
+
+/* ---- Bloco de boas-vindas ---- */
+.e2-welcome {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.e2-welcome-title {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--color-text);
+  font-family: var(--font-primary, 'Exo 2', sans-serif);
+  text-transform: uppercase;
+}
+
+.e2-welcome-sub {
+  font-size: 14px;
+  color: var(--color-text-muted);
+  letter-spacing: 0.04em;
+}
+
+/* ---- Grade de cards de ação ---- */
+.e2-actions {
+  display: grid;
+  grid-template-columns: repeat(2, 360px);
+  gap: var(--space-6);
+}
+
+/* ---- Barra de status inferior (Chip do UI Kit) ---- */
+.e2-status {
+  display: flex;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.e2-status .gsfs-badge { display: inline-flex; align-items: center; gap: 6px; }
+.e2-status strong { color: var(--color-success); font-weight: 700; }
+
+.e2-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full, 999px);
+  background: var(--color-success);
+  flex-shrink: 0;
+}

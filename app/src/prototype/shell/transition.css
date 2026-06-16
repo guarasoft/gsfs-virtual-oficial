@@ -1,0 +1,16 @@
+/* Transição de conteúdo entre etapas do simulador.
+   Cada troca de etapa (key={step}) entra com fade + leve zoom-in.
+   Só opacidade/scale (≤1) → sem overflow/scrollbar na viewport. */
+.pt-transition {
+  animation: pt-step-in 360ms ease both;
+  transform-origin: center;
+}
+
+@keyframes pt-step-in {
+  from { opacity: 0; transform: scale(0.985); }
+  to   { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pt-transition { animation: none; }
+}

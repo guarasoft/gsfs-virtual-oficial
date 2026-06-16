@@ -1,0 +1,187 @@
+/* E5 — Resultado + Bloco 3D — estilos hi-fi */
+
+/* ---- Layout principal (corpo da tela) ---- */
+.e5-body {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: var(--space-6);
+  height: 100%;
+  min-height: 0;
+}
+
+/* ---- Bloco 3D ---- */
+.e5-3d-block {
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Grade técnica de fundo (visual de equipamento) */
+.e5-3d-block::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--color-border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-border) 1px, transparent 1px);
+  background-size: 40px 40px;
+  opacity: 0.3;
+}
+
+/* Vinheta central */
+.e5-3d-block::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 40%, var(--color-bg-surface) 100%);
+}
+
+.e5-3d-inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  text-align: center;
+  padding: var(--space-6);
+}
+
+.e5-3d-label {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--color-text-muted);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-4) var(--space-6);
+  background: var(--color-bg);
+}
+
+.e5-3d-caption {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  letter-spacing: 0.03em;
+  opacity: 0.7;
+}
+
+/* ---- Legenda lateral ---- */
+.e5-legend {
+  min-height: 0;
+  overflow: auto;
+}
+
+.e5-legend-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/* ---- Bloco de linhas chave-valor ---- */
+.e5-legend-rows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.e5-legend-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2);
+  font-size: 13px;
+}
+
+.e5-legend-key {
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+}
+
+.e5-legend-val {
+  color: var(--color-text);
+  font-weight: 700;
+  text-align: right;
+  word-break: break-all;
+}
+
+.e5-legend-val--mono {
+  font-family: var(--font-secondary, 'JetBrains Mono', monospace);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+}
+
+/* ---- Cabeçalho de sub-seção ---- */
+.e5-legend-section {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: var(--space-1);
+  margin-top: var(--space-2);
+}
+
+/* ---- Lista de ativos ---- */
+.e5-assets {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+/* sobreposição do Card para o ativo */
+.e5-assets .gsfs-card {
+  padding: var(--space-3) var(--space-4);
+}
+
+.e5-asset {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.e5-asset-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.e5-asset-meta {
+  font-size: 12px;
+  font-family: var(--font-secondary, 'JetBrains Mono', monospace);
+  color: var(--color-text-muted);
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+
+/* ---- Hash SHA-256 ---- */
+.e5-hash {
+  font-family: var(--font-secondary, 'JetBrains Mono', monospace);
+  font-size: 10px;
+  color: var(--color-text-muted);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-3);
+  word-break: break-all;
+  letter-spacing: 0.04em;
+  line-height: 1.6;
+}
+
+/* ---- Barra de ações (rodapé) ---- */
+.e5-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border);
+  margin-top: var(--space-4);
+}

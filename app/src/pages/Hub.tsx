@@ -37,9 +37,9 @@ const cards: Card[] = [
     phase: 'Fase 3',
     name: 'Protótipo',
     desc: 'O simulador de alta fidelidade, navegável e determinístico. É o produto entregue ao cliente.',
-    tag: 'Em breve',
-    tone: 'soon',
-    enabled: false,
+    tag: 'Em construção',
+    tone: 'pending',
+    enabled: true,
   },
 ]
 

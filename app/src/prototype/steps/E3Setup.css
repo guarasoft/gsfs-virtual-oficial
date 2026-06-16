@@ -1,0 +1,161 @@
+/* ============================================================
+   E3 Setup de Missão — hi-fi styles
+   Design tokens only (no wf-* classes).
+   1280 × 800 tablet layout (two-column).
+   ============================================================ */
+
+/* ---- raiz da tela ---- */
+.e3-setup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  height: 100%;
+}
+
+/* ---- duas colunas (alinhadas no topo) ---- */
+.e3-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-6);
+  align-items: stretch;   /* colunas ocupam toda a altura disponível */
+  flex: 1;
+  min-height: 0;
+}
+
+.e3-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/* coluna do formulário: respiro consistente + campos ocupam a largura toda */
+.e3-col-form { gap: var(--space-5); }
+.e3-col-form .gsfs-field-group { width: 100%; }   /* override do fit-content global */
+.e3-col-form .gsfs-select { width: 100%; }        /* trigger + lista acompanham a coluna */
+
+/* ---- área de varredura (Segmented e NumberField vêm do UI Kit) ---- */
+.e3-area-hybrid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.e3-area-inputs {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.e3-area-sep {
+  font-size: 13px;
+  color: var(--color-text-muted);
+}
+
+.e3-area-presets {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.e3-area-preset {
+  padding: 4px 12px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-surface);
+  color: var(--color-text-muted);
+  font-size: 12px;
+  font-family: var(--font-secondary, inherit);
+  cursor: pointer;
+  transition: background 100ms ease, border-color 100ms ease, color 100ms ease;
+}
+
+.e3-area-preset:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  background: var(--color-info-bg);
+}
+
+/* readout (locked area) */
+.e3-readout {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-surface);
+  color: var(--color-text);
+  font-size: 14px;
+  font-family: var(--font-secondary, inherit);
+  font-weight: 600;
+}
+
+/* ---- painel contexto (ocupa toda a altura da coluna) ---- */
+.e3-ctx-panel {
+  flex: 1;
+  min-height: 0;
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.e3-ctx-header {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--color-border);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  background: var(--color-bg-raised);
+}
+
+.e3-ctx-rows {
+  display: flex;
+  flex-direction: column;
+  padding: 4px 0;
+}
+
+.e3-ctx-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 6px 16px;
+  font-size: 13px;
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.e3-ctx-row:last-child {
+  border-bottom: none;
+}
+
+.e3-ctx-row-label {
+  color: var(--color-text-muted);
+}
+
+.e3-ctx-row-value {
+  font-weight: 600;
+  color: var(--color-text);
+  font-family: var(--font-secondary, inherit);
+}
+
+.e3-ctx-row-value--primary {
+  color: var(--color-primary);
+}
+
+/* ---- mapa placeholder ---- */
+.e3-ctx-map {
+  flex: 1;                 /* mapa adapta a altura ao espaço restante do card */
+  min-height: 160px;
+  margin: 12px 16px 16px;
+}
+
+/* ---- barra de ações ---- */
+.e3-actions-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+}

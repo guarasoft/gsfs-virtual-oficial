@@ -20,6 +20,8 @@ export const KIT_GROUPS: KitGroup[] = [
     items: [
       { slug: 'button', label: 'Button' },
       { slug: 'campos', label: 'Campos (Input/Select/Toggle)' },
+      { slug: 'controles', label: 'Segmented & NumberField' },
+      { slug: 'acao', label: 'ActionCard' },
       { slug: 'badge', label: 'Badge, Chip, Card, Panel' },
       { slug: 'dados', label: 'Table, Tabs, Progress, Tooltip' },
     ],
@@ -30,6 +32,7 @@ export const KIT_GROUPS: KitGroup[] = [
       { slug: 'deteccao', label: 'Detecção & Confiança' },
       { slug: 'medidores', label: 'Bateria & Temperatura' },
       { slug: 'sensores', label: 'Sensores, RTK, Métricas, Status' },
+      { slug: 'gnss', label: 'Mapa GNSS' },
     ],
   },
 ]
