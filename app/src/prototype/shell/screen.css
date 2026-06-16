@@ -1,3 +1,11 @@
+/* Palco: centraliza o quadro 1280×800 do protótipo na viewport (ambos eixos). */
+.pt-stage {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: var(--color-bg);
+}
+
 .pt-screen {
   /* Tokens complementares usados pelas telas do protótipo e ausentes do set
      canônico — preenchem a escala/derivados sem alterar os tokens globais. */

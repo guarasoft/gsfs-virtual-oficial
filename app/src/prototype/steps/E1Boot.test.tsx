@@ -12,8 +12,9 @@ describe('E1 Boot', () => {
     // Logo oficial (imagem) na splash
     const logo = screen.getByAltText(/GSFS/i)
     expect(logo).toBeTruthy()
-    expect(logo.getAttribute('src')).toContain('GSFS_Logo_Primary_Horizontal_RGB.svg')
-    // Caption e estado de carregamento da splash
+    expect(logo.getAttribute('src')).toContain('GSFS_Logo_Icon_RGB.svg')
+    // Tagline (texto nítido) e estado de carregamento da splash
+    expect(screen.getByText('GROUND SCANNING FUSION SYSTEM')).toBeTruthy()
     expect(screen.getByText('INICIALIZANDO NÚCLEO GSFS')).toBeTruthy()
     expect(screen.getByText(/Carregando módulos de varredura/)).toBeTruthy()
   })
