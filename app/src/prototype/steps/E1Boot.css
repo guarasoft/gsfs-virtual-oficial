@@ -65,6 +65,45 @@
   min-height: 0;
 }
 
+/* Fechamento: autoteste some antes do "Concluído" */
+.pt-boot-fade-out { animation: pt-boot-out 460ms ease both; }
+@keyframes pt-boot-out {
+  from { opacity: 1; transform: none; }
+  to   { opacity: 0; transform: scale(0.99); }
+}
+
+/* Tela "Concluído" (centralizada, fade + zoom-in) */
+.pt-boot-done {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4, 16px);
+  animation: pt-boot-done-in 320ms ease both;
+}
+.pt-boot-done-check {
+  width: 78px;
+  height: 78px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-full, 999px);
+  color: var(--color-success);
+  background: color-mix(in srgb, var(--color-success) 14%, transparent);
+  border: 1.5px solid color-mix(in srgb, var(--color-success) 40%, transparent);
+}
+.pt-boot-done-label {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--color-text);
+}
+@keyframes pt-boot-done-in {
+  from { opacity: 0; transform: scale(0.92); }
+  to   { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pt-boot-fade-out, .pt-boot-done { animation: none; }
+}
+
 .pt-boot-panels {
   display: grid;
   grid-template-columns: 1fr 340px;

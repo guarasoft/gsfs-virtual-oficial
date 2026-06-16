@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Progress } from '../../ui'
 import { Screen } from '../shell/Screen'
 import { useSimulator } from '../store'
@@ -101,10 +101,15 @@ function DiagItem({
 
 // ── Componente principal ─────────────────────────────────────
 
+// Fechamento do boot: autoteste some (fade out) → "Concluído" → menu.
+const FINISH_MS = 460 // duração do fade-out do autoteste
+const DONE_MS = 1200 // tempo que "Concluído" fica na tela antes do menu
+
 export function E1Boot() {
   const goTo = useSimulator((s) => s.goTo)
   const [okSet, setOkSet] = useState<Set<DiagId>>(new Set())
   const [activeId, setActiveId] = useState<DiagId | null>(null)
+  const [phase, setPhase] = useState<'running' | 'finishing' | 'done'>('running')
 
   const tl = useTimeline({
     durationSec: 8,
@@ -121,8 +126,37 @@ export function E1Boot() {
         return next
       })
     },
-    onComplete: () => goTo('e2-menu'),
+    onComplete: () => setPhase('finishing'),
   })
+
+  // Encadeia o fechamento: finishing (fade out) → done ("Concluído") → menu.
+  useEffect(() => {
+    if (phase === 'finishing') {
+      const id = setTimeout(() => setPhase('done'), FINISH_MS)
+      return () => clearTimeout(id)
+    }
+    if (phase === 'done') {
+      const id = setTimeout(() => goTo('e2-menu'), DONE_MS)
+      return () => clearTimeout(id)
+    }
+  }, [phase, goTo])
+
+  // ── Concluído ───────────────────────────────────────────────
+  if (phase === 'done') {
+    return (
+      <Screen bare>
+        <div className="pt-boot-done">
+          <div className="pt-boot-done-check" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="40" height="40">
+              <path d="M5 13l4 4L19 7" fill="none" stroke="currentColor" strokeWidth="2.4"
+                strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </div>
+          <div className="pt-boot-done-label">Concluído</div>
+        </div>
+      </Screen>
+    )
+  }
 
   // ── Splash ──────────────────────────────────────────────────
   if (tl.elapsed < SPLASH_UNTIL) {
@@ -154,7 +188,7 @@ export function E1Boot() {
       subtitle="GROUND SCANNING FUSION SYSTEM • SEQUÊNCIA DE BOOT"
       meta={['VERSÃO: GSFS-BOOT 1.0', 'MODO: OPERATIONAL STANDBY', 'HASH: A9F2-C71D']}
     >
-      <div className="pt-boot-diag">
+      <div className={`pt-boot-diag${phase === 'finishing' ? ' pt-boot-fade-out' : ''}`}>
         {/* ── Dois painéis lado a lado ── */}
         <div className="pt-boot-panels">
           {/* Painel esquerdo: itens de diagnóstico */}
