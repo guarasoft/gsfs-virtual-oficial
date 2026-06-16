@@ -8,18 +8,24 @@
 .e3-setup {
   display: flex;
   flex-direction: column;
-  gap: var(--space-6);
   height: 100%;
 }
 
-/* ---- duas colunas (alinhadas no topo) ---- */
+/* corpo: centraliza o bloco das colunas verticalmente no espaço disponível */
+.e3-body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+}
+
+/* ---- duas colunas (alinhadas no topo entre si) ---- */
 .e3-cols {
+  width: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--space-6);
-  align-items: stretch;
-  flex: 1;
-  min-height: 0;
+  align-items: start;
 }
 
 .e3-col {
@@ -31,63 +37,11 @@
 /* coluna do formulário: respiro consistente entre os Fields */
 .e3-col-form { gap: var(--space-5); }
 
-/* ---- segmented control (solo / modalidade) ---- */
-.e3-seg {
-  display: flex;
-  gap: var(--space-2);
-  flex-wrap: wrap;
-}
-
-.e3-seg-opt {
-  padding: 7px 16px;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--color-border);
-  background: var(--color-bg-surface);
-  color: var(--color-text-muted);
-  font-size: 13px;
-  font-family: inherit;
-  cursor: pointer;
-  transition: background 120ms ease, border-color 120ms ease, color 120ms ease;
-  line-height: 1.4;
-}
-
-.e3-seg-opt:hover:not(:disabled) {
-  border-color: var(--color-border-strong);
-  background: var(--color-bg-raised);
-  color: var(--color-text);
-}
-
-.e3-seg-opt.is-active {
-  background: var(--color-primary);
-  border-color: var(--color-primary);
-  color: var(--color-on-primary);
-  font-weight: 600;
-}
-
-.e3-seg-opt:disabled {
-  cursor: default;
-  opacity: 1; /* locked: show colors but no cursor */
-}
-
-/* locked + active: still show the highlight, just not interactive */
-.e3-seg-opt:disabled.is-active {
-  background: var(--color-primary);
-  border-color: var(--color-primary);
-  color: var(--color-on-primary);
-}
-
-/* locked + inactive in locked mode */
-.e3-seg-opt:disabled:not(.is-active) {
-  background: var(--color-bg-surface);
-  border-color: var(--color-border);
-  color: var(--color-text-disabled);
-}
-
-/* ---- área de varredura ---- */
+/* ---- área de varredura (Segmented e NumberField vêm do UI Kit) ---- */
 .e3-area-hybrid {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  gap: var(--space-3);
 }
 
 .e3-area-inputs {
@@ -96,26 +50,7 @@
   gap: var(--space-2);
 }
 
-.e3-area-input {
-  width: 80px;
-  padding: 7px 10px;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--color-border);
-  background: var(--color-bg-raised);
-  color: var(--color-text);
-  font-size: 14px;
-  font-family: var(--font-secondary, inherit);
-  outline: none;
-  transition: border-color 120ms ease;
-}
-
-.e3-area-input:focus {
-  border-color: var(--color-focus-ring);
-  box-shadow: 0 0 0 2px rgba(0, 182, 200, 0.18);
-}
-
-.e3-area-sep,
-.e3-area-unit {
+.e3-area-sep {
   font-size: 13px;
   color: var(--color-text-muted);
 }
@@ -214,8 +149,7 @@
 
 /* ---- mapa placeholder ---- */
 .e3-map-placeholder {
-  flex: 1;
-  min-height: 120px;
+  height: 180px;
   margin: 12px 16px 16px;
   border-radius: var(--radius-md);
   border: 1px dashed var(--color-border);

@@ -1,0 +1,28 @@
+.gsfs-numberfield {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.gsfs-numberfield-input {
+  width: 80px;
+  padding: 8px 10px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-raised);
+  color: var(--color-text);
+  font-family: var(--font-secondary, inherit);
+  font-size: 14px;
+  outline: none;
+  transition: border-color 120ms ease, box-shadow 120ms ease;
+}
+
+.gsfs-numberfield-input:focus {
+  border-color: var(--color-focus-ring);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-primary) 22%, transparent);
+}
+
+.gsfs-numberfield-unit {
+  font-size: 13px;
+  color: var(--color-text-muted);
+}

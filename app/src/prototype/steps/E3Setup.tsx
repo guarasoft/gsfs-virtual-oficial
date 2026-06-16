@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Button, Field, Select } from '../../ui'
+import { Button, Field, Select, Segmented, NumberField } from '../../ui'
 import { Screen } from '../shell/Screen'
 import { useSimulator } from '../store'
 import { SCENARIOS, getScenario } from '../data/scenarios'
@@ -40,40 +40,6 @@ function soilNote(soil: Soil, scenarioId: ScenarioId): string | null {
 }
 
 const AREA_PRESETS: [number, number][] = [[10, 10], [15, 15], [20, 20], [25, 25]]
-
-// ---- Segmented control -------------------------------------------------
-
-function SegControl({
-  options,
-  activeKeys,
-  locked,
-  onSelect,
-}: {
-  options: { key: string; label: string }[]
-  activeKeys: string[]
-  locked?: boolean
-  onSelect?: (key: string) => void
-}) {
-  return (
-    <div className="e3-seg" role="group">
-      {options.map(({ key, label }) => {
-        const isActive = activeKeys.includes(key)
-        return (
-          <button
-            key={key}
-            type="button"
-            disabled={locked}
-            className={`e3-seg-opt${isActive ? ' is-active' : ''}`}
-            aria-pressed={isActive}
-            onClick={() => !locked && onSelect?.(key)}
-          >
-            {label}
-          </button>
-        )
-      })}
-    </div>
-  )
-}
 
 // ---- Select options ----------------------------------------------------
 
@@ -149,7 +115,9 @@ export function E3Setup() {
     >
       <div className="e3-setup">
 
-        {/* ---- Two-column body (desde o topo) ---- */}
+        {/* ---- corpo centralizado verticalmente ---- */}
+        <div className="e3-body">
+        {/* ---- Two-column body (colunas alinhadas no topo) ---- */}
         <div className="e3-cols">
 
           {/* LEFT: Cenário / Solo / Modalidade / Área — tudo via Field */}
@@ -163,20 +131,20 @@ export function E3Setup() {
             </Field>
 
             <Field label="Tipo de solo" hint={note ?? undefined}>
-              <SegControl
-                options={SOLOS}
-                activeKeys={activeSoilKeys}
-                locked={!isManual}
-                onSelect={handleSoloSelect}
+              <Segmented
+                options={SOLOS.map((s) => ({ value: s.key, label: s.label }))}
+                value={activeSoilKeys}
+                disabled={!isManual}
+                onChange={handleSoloSelect}
               />
             </Field>
 
             <Field label="Modalidade">
-              <SegControl
-                options={MODALIDADES}
-                activeKeys={activeModalKeys}
-                locked={!isManual}
-                onSelect={handleModalSelect}
+              <Segmented
+                options={MODALIDADES.map((m) => ({ value: m.key, label: m.label }))}
+                value={activeModalKeys}
+                disabled={!isManual}
+                onChange={handleModalSelect}
               />
             </Field>
 
@@ -184,24 +152,9 @@ export function E3Setup() {
               {isManual ? (
                 <div className="e3-area-hybrid">
                   <div className="e3-area-inputs">
-                    <input
-                      className="e3-area-input"
-                      type="number"
-                      min={1}
-                      value={aX}
-                      onChange={(e) => setAX(Number(e.target.value))}
-                      aria-label="Eixo X (m)"
-                    />
+                    <NumberField value={aX} min={1} onValueChange={setAX} aria-label="Eixo X (m)" />
                     <span className="e3-area-sep">×</span>
-                    <input
-                      className="e3-area-input"
-                      type="number"
-                      min={1}
-                      value={aY}
-                      onChange={(e) => setAY(Number(e.target.value))}
-                      aria-label="Eixo Y (m)"
-                    />
-                    <span className="e3-area-unit">m</span>
+                    <NumberField value={aY} min={1} unit="m" onValueChange={setAY} aria-label="Eixo Y (m)" />
                   </div>
                   <div className="e3-area-presets">
                     {AREA_PRESETS.map(([x, y]) => (
@@ -260,6 +213,7 @@ export function E3Setup() {
               </div>
             </div>
           </div>
+        </div>
         </div>
 
         {/* ---- Actions bar ---- */}
