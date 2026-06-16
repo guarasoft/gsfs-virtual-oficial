@@ -17,7 +17,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--space-6);
-  align-items: start;
+  align-items: stretch;   /* colunas ocupam toda a altura disponível */
   flex: 1;
   min-height: 0;
 }
@@ -89,8 +89,10 @@
   font-weight: 600;
 }
 
-/* ---- painel contexto ---- */
+/* ---- painel contexto (ocupa toda a altura da coluna) ---- */
 .e3-ctx-panel {
+  flex: 1;
+  min-height: 0;
   background: var(--color-bg-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
@@ -145,7 +147,8 @@
 
 /* ---- mapa placeholder ---- */
 .e3-ctx-map {
-  height: 188px;
+  flex: 1;                 /* mapa adapta a altura ao espaço restante do card */
+  min-height: 160px;
   margin: 12px 16px 16px;
 }
 

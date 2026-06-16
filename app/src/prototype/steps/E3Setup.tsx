@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button, Field, Select, Segmented, NumberField, GnssMap } from '../../ui'
 import { Screen } from '../shell/Screen'
 import { useSimulator } from '../store'
@@ -67,6 +67,15 @@ export function E3Setup() {
   const [mModal, setMModal] = useState<Modality>('manual')
   const [aX, setAX] = useState(20)
   const [aY, setAY] = useState(20)
+
+  // Relógio real da máquina (PRD §6 — reatividade dinâmica obrigatória)
+  const [now, setNow] = useState(() => new Date())
+  useEffect(() => {
+    const id = setInterval(() => setNow(new Date()), 1000)
+    return () => clearInterval(id)
+  }, [])
+  const dataStr = now.toLocaleDateString('pt-BR')
+  const horaStr = now.toLocaleTimeString('pt-BR')
 
   const isManual = selValue === 'manual'
 
@@ -183,11 +192,11 @@ export function E3Setup() {
               <div className="e3-ctx-rows">
                 <div className="e3-ctx-row">
                   <span className="e3-ctx-row-label">Data</span>
-                  <strong className="e3-ctx-row-value">03/06/2026</strong>
+                  <strong className="e3-ctx-row-value">{dataStr}</strong>
                 </div>
                 <div className="e3-ctx-row">
                   <span className="e3-ctx-row-label">Hora</span>
-                  <strong className="e3-ctx-row-value">14:34:31</strong>
+                  <strong className="e3-ctx-row-value">{horaStr}</strong>
                 </div>
                 <div className="e3-ctx-row">
                   <span className="e3-ctx-row-label">Coordenadas (GNSS)</span>

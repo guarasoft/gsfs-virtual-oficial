@@ -1,3 +1,4 @@
+import { ActionCard, Chip } from '../../ui'
 import { Screen } from '../shell/Screen'
 import { useSimulator } from '../store'
 import './E2Menu.css'
@@ -46,26 +47,23 @@ export function E2Menu() {
         {/* Cards de ação */}
         <div className="e2-actions">
           {actions.map((a) => (
-            <button
+            <ActionCard
               key={a.k}
-              className="e2-action"
+              index={a.k}
+              title={a.name}
+              description={a.desc}
               onClick={() => goTo(a.step)}
-              type="button"
-            >
-              <span className="e2-action-k">{a.k}</span>
-              <span className="e2-action-name">{a.name}</span>
-              <span className="e2-action-desc">{a.desc}</span>
-            </button>
+            />
           ))}
         </div>
 
         {/* Status inferior */}
         <div className="e2-status">
           {statusItems.map(([label, value]) => (
-            <span className="e2-status-pill" key={label}>
+            <Chip key={label}>
               <span className="e2-status-dot" aria-hidden="true" />
               {label}: <strong>{value}</strong>
-            </span>
+            </Chip>
           ))}
         </div>
       </div>

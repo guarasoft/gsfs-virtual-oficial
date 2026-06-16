@@ -169,10 +169,12 @@ describe('E3Setup — tela de Setup hi-fi', () => {
 
   // ---- Contexto da operação -------------------------------------------
 
-  it('exibe Data, Hora e Coordenadas GNSS no contexto', () => {
+  it('exibe Data, Hora (relógio real) e Coordenadas GNSS no contexto', () => {
     render(<E3Setup />)
-    expect(screen.getByText('03/06/2026')).toBeTruthy()
-    expect(screen.getByText('14:34:31')).toBeTruthy()
+    // Data/Hora refletem o relógio real da máquina (PRD §6) — valida o formato pt-BR
+    expect(screen.getByText(/^\d{2}\/\d{2}\/\d{4}$/)).toBeTruthy() // DD/MM/AAAA (só no contexto)
+    // HH:MM:SS aparece no contexto e no relógio do rodapé
+    expect(screen.getAllByText(/^\d{2}:\d{2}:\d{2}$/).length).toBeGreaterThanOrEqual(1)
     expect(screen.getByText('−23,5489° / −46,6388°')).toBeTruthy()
   })
 
