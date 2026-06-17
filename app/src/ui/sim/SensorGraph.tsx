@@ -104,11 +104,9 @@ function Emi({ progress, detections }: { progress: number; detections: number })
     pts.push(`${x.toFixed(2)} ${y.toFixed(2)}`)
   }
   const line = 'M ' + pts.join(' L ')
-  const area = `M 0 ${bottom} L ` + pts.join(' L ') + ` L 200 ${bottom} Z`
   return (
     <svg viewBox="0 0 200 100" preserveAspectRatio="none" className="svg-emi">
       {[28, 50, 72].map((y) => <line key={y} className="emi-grid" x1="0" y1={y} x2="200" y2={y} />)}
-      <path className="emi-fill" d={area} />
       <path className="emi-line" d={line} vectorEffect="non-scaling-stroke" />
       <text className="svg-axis" x="4" y="12">COND.</text>
     </svg>
