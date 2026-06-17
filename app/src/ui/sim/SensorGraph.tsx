@@ -11,6 +11,9 @@ export type ImuMotion = 'smooth' | 'walk' | 'rough'
 export interface GprSignature {
   depth: number
   kind: 'hyperbola' | 'line'
+  /** posição no eixo da varredura (0..1) = instante do achado; alinha a
+      hipérbole com onde a linha de varredura estava ao detectar. Default 0,5 */
+  at?: number
 }
 
 export interface SensorGraphProps {
@@ -88,9 +91,10 @@ function Gpr({ progress, signatures }: { progress: number; signatures: GprSignat
         const y = depthToY(s.depth)
         return <line key={`l${i}`} className="gpr-hline" x1="12" y1={y} x2="188" y2={y} />
       })}
-      {/* hipérboles de reflexão: uma por achado de GPR, posicionada pela profundidade */}
+      {/* hipérboles de reflexão: uma por achado de GPR, posicionada no eixo da
+          varredura pelo instante do achado (x) e pela profundidade (y) */}
       {hyps.map((s, i) => {
-        const cx = (200 * (i + 1)) / (hyps.length + 1)
+        const cx = 8 + clamp(s.at ?? 0.5, 0, 1) * 184
         const y = depthToY(s.depth)
         return (
           <g className="gpr-hyperbola" key={`h${i}`}>

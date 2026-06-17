@@ -172,7 +172,11 @@ export function useScan(
     .map((e) => {
       const tgt = scenario.targets.find((t) => t.label === e.targetRef)
       if (!tgt) return null
-      return { depth: tgt.depth, kind: tgt.type === 'agua' ? 'line' : 'hyperbola' } as GprSignature
+      // `at` = instante do achado na escala da varredura (mesma da linha de
+      // varredura / barra de progresso): posiciona a hipérbole onde a varredura
+      // estava ao detectar.
+      const at = Math.max(0, Math.min(1, e.t / f2EndSec))
+      return { depth: tgt.depth, kind: tgt.type === 'agua' ? 'line' : 'hyperbola', at } as GprSignature
     })
     .filter((s): s is GprSignature => s !== null)
 
