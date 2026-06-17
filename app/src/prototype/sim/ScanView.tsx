@@ -106,10 +106,10 @@ export function ScanView({ state, banner, controls }: ScanViewProps) {
       <div className="sv-body">
         {/* 4-panel sensor grid */}
         <div className="sv-sensor-grid">
-          <SensorPanelFull kind="gpr" title="GPR" tag="eco / reflexão" note={state.sensorNotes.gpr} progress={state.progress} detections={state.detections.length} />
-          <SensorPanelFull kind="emi" title="EMI" tag="condutividade" note={state.sensorNotes.emi} progress={state.progress} detections={state.detections.length} />
-          <SensorPanelFull kind="imu" title="IMU" tag="orientação 6 eixos" note={state.sensorNotes.imu} progress={state.progress} detections={state.detections.length} />
-          <SensorPanelFull kind="gnss" title="GNSS / RTK" tag="posicionamento" note={state.sensorNotes.gnss} progress={state.progress} detections={state.detections.length} />
+          <SensorPanelFull kind="gpr" title="GPR" tag="eco / reflexão" note={state.sensorNotes.gpr} progress={state.progressExact} detections={state.detections.length} />
+          <SensorPanelFull kind="emi" title="EMI" tag="condutividade" note={state.sensorNotes.emi} progress={state.progressExact} detections={state.detections.length} />
+          <SensorPanelFull kind="imu" title="IMU" tag="orientação 6 eixos" note={state.sensorNotes.imu} progress={state.progressExact} detections={state.detections.length} />
+          <SensorPanelFull kind="gnss" title="GNSS / RTK" tag="posicionamento" note={state.sensorNotes.gnss} progress={state.progressExact} detections={state.detections.length} />
         </div>
 
         {/* Right rail */}

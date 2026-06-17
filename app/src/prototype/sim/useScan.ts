@@ -29,6 +29,9 @@ export type ScanDetection = {
 
 export type ScanState = {
   progress: number
+  /** progresso contínuo (não arredondado) — alimenta os gráficos para
+      movimento fluido a cada frame, sem os "degraus" do valor inteiro */
+  progressExact: number
   elapsedSec: number
   clock: string
   battery: number
@@ -151,6 +154,7 @@ export function useScan(
 
   return {
     progress: Math.round(progress),
+    progressExact: Math.max(0, Math.min(100, (elapsed / durationSec) * 100)),
     elapsedSec: elapsed,
     clock,
     battery: batteryFromElapsed(elapsed, durationSec),
