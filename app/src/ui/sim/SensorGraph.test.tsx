@@ -29,8 +29,8 @@ describe('SensorGraph', () => {
     expect(container.querySelectorAll('.gnss-marker').length).toBe(0)
   })
 
-  it('EMI renderiza a matriz de células', () => {
+  it('EMI renderiza a curva de resposta de condutividade', () => {
     const { container } = render(<SensorGraph kind="emi" progress={40} detections={1} />)
-    expect(container.querySelectorAll('.emi-cell').length).toBeGreaterThan(0)
+    expect(container.querySelector('.emi-line')).not.toBeNull()
   })
 })

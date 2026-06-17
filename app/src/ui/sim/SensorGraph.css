@@ -36,10 +36,16 @@
 @keyframes gpr-sweep-glow { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
 @keyframes gpr-sig-in { from { opacity: 0; } to { opacity: 1; } }
 
-/* ---------------- EMI — heatmap ---------------- */
-.svg-emi .emi-cell { fill: var(--sensor-emi); }
-.svg-emi { animation: emi-shimmer 3s ease-in-out infinite; }
-@keyframes emi-shimmer { 0%, 100% { filter: brightness(1); } 50% { filter: brightness(1.12); } }
+/* ---------------- EMI — resposta de condutividade (strip-chart) ---------------- */
+.svg-emi .emi-grid { stroke: color-mix(in srgb, var(--sensor-emi) 12%, transparent); stroke-width: 0.5; }
+.svg-emi .emi-fill { fill: color-mix(in srgb, var(--sensor-emi) 13%, transparent); stroke: none; }
+.svg-emi .emi-line {
+  fill: none;
+  stroke: var(--sensor-emi);
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 3px color-mix(in srgb, var(--sensor-emi) 55%, transparent));
+}
 
 /* ---------------- IMU — horizonte artificial ---------------- */
 .svg-imu .imu-bezel { fill: color-mix(in srgb, var(--color-bg-raised) 80%, black); stroke: var(--color-border); stroke-width: 1; }
@@ -82,7 +88,6 @@
 
 @media (prefers-reduced-motion: reduce) {
   .svg-gpr .gpr-sweep,
-  .svg-emi,
   .svg-imu .imu-horizon,
   .svg-gnss .gnss-head { animation: none; }
 }

@@ -12,7 +12,7 @@ export interface SensorGraphProps {
 
 const VIZ_LABEL: Record<SensorKind, string> = {
   gpr: 'Radargrama GPR — eco e reflexão por profundidade',
-  emi: 'Mapa de calor EMI — matriz de condutividade',
+  emi: 'Resposta de condutividade EMI — sinal no tempo',
   imu: 'Horizonte artificial IMU — roll e pitch',
   gnss: 'Trajetória de varredura GNSS / RTK',
 }
@@ -68,43 +68,49 @@ function Gpr({ progress, detections }: { progress: number; detections: number })
 }
 
 // --------------------------------------------------------------------------
-// EMI — mapa de calor: matriz de condutividade com hotspot sobre anomalia
+// EMI — resposta de condutividade: sinal rolando no tempo (strip-chart).
+// Baseline sobe com a umidade de fundo; picos emergem sobre anomalias.
 // --------------------------------------------------------------------------
 
-const EMI_COLS = 14
-const EMI_ROWS = 6
+const EMI_N = 72
+
+// Valor de condutividade (0..1) numa coordenada de mundo `w`. Determinístico:
+// ondulação ambiente (soma de senos) + picos recorrentes quando há anomalia.
+function emiValue(w: number, baseline: number, active: boolean): number {
+  const ripple =
+    Math.sin(w * 0.20) * 0.06 +
+    Math.sin(w * 0.53 + 1.3) * 0.04 +
+    Math.sin(w * 0.11 + 0.7) * 0.05
+  let v = baseline + ripple
+  if (active) {
+    const p = Math.sin(w * 0.16)
+    v += Math.max(0, p) ** 6 * 0.5 // picos estreitos de anomalia
+  }
+  return clamp(v, 0.04, 0.96)
+}
 
 function Emi({ progress, detections }: { progress: number; detections: number }) {
-  const cw = 200 / EMI_COLS
-  const ch = 100 / EMI_ROWS
-  // centro do hotspot caminha um pouco com o progresso
-  const hotC = 8 + (clamp(progress, 0, 100) / 100) * 3
-  const hotR = 2.4
-  const cells: { x: number; y: number; o: number }[] = []
-  for (let r = 0; r < EMI_ROWS; r++) {
-    for (let c = 0; c < EMI_COLS; c++) {
-      const base = 0.08 + 0.07 * (((c * 7 + r * 3) % 5) / 5)
-      let bump = 0
-      if (detections > 0) {
-        const d2 = (c - hotC) ** 2 + (r - hotR) ** 2
-        bump = Math.exp(-d2 / 4) * 0.85
-      }
-      cells.push({ x: c * cw, y: r * ch, o: clamp(base + bump, 0, 1) })
-    }
+  const top = 14
+  const bottom = 86
+  const pr = clamp(progress, 0, 100)
+  const phase = pr * 1.4 // rola continuamente com o progresso
+  const baseline = 0.22 + (pr / 100) * 0.18 // umidade de fundo sobe ao longo da varredura
+  const active = detections > 0
+  const pts: string[] = []
+  for (let i = 0; i < EMI_N; i++) {
+    const x = (i / (EMI_N - 1)) * 200
+    const v = emiValue(i + phase, baseline, active)
+    const y = bottom - v * (bottom - top)
+    pts.push(`${x.toFixed(2)} ${y.toFixed(2)}`)
   }
+  const line = 'M ' + pts.join(' L ')
+  const area = `M 0 ${bottom} L ` + pts.join(' L ') + ` L 200 ${bottom} Z`
   return (
     <svg viewBox="0 0 200 100" preserveAspectRatio="none" className="svg-emi">
-      {cells.map((cell, i) => (
-        <rect
-          key={i}
-          className="emi-cell"
-          x={cell.x + 0.5}
-          y={cell.y + 0.5}
-          width={cw - 1}
-          height={ch - 1}
-          style={{ opacity: cell.o }}
-        />
-      ))}
+      {[28, 50, 72].map((y) => <line key={y} className="emi-grid" x1="0" y1={y} x2="200" y2={y} />)}
+      <path className="emi-fill" d={area} />
+      <path className="emi-line" d={line} vectorEffect="non-scaling-stroke" />
+      <text className="svg-axis" x="4" y="12">COND.</text>
     </svg>
   )
 }
