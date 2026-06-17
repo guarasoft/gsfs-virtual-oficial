@@ -88,16 +88,24 @@ export function ScanView({ state, banner, controls }: ScanViewProps) {
         </div>
       </div>
 
-      {/* Alert row */}
-      {confirmedDetections.length > 0 && (
-        <div className="sv-alert">
-          <span className="sv-alert-pulse" />
-          <span className="sv-alert-lead">DETECÇÃO CONFIRMADA</span>
-          <span className="sv-alert-info">
-            {confirmedDetections.map((d) => `${d.label} · ${d.meta}`).join(' | ')}
-          </span>
-        </div>
-      )}
+      {/* Faixa de detecção — sempre presente (altura reservada) para a grade
+          não "saltar" quando o badge de detecção confirmada surge. */}
+      <div className={`sv-alert${confirmedDetections.length > 0 ? '' : ' sv-alert--idle'}`}>
+        <span className="sv-alert-pulse" />
+        {confirmedDetections.length > 0 ? (
+          <>
+            <span className="sv-alert-lead">DETECÇÃO CONFIRMADA</span>
+            <span className="sv-alert-info">
+              {confirmedDetections.map((d) => `${d.label} · ${d.meta}`).join(' | ')}
+            </span>
+          </>
+        ) : (
+          <>
+            <span className="sv-alert-lead">MONITORANDO</span>
+            <span className="sv-alert-info">sem detecções até o momento</span>
+          </>
+        )}
+      </div>
 
       {/* Body */}
       <div className="sv-body">
