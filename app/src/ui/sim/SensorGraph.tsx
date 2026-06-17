@@ -56,8 +56,8 @@ function Gpr({ progress, detections }: { progress: number; detections: number })
       {/* hipérbole de reflexão (assinatura de alvo) */}
       {hasSig && (
         <g className="gpr-hyperbola">
-          <path d="M 78 82 Q 118 34 158 82" />
-          <path className="gpr-hyperbola-faint" d="M 70 84 Q 118 24 166 84" />
+          <path d="M 98 76 Q 118 52 138 76" />
+          <path className="gpr-hyperbola-faint" d="M 94 77 Q 118 47 142 77" />
         </g>
       )}
       {/* linha de varredura (posição atual em profundidade) */}
