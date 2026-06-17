@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react'
-import type { ScenarioId } from '../data/types'
+import type { ScenarioId, Modality } from '../data/types'
 import { getScenario } from '../data/scenarios'
 import { getTimeline } from '../data/timeline'
 import type { TimelineEvent } from '../data/timeline'
@@ -37,6 +37,8 @@ export type ScanState = {
   battery: number
   temp: number
   gnss: 'FIX' | 'NO FIX'
+  /** modalidade do cenário — define a assinatura de movimento do IMU */
+  modality: Modality
   sensorNotes: Partial<Record<'gpr' | 'emi' | 'imu' | 'gnss', string>>
   detections: ScanDetection[]
   fusionNote: string | null
@@ -160,6 +162,7 @@ export function useScan(
     battery: batteryFromElapsed(elapsed, durationSec),
     temp: tempFromElapsed(elapsed, durationSec),
     gnss: elapsed >= 10 ? 'FIX' : 'NO FIX',
+    modality: scenario.modality,
     sensorNotes,
     detections,
     fusionNote,
