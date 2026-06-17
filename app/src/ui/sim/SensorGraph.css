@@ -46,22 +46,20 @@
   filter: drop-shadow(0 0 3px color-mix(in srgb, var(--color-primary) 55%, transparent));
 }
 
-/* ---------------- IMU — horizonte artificial ---------------- */
-.svg-imu .imu-bezel { fill: color-mix(in srgb, var(--color-bg-raised) 80%, black); stroke: var(--color-border); stroke-width: 1; }
-.svg-imu .imu-sky { fill: color-mix(in srgb, var(--sensor-imu) 22%, var(--color-bg)); }
-.svg-imu .imu-ground { fill: color-mix(in srgb, var(--sensor-imu) 6%, black); }
-.svg-imu .imu-line { stroke: color-mix(in srgb, var(--sensor-imu) 90%, white 10%); stroke-width: 1; }
-.svg-imu .imu-pitch { stroke: color-mix(in srgb, var(--sensor-imu) 55%, transparent); stroke-width: 0.7; }
-.svg-imu .imu-horizon { transform-origin: 50px 50px; animation: imu-roll 6s ease-in-out infinite; }
-.svg-imu .imu-ref line { stroke: var(--color-text-strong); stroke-width: 1.4; }
-.svg-imu .imu-ref circle { fill: var(--color-text-strong); }
-.svg-imu .imu-rim { fill: none; stroke: color-mix(in srgb, var(--sensor-imu) 40%, transparent); stroke-width: 1.5; }
-@keyframes imu-roll {
-  0%   { transform: rotate(-7deg) translateY(-3px); }
-  25%  { transform: rotate(4deg) translateY(2px); }
-  50%  { transform: rotate(-3deg) translateY(4px); }
-  75%  { transform: rotate(6deg) translateY(-2px); }
-  100% { transform: rotate(-7deg) translateY(-3px); }
+/* ---------------- IMU — séries temporais (roll / pitch) ---------------- */
+.svg-imu .imu-zero { stroke: color-mix(in srgb, var(--color-primary) 14%, transparent); stroke-width: 0.5; }
+.svg-imu .imu-roll {
+  fill: none;
+  stroke: var(--color-primary);
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 3px color-mix(in srgb, var(--color-primary) 50%, transparent));
+}
+.svg-imu .imu-pitch {
+  fill: none;
+  stroke: color-mix(in srgb, var(--color-primary) 50%, transparent);
+  stroke-width: 1.4;
+  stroke-linejoin: round;
 }
 
 /* ---------------- GNSS — trajetória ---------------- */
@@ -87,6 +85,5 @@
 
 @media (prefers-reduced-motion: reduce) {
   .svg-gpr .gpr-sweep,
-  .svg-imu .imu-horizon,
   .svg-gnss .gnss-head { animation: none; }
 }

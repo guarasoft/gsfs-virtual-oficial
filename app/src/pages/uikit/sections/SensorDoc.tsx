@@ -5,7 +5,7 @@ const KINDS: SensorKind[] = ['gpr', 'emi', 'imu', 'gnss']
 const STATES: SensorState[] = ['on', 'off', 'err']
 const RTK: RtkState[] = ['fix', 'float', 'nofix']
 const GRAPH_LABEL: Record<SensorKind, string> = {
-  gpr: 'GPR · radargrama', emi: 'EMI · resposta', imu: 'IMU · horizonte', gnss: 'GNSS · trajetória',
+  gpr: 'GPR · radargrama', emi: 'EMI · resposta', imu: 'IMU · roll/pitch', gnss: 'GNSS · trajetória',
 }
 
 export default function SensorDoc() {

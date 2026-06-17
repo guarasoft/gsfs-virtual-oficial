@@ -13,7 +13,7 @@ export interface SensorGraphProps {
 const VIZ_LABEL: Record<SensorKind, string> = {
   gpr: 'Radargrama GPR — eco e reflexão por profundidade',
   emi: 'Resposta de condutividade EMI — sinal no tempo',
-  imu: 'Horizonte artificial IMU — roll e pitch',
+  imu: 'Sinais inerciais IMU — roll e pitch no tempo',
   gnss: 'Trajetória de varredura GNSS / RTK',
 }
 
@@ -28,7 +28,7 @@ export function SensorGraph({ kind, progress, detections = 0 }: SensorGraphProps
     <div className={`gsfs-svgraph gsfs-svgraph--${kind}`} role="img" aria-label={VIZ_LABEL[kind]}>
       {kind === 'gpr' && <Gpr progress={progress} detections={detections} />}
       {kind === 'emi' && <Emi progress={progress} detections={detections} />}
-      {kind === 'imu' && <Imu />}
+      {kind === 'imu' && <Imu progress={progress} />}
       {kind === 'gnss' && <Gnss progress={progress} detections={detections} />}
     </div>
   )
@@ -114,34 +114,35 @@ function Emi({ progress, detections }: { progress: number; detections: number })
 }
 
 // --------------------------------------------------------------------------
-// IMU — horizonte artificial: roll/pitch oscilando com o terreno
+// IMU — séries temporais dos eixos inerciais: roll e pitch oscilando
+// (terreno irregular / passos). Determinístico: rola com o progresso.
 // --------------------------------------------------------------------------
 
-function Imu() {
+const IMU_N = 80
+
+function imuTrace(amp: number, f1: number, f2: number, ph: number, phase: number): string {
+  const mid = 50
+  const pts: string[] = []
+  for (let i = 0; i < IMU_N; i++) {
+    const x = (i / (IMU_N - 1)) * 200
+    const w = i + phase
+    const osc = Math.sin(w * f1 + ph) * 0.7 + Math.sin(w * f2 + ph * 1.7) * 0.3
+    const y = mid - osc * amp
+    pts.push(`${x.toFixed(2)} ${y.toFixed(2)}`)
+  }
+  return 'M ' + pts.join(' L ')
+}
+
+function Imu({ progress }: { progress: number }) {
+  const phase = clamp(progress, 0, 100) * 1.6
+  const roll = imuTrace(24, 0.16, 0.07, 0, phase)
+  const pitch = imuTrace(15, 0.11, 0.23, 1.2, phase)
   return (
-    <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" className="svg-imu">
-      <defs>
-        <clipPath id="imu-clip"><circle cx="50" cy="50" r="38" /></clipPath>
-      </defs>
-      <circle className="imu-bezel" cx="50" cy="50" r="38" />
-      <g clipPath="url(#imu-clip)">
-        <g className="imu-horizon">
-          <rect className="imu-sky" x="-30" y="-30" width="160" height="80" />
-          <rect className="imu-ground" x="-30" y="50" width="160" height="80" />
-          <line className="imu-line" x1="-30" y1="50" x2="130" y2="50" />
-          {/* escada de pitch */}
-          {[30, 40, 60, 70].map((y) => (
-            <line key={y} className="imu-pitch" x1="38" y1={y} x2="62" y2={y} />
-          ))}
-        </g>
-      </g>
-      {/* referência fixa (aeronave) */}
-      <g className="imu-ref">
-        <line x1="30" y1="50" x2="42" y2="50" />
-        <line x1="58" y1="50" x2="70" y2="50" />
-        <circle cx="50" cy="50" r="1.6" />
-      </g>
-      <circle className="imu-rim" cx="50" cy="50" r="38" />
+    <svg viewBox="0 0 200 100" preserveAspectRatio="none" className="svg-imu">
+      <line className="imu-zero" x1="0" y1="50" x2="200" y2="50" />
+      <path className="imu-roll" d={roll} vectorEffect="non-scaling-stroke" />
+      <path className="imu-pitch" d={pitch} vectorEffect="non-scaling-stroke" />
+      <text className="svg-axis" x="4" y="12">ROLL / PITCH</text>
     </svg>
   )
 }
