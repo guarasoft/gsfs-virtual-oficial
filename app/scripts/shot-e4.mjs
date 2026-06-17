@@ -29,7 +29,7 @@ for (const { w, h, tag } of sizes) {
   await page.getByRole('button', { name: /Iniciar varredura/ }).click()
 
   // Let the scan run so progress/detections accumulate
-  await page.waitForTimeout(6000)
+  await page.waitForTimeout(13000)
   await page.screenshot({ path: `${dir}e4-${tag}.png` })
   console.log('saved', `e4-${tag}.png`)
   await page.close()
