@@ -30,7 +30,7 @@
 .sv-sensor-grid { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; flex: 1; gap: 1px; background: var(--color-border); min-width: 0; }
 
 .sv-panel { background: var(--color-bg); display: flex; flex-direction: column; overflow: hidden; }
-.sv-panel-hdr { display: flex; align-items: center; justify-content: space-between; padding: 8px 14px; border-bottom: 1px solid var(--color-border); background: var(--color-bg-raised); flex-shrink: 0; }
+.sv-panel-hdr { display: flex; align-items: center; justify-content: space-between; min-height: 36px; box-sizing: border-box; padding: 6px 14px; border-bottom: 1px solid var(--color-border); background: var(--color-bg-raised); flex-shrink: 0; }
 .sv-panel-title { font-family: var(--font-secondary); font-weight: 700; font-size: 0.8rem; letter-spacing: 0.06em; color: var(--color-text-strong); }
 .sv-panel-tag { font-family: var(--font-secondary); font-size: 0.65rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-text-muted); border: 1px solid var(--color-border); padding: 2px 8px; border-radius: var(--radius-sm, 4px); }
 .sv-panel-body { flex: 1; display: flex; flex-direction: column; gap: 8px; padding: 12px 14px; min-height: 0; overflow: hidden; }
@@ -40,7 +40,7 @@
 .sv-rail { width: 260px; flex-shrink: 0; display: flex; flex-direction: column; border-left: 1px solid var(--color-border); overflow: hidden; }
 .sv-rail-panel { flex: 1; display: flex; flex-direction: column; overflow: hidden; border-bottom: 1px solid var(--color-border); }
 .sv-rail-panel:last-child { border-bottom: none; }
-.sv-rail-h { font-family: var(--font-secondary); font-weight: 700; font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-text-muted); padding: 8px 14px; border-bottom: 1px solid var(--color-border); background: var(--color-bg-raised); flex-shrink: 0; }
+.sv-rail-h { display: flex; align-items: center; min-height: 36px; box-sizing: border-box; font-family: var(--font-secondary); font-weight: 700; font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-text-muted); padding: 6px 14px; border-bottom: 1px solid var(--color-border); background: var(--color-bg-raised); flex-shrink: 0; }
 .sv-rail-empty { font-size: 0.72rem; color: var(--color-text-muted); padding: 12px 14px; font-style: italic; }
 .sv-det-item { padding: 10px 14px; display: flex; flex-direction: column; gap: 4px; border-bottom: 1px solid var(--color-border); }
 .sv-det-name { font-family: var(--font-secondary); font-weight: 600; font-size: 0.8rem; color: var(--color-text-strong); }
