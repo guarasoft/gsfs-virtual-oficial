@@ -1,32 +1,27 @@
 import type { ReactNode } from 'react'
-import { Progress, HudMetric, SensorPanel, DetectionBadge } from '../../ui'
+import { Progress, HudMetric, SensorPanel, SensorGraph, DetectionBadge } from '../../ui'
 import type { SensorKind } from '../../ui'
 import type { ScanState } from './useScan'
 import './ScanView.css'
 
 // ---------------------------------------------------------------------------
-// Internal: full sensor panel with visualization placeholder
+// Internal: full sensor panel with live visualization
 // ---------------------------------------------------------------------------
-
-function getVizLabel(kind: SensorKind): string {
-  switch (kind) {
-    case 'gpr': return '[ radargrama — eco / reflexão por profundidade ]'
-    case 'emi': return '[ mapa de calor — matriz de intensidade ]'
-    case 'imu': return '[ vetor de orientação — roll / pitch ]'
-    case 'gnss': return '[ trajetória de varredura no mapa ]'
-  }
-}
 
 function SensorPanelFull({
   kind,
   title,
   tag,
   note,
+  progress,
+  detections,
 }: {
   kind: SensorKind
   title: string
   tag: string
   note?: string
+  progress: number
+  detections: number
 }) {
   return (
     <div className="sv-panel">
@@ -36,7 +31,7 @@ function SensorPanelFull({
       </div>
       <div className="sv-panel-body">
         <div className="sv-panel-viz">
-          <span className="sv-panel-viz-label">{getVizLabel(kind)}</span>
+          <SensorGraph kind={kind} progress={progress} detections={detections} />
         </div>
         {note && <div className="sv-panel-note">{note}</div>}
       </div>
@@ -111,10 +106,10 @@ export function ScanView({ state, banner, controls }: ScanViewProps) {
       <div className="sv-body">
         {/* 4-panel sensor grid */}
         <div className="sv-sensor-grid">
-          <SensorPanelFull kind="gpr" title="GPR" tag="eco / reflexão" note={state.sensorNotes.gpr} />
-          <SensorPanelFull kind="emi" title="EMI" tag="condutividade" note={state.sensorNotes.emi} />
-          <SensorPanelFull kind="imu" title="IMU" tag="orientação 6 eixos" note={state.sensorNotes.imu} />
-          <SensorPanelFull kind="gnss" title="GNSS / RTK" tag="posicionamento" note={state.sensorNotes.gnss} />
+          <SensorPanelFull kind="gpr" title="GPR" tag="eco / reflexão" note={state.sensorNotes.gpr} progress={state.progress} detections={state.detections.length} />
+          <SensorPanelFull kind="emi" title="EMI" tag="condutividade" note={state.sensorNotes.emi} progress={state.progress} detections={state.detections.length} />
+          <SensorPanelFull kind="imu" title="IMU" tag="orientação 6 eixos" note={state.sensorNotes.imu} progress={state.progress} detections={state.detections.length} />
+          <SensorPanelFull kind="gnss" title="GNSS / RTK" tag="posicionamento" note={state.sensorNotes.gnss} progress={state.progress} detections={state.detections.length} />
         </div>
 
         {/* Right rail */}

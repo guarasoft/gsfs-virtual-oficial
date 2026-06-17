@@ -1,9 +1,12 @@
-import { SensorPanel, RtkStatus, HudMetric, StatusBar, type SensorKind, type SensorState, type RtkState } from '../../../ui'
+import { SensorPanel, RtkStatus, HudMetric, StatusBar, SensorGraph, type SensorKind, type SensorState, type RtkState } from '../../../ui'
 import { DocSection, DocBlock, Cell } from '../docs-kit'
 
 const KINDS: SensorKind[] = ['gpr', 'emi', 'imu', 'gnss']
 const STATES: SensorState[] = ['on', 'off', 'err']
 const RTK: RtkState[] = ['fix', 'float', 'nofix']
+const GRAPH_LABEL: Record<SensorKind, string> = {
+  gpr: 'GPR · radargrama', emi: 'EMI · heatmap', imu: 'IMU · horizonte', gnss: 'GNSS · trajetória',
+}
 
 export default function SensorDoc() {
   return (
@@ -16,6 +19,15 @@ export default function SensorDoc() {
       </DocBlock>
       <DocBlock title="Painel de sensor — estados (GPR)" code="SensorPanel">
         {STATES.map((s) => <Cell key={s} label={s}><SensorPanel kind="gpr" state={s} /></Cell>)}
+      </DocBlock>
+      <DocBlock title="Visualização por sensor (varredura)" code="SensorGraph">
+        {KINDS.map((k) => (
+          <Cell key={k} label={GRAPH_LABEL[k]}>
+            <div style={{ width: 220, height: 120, border: '1px solid var(--color-border)', borderRadius: 4, overflow: 'hidden' }}>
+              <SensorGraph kind={k} progress={55} detections={1} />
+            </div>
+          </Cell>
+        ))}
       </DocBlock>
       <DocBlock title="Sensor compacto — pílula da faixa do HUD" code="SensorPanel compact">
         {KINDS.map((k) => <Cell key={k} label={k.toUpperCase()}><SensorPanel kind={k} state="on" compact /></Cell>)}
