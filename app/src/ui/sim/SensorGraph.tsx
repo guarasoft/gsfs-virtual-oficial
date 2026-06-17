@@ -98,8 +98,10 @@ function Gpr({ progress, signatures }: { progress: number; signatures: GprSignat
         const y = depthToY(s.depth)
         return (
           <g className="gpr-hyperbola" key={`h${i}`}>
-            <path d={`M ${cx - 20} ${y + 12} Q ${cx} ${y - 12} ${cx + 20} ${y + 12}`} />
-            <path className="gpr-hyperbola-faint" d={`M ${cx - 24} ${y + 15} Q ${cx} ${y - 15} ${cx + 24} ${y + 15}`} />
+            {/* arco interno (apex na profundidade) e arco externo nidificado
+                com folga clara entre eles */}
+            <path d={`M ${cx - 18} ${y + 10} Q ${cx} ${y - 10} ${cx + 18} ${y + 10}`} />
+            <path className="gpr-hyperbola-faint" d={`M ${cx - 28} ${y + 17} Q ${cx} ${y - 25} ${cx + 28} ${y + 17}`} />
           </g>
         )
       })}

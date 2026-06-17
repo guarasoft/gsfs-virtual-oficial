@@ -164,21 +164,17 @@ export function useScan(
   const f2EndSec = Math.max(1, durationSec - 10)
   const progressExact = Math.max(0, Math.min(100, (elapsed / f2EndSec) * 100))
 
-  // Assinaturas de GPR já reveladas: cada achado de GPR (evento de detecção com
-  // nota no sensor gpr) surge no seu instante; lâmina d'água vira linha
-  // horizontal, demais alvos viram hipérbole. Posicionadas pela profundidade.
+  // Padrão: TODA detecção gera uma hipérbole no radargrama, surgindo no seu
+  // instante. `at` = instante do achado na escala da varredura (mesma da linha
+  // de varredura / barra), posicionando a hipérbole onde a varredura estava ao
+  // detectar; `depth` posiciona no eixo vertical (raso = acima, fundo = abaixo).
   const gprSignatures: GprSignature[] = events
-    .filter((e) => e.kind === 'detection' && e.sensors?.gpr && e.t <= elapsed)
+    .filter((e) => e.kind === 'detection' && e.t <= elapsed)
     .map((e) => {
       const tgt = scenario.targets.find((t) => t.label === e.targetRef)
-      if (!tgt) return null
-      // `at` = instante do achado na escala da varredura (mesma da linha de
-      // varredura / barra de progresso): posiciona a hipérbole onde a varredura
-      // estava ao detectar.
       const at = Math.max(0, Math.min(1, e.t / f2EndSec))
-      return { depth: tgt.depth, kind: tgt.type === 'agua' ? 'line' : 'hyperbola', at } as GprSignature
+      return { depth: tgt?.depth ?? 2.5, kind: 'hyperbola', at } as GprSignature
     })
-    .filter((s): s is GprSignature => s !== null)
 
   const emiActive = events.some(
     (e) => e.kind === 'detection' && e.sensors?.emi && e.t <= elapsed,
