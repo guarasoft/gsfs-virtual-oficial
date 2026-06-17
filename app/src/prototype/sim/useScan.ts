@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react'
+import type { GprSignature } from '../../ui'
 import type { ScenarioId, Modality } from '../data/types'
 import { getScenario } from '../data/scenarios'
 import { getTimeline } from '../data/timeline'
@@ -39,6 +40,10 @@ export type ScanState = {
   gnss: 'FIX' | 'NO FIX'
   /** modalidade do cenário — define a assinatura de movimento do IMU */
   modality: Modality
+  /** assinaturas de GPR já reveladas (uma por achado de GPR, no seu instante) */
+  gprSignatures: GprSignature[]
+  /** há achado de EMI revelado → pico na curva de condutividade */
+  emiActive: boolean
   sensorNotes: Partial<Record<'gpr' | 'emi' | 'imu' | 'gnss', string>>
   detections: ScanDetection[]
   fusionNote: string | null
@@ -145,7 +150,7 @@ export function useScan(
     timeline.play()
   }, [timeline])
 
-  const { elapsed, progress, playing, play, pause, seek, setRate } = timeline
+  const { elapsed, playing, play, pause, seek, setRate } = timeline
 
   const clock = new Date().toLocaleTimeString('pt-BR', {
     hour: '2-digit',
@@ -154,15 +159,38 @@ export function useScan(
     hour12: false,
   })
 
+  // A barra da varredura atinge 100% no fim da F2 (Roteiro §2.4); os últimos
+  // 10s são F3 — Consolidação (barra em 100%, geração do GSFS_RECORD).
+  const f2EndSec = Math.max(1, durationSec - 10)
+  const progressExact = Math.max(0, Math.min(100, (elapsed / f2EndSec) * 100))
+
+  // Assinaturas de GPR já reveladas: cada achado de GPR (evento de detecção com
+  // nota no sensor gpr) surge no seu instante; lâmina d'água vira linha
+  // horizontal, demais alvos viram hipérbole. Posicionadas pela profundidade.
+  const gprSignatures: GprSignature[] = events
+    .filter((e) => e.kind === 'detection' && e.sensors?.gpr && e.t <= elapsed)
+    .map((e) => {
+      const tgt = scenario.targets.find((t) => t.label === e.targetRef)
+      if (!tgt) return null
+      return { depth: tgt.depth, kind: tgt.type === 'agua' ? 'line' : 'hyperbola' } as GprSignature
+    })
+    .filter((s): s is GprSignature => s !== null)
+
+  const emiActive = events.some(
+    (e) => e.kind === 'detection' && e.sensors?.emi && e.t <= elapsed,
+  )
+
   return {
-    progress: Math.round(progress),
-    progressExact: Math.max(0, Math.min(100, (elapsed / durationSec) * 100)),
+    progress: Math.round(progressExact),
+    progressExact,
     elapsedSec: elapsed,
     clock,
     battery: batteryFromElapsed(elapsed, durationSec),
     temp: tempFromElapsed(elapsed, durationSec),
-    gnss: elapsed >= 10 ? 'FIX' : 'NO FIX',
+    gnss: elapsed >= scenario.fixSec ? 'FIX' : 'NO FIX',
     modality: scenario.modality,
+    gprSignatures,
+    emiActive,
     sensorNotes,
     detections,
     fusionNote,

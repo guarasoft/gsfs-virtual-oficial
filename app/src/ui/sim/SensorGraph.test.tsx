@@ -10,11 +10,23 @@ describe('SensorGraph', () => {
     expect(screen.getByRole('img', { name: /Radargrama GPR/i })).toBeTruthy()
   })
 
-  it('GPR só mostra a hipérbole quando há detecção', () => {
-    const { container, rerender } = render(<SensorGraph kind="gpr" progress={50} detections={0} />)
+  it('GPR só mostra a hipérbole quando há assinatura de GPR', () => {
+    const { container, rerender } = render(<SensorGraph kind="gpr" progress={50} signatures={[]} />)
     expect(container.querySelector('.gpr-hyperbola')).toBeNull()
-    rerender(<SensorGraph kind="gpr" progress={50} detections={1} />)
+    rerender(<SensorGraph kind="gpr" progress={50} signatures={[{ depth: 3, kind: 'hyperbola' }]} />)
     expect(container.querySelector('.gpr-hyperbola')).not.toBeNull()
+  })
+
+  it('GPR plota uma hipérbole por assinatura e linha para lâmina d’água', () => {
+    const { container } = render(
+      <SensorGraph kind="gpr" progress={80} signatures={[
+        { depth: 2, kind: 'hyperbola' },
+        { depth: 4, kind: 'hyperbola' },
+        { depth: 4.5, kind: 'line' },
+      ]} />,
+    )
+    expect(container.querySelectorAll('.gpr-hyperbola').length).toBe(2)
+    expect(container.querySelectorAll('.gpr-hline').length).toBe(1)
   })
 
   it('GNSS plota um marcador por detecção alcançada pelo progresso', () => {

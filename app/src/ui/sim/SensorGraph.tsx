@@ -6,13 +6,23 @@ import type { SensorKind } from './SensorPanel'
     rough = manual sobre terreno irregular */
 export type ImuMotion = 'smooth' | 'walk' | 'rough'
 
+/** assinatura visível no radargrama GPR — uma por achado de GPR já detectado.
+    hyperbola = alvo pontual (ouro/magnetita/vazio) · line = lâmina d'água */
+export interface GprSignature {
+  depth: number
+  kind: 'hyperbola' | 'line'
+}
+
 export interface SensorGraphProps {
   kind: SensorKind
   /** progresso da varredura 0..100 — avança a varredura / trajetória */
   progress: number
-  /** nº de detecções acumuladas — faz emergir as assinaturas
-      (hipérbole no GPR, hotspot no EMI, marcadores no GNSS) */
+  /** GNSS: nº de detecções acumuladas — plota um marcador por achado */
   detections?: number
+  /** GPR: assinaturas já reveladas (cada achado de GPR no seu instante) */
+  signatures?: GprSignature[]
+  /** EMI: há achado de condutividade revelado → pico na curva */
+  emiActive?: boolean
   /** IMU: assinatura de movimento conforme a modalidade do cenário */
   motion?: ImuMotion
 }
@@ -30,11 +40,18 @@ const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v
 // (Roteiro Técnico §cenários). Determinística: o conteúdo significativo é
 // função de `progress`/`detections` (bate no replay — CA-07); o movimento de
 // ambiente é decorativo (CSS) e respeita prefers-reduced-motion.
-export function SensorGraph({ kind, progress, detections = 0, motion = 'rough' }: SensorGraphProps) {
+export function SensorGraph({
+  kind,
+  progress,
+  detections = 0,
+  signatures = [],
+  emiActive = false,
+  motion = 'rough',
+}: SensorGraphProps) {
   return (
     <div className={`gsfs-svgraph gsfs-svgraph--${kind}`} role="img" aria-label={VIZ_LABEL[kind]}>
-      {kind === 'gpr' && <Gpr progress={progress} detections={detections} />}
-      {kind === 'emi' && <Emi progress={progress} detections={detections} />}
+      {kind === 'gpr' && <Gpr progress={progress} signatures={signatures} />}
+      {kind === 'emi' && <Emi progress={progress} active={emiActive} />}
       {kind === 'imu' && <Imu progress={progress} motion={motion} />}
       {kind === 'gnss' && <Gnss progress={progress} detections={detections} />}
     </div>
@@ -45,9 +62,15 @@ export function SensorGraph({ kind, progress, detections = 0, motion = 'rough' }
 // GPR — radargrama B-scan: camadas de profundidade + varredura + hipérbole
 // --------------------------------------------------------------------------
 
-function Gpr({ progress, detections }: { progress: number; detections: number }) {
+// profundidade (m, ≤5 — Teto) → y no radargrama (apex da hipérbole)
+function depthToY(d: number): number {
+  return 22 + (clamp(d, 0, 5) / 5) * 56
+}
+
+function Gpr({ progress, signatures }: { progress: number; signatures: GprSignature[] }) {
   const sweepX = 8 + (clamp(progress, 0, 100) / 100) * 184
-  const hasSig = detections > 0
+  const hyps = signatures.filter((s) => s.kind === 'hyperbola')
+  const lines = signatures.filter((s) => s.kind === 'line')
   return (
     <svg viewBox="0 0 200 100" preserveAspectRatio="none" className="svg-gpr">
       {/* camadas de profundidade (eco/reflexão) */}
@@ -60,13 +83,22 @@ function Gpr({ progress, detections }: { progress: number; detections: number })
         const h = 6 + ((i * 13) % 9)
         return <line key={i} className="gpr-trace" x1={x} y1={50 - h} x2={x} y2={50 + h} />
       })}
-      {/* hipérbole de reflexão (assinatura de alvo) */}
-      {hasSig && (
-        <g className="gpr-hyperbola">
-          <path d="M 98 76 Q 118 52 138 76" />
-          <path className="gpr-hyperbola-faint" d="M 94 77 Q 118 47 142 77" />
-        </g>
-      )}
+      {/* lâmina d'água: linha horizontal contínua na profundidade do achado */}
+      {lines.map((s, i) => {
+        const y = depthToY(s.depth)
+        return <line key={`l${i}`} className="gpr-hline" x1="12" y1={y} x2="188" y2={y} />
+      })}
+      {/* hipérboles de reflexão: uma por achado de GPR, posicionada pela profundidade */}
+      {hyps.map((s, i) => {
+        const cx = (200 * (i + 1)) / (hyps.length + 1)
+        const y = depthToY(s.depth)
+        return (
+          <g className="gpr-hyperbola" key={`h${i}`}>
+            <path d={`M ${cx - 20} ${y + 12} Q ${cx} ${y - 12} ${cx + 20} ${y + 12}`} />
+            <path className="gpr-hyperbola-faint" d={`M ${cx - 24} ${y + 15} Q ${cx} ${y - 15} ${cx + 24} ${y + 15}`} />
+          </g>
+        )
+      })}
       {/* linha de varredura (posição atual em profundidade) */}
       <line className="gpr-sweep" x1={sweepX} y1="0" x2={sweepX} y2="100" />
       <text className="svg-axis" x="4" y="12">PROF.</text>
@@ -96,13 +128,12 @@ function emiValue(w: number, baseline: number, active: boolean): number {
   return clamp(v, 0.04, 0.96)
 }
 
-function Emi({ progress, detections }: { progress: number; detections: number }) {
+function Emi({ progress, active }: { progress: number; active: boolean }) {
   const top = 14
   const bottom = 86
   const pr = clamp(progress, 0, 100)
   const phase = pr * 1.4 // rola continuamente com o progresso
   const baseline = 0.22 + (pr / 100) * 0.18 // umidade de fundo sobe ao longo da varredura
-  const active = detections > 0
   const pts: string[] = []
   for (let i = 0; i < EMI_N; i++) {
     const x = (i / (EMI_N - 1)) * 200

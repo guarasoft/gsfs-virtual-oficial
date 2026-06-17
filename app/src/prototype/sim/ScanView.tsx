@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import { Progress, HudMetric, SensorPanel, SensorGraph, DetectionBadge } from '../../ui'
-import type { SensorKind, ImuMotion } from '../../ui'
+import type { SensorKind, ImuMotion, GprSignature } from '../../ui'
 import type { Modality } from '../data/types'
 import type { ScanState } from './useScan'
 import './ScanView.css'
@@ -23,6 +23,8 @@ function SensorPanelFull({
   note,
   progress,
   detections,
+  signatures,
+  emiActive,
   motion,
 }: {
   kind: SensorKind
@@ -31,6 +33,8 @@ function SensorPanelFull({
   note?: string
   progress: number
   detections: number
+  signatures?: GprSignature[]
+  emiActive?: boolean
   motion?: ImuMotion
 }) {
   return (
@@ -41,7 +45,7 @@ function SensorPanelFull({
       </div>
       <div className="sv-panel-body">
         <div className="sv-panel-viz">
-          <SensorGraph kind={kind} progress={progress} detections={detections} motion={motion} />
+          <SensorGraph kind={kind} progress={progress} detections={detections} signatures={signatures} emiActive={emiActive} motion={motion} />
         </div>
         {note && <div className="sv-panel-note">{note}</div>}
       </div>
@@ -116,8 +120,8 @@ export function ScanView({ state, banner, controls }: ScanViewProps) {
       <div className="sv-body">
         {/* 4-panel sensor grid */}
         <div className="sv-sensor-grid">
-          <SensorPanelFull kind="gpr" title="GPR" tag="eco / reflexão" note={state.sensorNotes.gpr} progress={state.progressExact} detections={state.detections.length} />
-          <SensorPanelFull kind="emi" title="EMI" tag="condutividade" note={state.sensorNotes.emi} progress={state.progressExact} detections={state.detections.length} />
+          <SensorPanelFull kind="gpr" title="GPR" tag="eco / reflexão" note={state.sensorNotes.gpr} progress={state.progressExact} detections={state.detections.length} signatures={state.gprSignatures} />
+          <SensorPanelFull kind="emi" title="EMI" tag="condutividade" note={state.sensorNotes.emi} progress={state.progressExact} detections={state.detections.length} emiActive={state.emiActive} />
           <SensorPanelFull kind="imu" title="IMU" tag="orientação 6 eixos" note={state.sensorNotes.imu} progress={state.progressExact} detections={state.detections.length} motion={IMU_MOTION[state.modality]} />
           <SensorPanelFull kind="gnss" title="GNSS / RTK" tag="posicionamento" note={state.sensorNotes.gnss} progress={state.progressExact} detections={state.detections.length} />
         </div>

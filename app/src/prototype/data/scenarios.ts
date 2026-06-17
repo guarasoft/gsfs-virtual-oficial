@@ -9,6 +9,8 @@ export interface ScenarioMeta {
   area: { x: number; y: number }
   application: Application
   durationSec: 90 | 135
+  /** instante (s) em que o GNSS-RTK adquire FIX no warmup (Roteiro §F1) */
+  fixSec: number
   targets: Target[]
   differentiator: string
 }
@@ -17,7 +19,7 @@ export const SCENARIOS: ScenarioMeta[] = [
   {
     id: 'c1', n: 1, name: 'Veio de Ouro em Encosta Rochosa',
     soil: 'rochoso', modality: 'manual', area: { x: 10, y: 10 },
-    application: 'mineracao', durationSec: 90,
+    application: 'mineracao', durationSec: 90, fixSec: 10,
     targets: [
       { type: 'magnetita', label: 'Magnetita', depth: 1.8, note: 'massa acessória' },
       { type: 'ouro', label: 'Ouro (veio)', depth: 3.0, angle: 65, note: 'extensão lateral ~4 m' },
@@ -27,7 +29,7 @@ export const SCENARIOS: ScenarioMeta[] = [
   {
     id: 'c2', n: 2, name: 'Levantamento de Massa Magnetítica',
     soil: 'arenoso', modality: 'carrinho', area: { x: 20, y: 20 },
-    application: 'mineracao', durationSec: 90,
+    application: 'mineracao', durationSec: 90, fixSec: 9,
     targets: [
       { type: 'magnetita', label: 'Magnetita A', depth: 1.5, note: 'Centro-NW · 2×2 m' },
       { type: 'magnetita', label: 'Magnetita B', depth: 2.2, note: 'Centro · 3×2 m' },
@@ -38,7 +40,7 @@ export const SCENARIOS: ScenarioMeta[] = [
   {
     id: 'c3', n: 3, name: 'Cavidade Subterrânea em Solo Saturado',
     soil: 'umido', modality: 'mochila', area: { x: 15, y: 15 },
-    application: 'defesa-civil', durationSec: 90,
+    application: 'defesa-civil', durationSec: 90, fixSec: 11,
     targets: [
       { type: 'vazio', label: 'Cavidade/Vazio', depth: 2.5, note: 'teto; 3×2×1 m' },
       { type: 'agua', label: 'Lençol freático', depth: 4.2, note: 'lâmina contínua' },
@@ -48,7 +50,7 @@ export const SCENARIOS: ScenarioMeta[] = [
   {
     id: 'c4', n: 4, name: 'Operação sob Interferência Eletromagnética',
     soil: 'rochoso', modality: 'carrinho', area: { x: 25, y: 25 },
-    application: 'mineracao', durationSec: 90,
+    application: 'mineracao', durationSec: 90, fixSec: 9,
     targets: [
       { type: 'ouro', label: 'Ouro (veio)', depth: 3.2, angle: 50, note: 'confirmado por 3 sensores' },
     ],
@@ -57,7 +59,7 @@ export const SCENARIOS: ScenarioMeta[] = [
   {
     id: 'c5', n: 5, name: 'Inteligência Subsuperficial Integrada — Demonstração GSFS',
     soil: 'transicional', modality: 'mochila', area: { x: 20, y: 20 },
-    application: 'institucional', durationSec: 135,
+    application: 'institucional', durationSec: 135, fixSec: 13,
     targets: [
       { type: 'ouro', label: 'Ouro (veio)', depth: 2.0, angle: 40 },
       { type: 'magnetita', label: 'Magnetita', depth: 3.0, note: 'massa pontual' },
