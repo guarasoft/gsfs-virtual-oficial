@@ -68,11 +68,11 @@ export function ScanView({ state, banner, controls }: ScanViewProps) {
       {/* HUD */}
       <div className="sv-hud">
         <div className="sv-hud-progress">
-          <div className="sv-hud-progress-row">
-            <span className="sv-hud-progress-label">PROGRESSO DA VARREDURA</span>
+          <span className="sv-hud-progress-label">PROGRESSO DA VARREDURA</span>
+          <div className="sv-hud-progress-track">
+            <Progress value={state.progress} label="Progresso da varredura" />
             <strong className="sv-hud-progress-pct">{state.progress}%</strong>
           </div>
-          <Progress value={state.progress} label="Progresso da varredura" />
         </div>
         <div className="sv-hud-metrics">
           <HudMetric size="sm" label="Relógio" value={state.clock} />
