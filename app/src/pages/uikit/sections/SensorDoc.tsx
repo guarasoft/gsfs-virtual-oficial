@@ -17,12 +17,21 @@ export default function SensorDoc() {
       <DocBlock title="Painel de sensor — estados (GPR)" code="SensorPanel">
         {STATES.map((s) => <Cell key={s} label={s}><SensorPanel kind="gpr" state={s} /></Cell>)}
       </DocBlock>
+      <DocBlock title="Sensor compacto — pílula da faixa do HUD" code="SensorPanel compact">
+        {KINDS.map((k) => <Cell key={k} label={k.toUpperCase()}><SensorPanel kind={k} state="on" compact /></Cell>)}
+        <Cell label="erro"><SensorPanel kind="gnss" state="err" compact /></Cell>
+      </DocBlock>
       <DocBlock title="Status RTK" code="RtkStatus">
         {RTK.map((s) => <Cell key={s} label={s}><RtkStatus state={s} /></Cell>)}
       </DocBlock>
-      <DocBlock title="Métrica de HUD" code="HudMetric">
+      <DocBlock title="Métrica de HUD — destaque (lg)" code="HudMetric">
         <Cell label="profundidade"><HudMetric label="Profundidade" value="1.82" unit="m" /></Cell>
         <Cell label="detecções"><HudMetric label="Detecções" value="07" /></Cell>
+      </DocBlock>
+      <DocBlock title="Métrica de HUD — faixa compacta (sm)" code='HudMetric size="sm"'>
+        <Cell label="relógio"><HudMetric size="sm" label="Relógio" value="14:33:14" /></Cell>
+        <Cell label="bateria"><HudMetric size="sm" label="Bateria" value="91%" /></Cell>
+        <Cell label="temp."><HudMetric size="sm" label="Temp." value="36°C" /></Cell>
       </DocBlock>
       <DocBlock title="Barra de status (consolidada)" code="StatusBar">
         <StatusBar battery={86} batteryState="ok" temp={42} tempState="normal" rtk="fix" />

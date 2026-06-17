@@ -75,16 +75,16 @@ export function ScanView({ state, banner, controls }: ScanViewProps) {
           <Progress value={state.progress} label="Progresso da varredura" />
         </div>
         <div className="sv-hud-metrics">
-          <HudMetric label="Relógio" value={state.clock} />
-          <HudMetric label="Bateria" value={`${state.battery}%`} />
-          <HudMetric label="Temp." value={`${state.temp}°C`} />
-          <HudMetric label="GNSS" value={state.gnss} />
+          <HudMetric size="sm" label="Relógio" value={state.clock} />
+          <HudMetric size="sm" label="Bateria" value={`${state.battery}%`} />
+          <HudMetric size="sm" label="Temp." value={`${state.temp}°C`} />
+          <HudMetric size="sm" label="GNSS" value={state.gnss} />
         </div>
         <div className="sv-hud-sensors">
-          <SensorPanel kind="gpr" state="on" />
-          <SensorPanel kind="emi" state="on" />
-          <SensorPanel kind="imu" state="on" />
-          <SensorPanel kind="gnss" state={state.gnss === 'FIX' ? 'on' : 'err'} />
+          <SensorPanel kind="gpr" state="on" compact />
+          <SensorPanel kind="emi" state="on" compact />
+          <SensorPanel kind="imu" state="on" compact />
+          <SensorPanel kind="gnss" state={state.gnss === 'FIX' ? 'on' : 'err'} compact />
         </div>
       </div>
 

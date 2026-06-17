@@ -15,8 +15,16 @@ const STATE: Record<SensorState, { label: string; color: string }> = {
   off: { label: 'Inativo', color: 'var(--sim-sensor-off)' },
   err: { label: 'Erro', color: 'var(--sim-sensor-err)' },
 }
-export function SensorPanel({ kind, state }: { kind: SensorKind; state: SensorState }) {
+export function SensorPanel({ kind, state, compact = false }: { kind: SensorKind; state: SensorState; compact?: boolean }) {
   const k = KIND[kind]; const s = STATE[state]
+  if (compact) {
+    return (
+      <span className="sim-sensor-pill" style={{ color: k.color }} title={`${k.label} · ${s.label}`}>
+        <k.Icon size={14} strokeWidth={2} />{k.label}
+        <span className="sim-sensor-pill-dot" style={{ background: s.color }} />
+      </span>
+    )
+  }
   return (
     <div className="sim-sensor">
       <span className="sim-sensor-name" style={{ color: k.color }}><k.Icon size={20} strokeWidth={1.75} />{k.label}</span>

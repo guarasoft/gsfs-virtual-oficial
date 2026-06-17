@@ -19,4 +19,19 @@
 .sim-sensor-name { display: flex; align-items: center; gap: 10px; font-family: var(--font-secondary); font-weight: 600; }
 .sim-sensor-state { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-secondary); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; }
 
+/* Variante compacta para a faixa do HUD (pílula: ícone + sigla + estado) */
+.sim-sensor-pill { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-secondary); font-weight: 600; font-size: 0.72rem; letter-spacing: 0.04em; padding: 5px 9px; border-radius: var(--radius-pill, 999px); border: 1px solid var(--color-border); background: var(--color-bg-raised); white-space: nowrap; }
+.sim-sensor-pill-dot { width: 7px; height: 7px; border-radius: 50%; flex: none; }
+
+/* Métrica de HUD (tabular). lg = destaque (32px); sm = faixa compacta */
+.gsfs-hudmetric { display: flex; flex-direction: column; gap: 4px; }
+.gsfs-hudmetric-label { font-family: var(--font-secondary); font-weight: var(--fw-semibold); letter-spacing: var(--ls-wider); text-transform: uppercase; color: var(--color-text-muted); }
+.gsfs-hudmetric-value { font-family: var(--font-secondary); font-weight: var(--fw-semibold); font-variant-numeric: tabular-nums; font-feature-settings: 'tnum' 1; line-height: 1.1; color: var(--color-text-strong); white-space: nowrap; }
+.gsfs-hudmetric-unit { color: var(--color-text-muted); font-weight: var(--fw-regular); margin-left: 5px; font-size: 0.8em; }
+.gsfs-hudmetric--lg .gsfs-hudmetric-label { font-size: var(--fs-caps); }
+.gsfs-hudmetric--lg .gsfs-hudmetric-value { font-size: var(--fs-metric); }
+.gsfs-hudmetric--sm { gap: 2px; }
+.gsfs-hudmetric--sm .gsfs-hudmetric-label { font-size: 0.62rem; }
+.gsfs-hudmetric--sm .gsfs-hudmetric-value { font-size: 1rem; font-weight: 700; }
+
 .sim-statusbar { display: flex; align-items: center; gap: 20px; padding: 10px 16px; border-radius: var(--radius-md); background: var(--color-bg-surface); border: 1px solid var(--color-border); width: fit-content; }
