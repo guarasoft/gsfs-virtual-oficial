@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { Screen } from '../shell/Screen'
 import { EdgeTab, Button } from '../../ui'
 import { useSimulator } from '../store'
@@ -17,10 +17,15 @@ export function E4Scan() {
   const [sheet, setSheet] = useState(false)
   const [confirm, setConfirm] = useState<null | 'restart' | 'abort'>(null)
 
-  const scan = useScan(scenarioId, {
-    autostart: true,
-    onComplete: () => goTo('e5-result'),
-  })
+  const scan = useScan(scenarioId, { autostart: true })
+
+  // Ao fim da F2 (barra em 100%), uma breve consolidação e vai ao resultado —
+  // sem esperar os 10s restantes da duração total.
+  useEffect(() => {
+    if (scan.progress < 100) return
+    const id = setTimeout(() => goTo('e5-result'), 800)
+    return () => clearTimeout(id)
+  }, [scan.progress, goTo])
 
   const openSheet = useCallback(() => {
     scan.pause()

@@ -38,6 +38,7 @@ export function E5Result() {
         'STATUS: CONCLUÍDA',
       ]}
     >
+      <div className="e5-layout">
       <div className="e5-body">
         {/* ---- Bloco 3D (placeholder para o vídeo Guarasoft D-020) ---- */}
         <div className="e5-3d-block" aria-label="Visualização 3D do subsolo">
@@ -105,6 +106,7 @@ export function E5Result() {
         <Button variant="ghost" onClick={() => newOperation()}>Nova operação</Button>
         <Button variant="secondary" onClick={() => goTo('e7-replay')}>Replay</Button>
         <Button variant="primary" onClick={() => goTo('e6-export')}>Exportar →</Button>
+      </div>
       </div>
     </Screen>
   )
