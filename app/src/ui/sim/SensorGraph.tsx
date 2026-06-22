@@ -24,8 +24,9 @@ export interface SensorGraphProps {
   detections?: number
   /** GPR: assinaturas já reveladas (cada achado de GPR no seu instante) */
   signatures?: GprSignature[]
-  /** EMI: há achado de condutividade revelado → pico na curva */
-  emiActive?: boolean
+  /** EMI: instantes (0..1) dos achados já revelados → picos na curva, cada um
+      no seu momento */
+  emiPeaks?: number[]
   /** IMU: assinatura de movimento conforme a modalidade do cenário */
   motion?: ImuMotion
 }
@@ -48,13 +49,13 @@ export function SensorGraph({
   progress,
   detections = 0,
   signatures = [],
-  emiActive = false,
+  emiPeaks = [],
   motion = 'rough',
 }: SensorGraphProps) {
   return (
     <div className={`gsfs-svgraph gsfs-svgraph--${kind}`} role="img" aria-label={VIZ_LABEL[kind]}>
       {kind === 'gpr' && <Gpr progress={progress} signatures={signatures} />}
-      {kind === 'emi' && <Emi progress={progress} active={emiActive} />}
+      {kind === 'emi' && <Emi progress={progress} peaks={emiPeaks} />}
       {kind === 'imu' && <Imu progress={progress} motion={motion} />}
       {kind === 'gnss' && <Gnss progress={progress} detections={detections} />}
     </div>
@@ -117,41 +118,46 @@ function Gpr({ progress, signatures }: { progress: number; signatures: GprSignat
 // Baseline sobe com a umidade de fundo; picos emergem sobre anomalias.
 // --------------------------------------------------------------------------
 
-const EMI_N = 72
+const EMI_N = 96
+const EMI_WINDOW = 0.5 // fração da varredura visível por vez (janela que rola)
+const EMI_BUMP_W = 0.04 // largura (σ) do pico de condutividade, em fração da varredura
 
-// Valor de condutividade (0..1) numa coordenada de mundo `w`. Determinístico:
-// ondulação ambiente (soma de senos) + picos recorrentes quando há anomalia.
-function emiValue(w: number, baseline: number, active: boolean): number {
-  const ripple =
-    Math.sin(w * 0.20) * 0.06 +
-    Math.sin(w * 0.53 + 1.3) * 0.04 +
-    Math.sin(w * 0.11 + 0.7) * 0.05
-  let v = baseline + ripple
-  if (active) {
-    const p = Math.sin(w * 0.16)
-    v += Math.max(0, p) ** 6 * 0.5 // picos estreitos de anomalia
-  }
-  return clamp(v, 0.04, 0.96)
+// ruído ambiente determinístico (função da posição temporal absoluta → rola junto)
+function emiAmbient(u: number): number {
+  return Math.sin(u * 47) * 0.02 + Math.sin(u * 113 + 1.3) * 0.012
 }
 
-function Emi({ progress, active }: { progress: number; active: boolean }) {
+// condutividade (0..1) no instante `u` (fração da varredura): baseline de
+// umidade que sobe + ruído + um pico gaussiano por achado (no seu instante)
+function emiValueAt(u: number, peaks: number[]): number {
+  const baseline = 0.2 + clamp(u, 0, 1) * 0.16
+  let bump = 0
+  for (const f of peaks) {
+    const d = (u - f) / EMI_BUMP_W
+    bump += Math.exp(-d * d) * 0.6
+  }
+  return clamp(baseline + emiAmbient(u) + bump, 0.04, 0.97)
+}
+
+function Emi({ progress, peaks }: { progress: number; peaks: number[] }) {
   const top = 14
   const bottom = 86
-  const pr = clamp(progress, 0, 100)
-  const phase = pr * 1.4 // rola continuamente com o progresso
-  const baseline = 0.22 + (pr / 100) * 0.18 // umidade de fundo sobe ao longo da varredura
+  const head = clamp(progress, 0, 100) / 100 // "agora" (borda direita)
+  const start = head - EMI_WINDOW
   const pts: string[] = []
-  for (let i = 0; i < EMI_N; i++) {
-    const x = (i / (EMI_N - 1)) * 200
-    const v = emiValue(i + phase, baseline, active)
-    const y = bottom - v * (bottom - top)
+  for (let i = 0; i <= EMI_N; i++) {
+    const u = start + (i / EMI_N) * EMI_WINDOW
+    const x = (i / EMI_N) * 200
+    const y = bottom - emiValueAt(u, peaks) * (bottom - top)
     pts.push(`${x.toFixed(2)} ${y.toFixed(2)}`)
   }
   const line = 'M ' + pts.join(' L ')
+  const headY = bottom - emiValueAt(head, peaks) * (bottom - top)
   return (
     <svg viewBox="0 0 200 100" preserveAspectRatio="none" className="svg-emi">
       {[28, 50, 72].map((y) => <line key={y} className="emi-grid" x1="0" y1={y} x2="200" y2={y} />)}
       <path className="emi-line" d={line} vectorEffect="non-scaling-stroke" />
+      <circle className="emi-head" cx="200" cy={headY} r="2.6" />
       <text className="svg-axis" x="4" y="12">COND.</text>
     </svg>
   )

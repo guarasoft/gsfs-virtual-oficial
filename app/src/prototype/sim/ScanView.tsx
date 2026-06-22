@@ -24,7 +24,7 @@ function SensorPanelFull({
   progress,
   detections,
   signatures,
-  emiActive,
+  emiPeaks,
   motion,
 }: {
   kind: SensorKind
@@ -34,7 +34,7 @@ function SensorPanelFull({
   progress: number
   detections: number
   signatures?: GprSignature[]
-  emiActive?: boolean
+  emiPeaks?: number[]
   motion?: ImuMotion
 }) {
   return (
@@ -45,7 +45,7 @@ function SensorPanelFull({
       </div>
       <div className="sv-panel-body">
         <div className="sv-panel-viz">
-          <SensorGraph kind={kind} progress={progress} detections={detections} signatures={signatures} emiActive={emiActive} motion={motion} />
+          <SensorGraph kind={kind} progress={progress} detections={detections} signatures={signatures} emiPeaks={emiPeaks} motion={motion} />
         </div>
         {note && <div className="sv-panel-note">{note}</div>}
       </div>
@@ -121,7 +121,7 @@ export function ScanView({ state, banner, controls }: ScanViewProps) {
         {/* 4-panel sensor grid */}
         <div className="sv-sensor-grid">
           <SensorPanelFull kind="gpr" title="GPR" tag="eco / reflexão" note={state.sensorNotes.gpr} progress={state.progressExact} detections={state.detections.length} signatures={state.gprSignatures} />
-          <SensorPanelFull kind="emi" title="EMI" tag="condutividade" note={state.sensorNotes.emi} progress={state.progressExact} detections={state.detections.length} emiActive={state.emiActive} />
+          <SensorPanelFull kind="emi" title="EMI" tag="condutividade" note={state.sensorNotes.emi} progress={state.progressExact} detections={state.detections.length} emiPeaks={state.emiPeaks} />
           <SensorPanelFull kind="imu" title="IMU" tag="orientação 6 eixos" note={state.sensorNotes.imu} progress={state.progressExact} detections={state.detections.length} motion={IMU_MOTION[state.modality]} />
           <SensorPanelFull kind="gnss" title="GNSS / RTK" tag="posicionamento" note={state.sensorNotes.gnss} progress={state.progressExact} detections={state.detections.length} />
         </div>

@@ -53,6 +53,12 @@
   stroke-linejoin: round;
   filter: drop-shadow(0 0 3px color-mix(in srgb, var(--color-primary) 55%, transparent));
 }
+.svg-emi .emi-head {
+  fill: var(--color-primary);
+  filter: drop-shadow(0 0 4px var(--color-primary));
+  animation: emi-head-pulse 1.2s ease-in-out infinite;
+}
+@keyframes emi-head-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
 
 /* ---------------- IMU — séries temporais (roll / pitch) ---------------- */
 .svg-imu .imu-zero { stroke: color-mix(in srgb, var(--color-primary) 14%, transparent); stroke-width: 0.5; }
@@ -93,5 +99,6 @@
 
 @media (prefers-reduced-motion: reduce) {
   .svg-gpr .gpr-sweep,
+  .svg-emi .emi-head,
   .svg-gnss .gnss-head { animation: none; }
 }
