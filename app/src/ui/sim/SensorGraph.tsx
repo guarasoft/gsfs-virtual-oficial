@@ -20,8 +20,9 @@ export interface SensorGraphProps {
   kind: SensorKind
   /** progresso da varredura 0..100 — avança a varredura / trajetória */
   progress: number
-  /** GNSS: nº de detecções acumuladas — plota um marcador por achado */
-  detections?: number
+  /** GNSS: instantes (0..1) dos achados → marcador na trajetória no ponto/tempo
+      em que cada achado ocorreu */
+  markers?: number[]
   /** GPR: assinaturas já reveladas (cada achado de GPR no seu instante) */
   signatures?: GprSignature[]
   /** EMI: instantes (0..1) dos achados já revelados → picos na curva, cada um
@@ -49,7 +50,7 @@ const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v
 export function SensorGraph({
   kind,
   progress,
-  detections = 0,
+  markers = [],
   signatures = [],
   emiPeaks = [],
   motion = 'rough',
@@ -60,7 +61,7 @@ export function SensorGraph({
       {kind === 'gpr' && <Gpr progress={progress} signatures={signatures} />}
       {kind === 'emi' && <Emi progress={progress} peaks={emiPeaks} />}
       {kind === 'imu' && <Imu progress={progress} motion={motion} disturbances={disturbances} />}
-      {kind === 'gnss' && <Gnss progress={progress} detections={detections} />}
+      {kind === 'gnss' && <Gnss progress={progress} markers={markers} />}
     </div>
   )
 }
@@ -253,8 +254,6 @@ const GNSS_PTS: [number, number][] = [
   [12, 60], [188, 60],
   [188, 82], [12, 82],
 ]
-const MARKER_FRACS = [0.22, 0.46, 0.66, 0.82, 0.93]
-
 function segLengths(pts: [number, number][]): number[] {
   const out: number[] = []
   for (let i = 1; i < pts.length; i++) {
@@ -279,12 +278,13 @@ function pointAt(pts: [number, number][], frac: number): [number, number] {
   return pts[pts.length - 1]
 }
 
-function Gnss({ progress, detections }: { progress: number; detections: number }) {
+function Gnss({ progress, markers }: { progress: number; markers: number[] }) {
   const frac = clamp(progress, 0, 100) / 100
   const d = 'M ' + GNSS_PTS.map((p) => p.join(' ')).join(' L ')
   const head = pointAt(GNSS_PTS, frac)
-  const markers = MARKER_FRACS
-    .slice(0, Math.max(0, detections))
+  // cada marcador no ponto da trajetória onde a varredura estava no instante do
+  // achado (só os já alcançados pela varredura)
+  const plotted = markers
     .filter((f) => f <= frac)
     .map((f) => pointAt(GNSS_PTS, f))
   return (
@@ -296,7 +296,7 @@ function Gnss({ progress, detections }: { progress: number; detections: number }
       <path className="gnss-track-bg" d={d} />
       <path className="gnss-track" d={d} pathLength={100} style={{ strokeDashoffset: 100 - clamp(progress, 0, 100) }} />
       {/* marcadores de detecção plotados */}
-      {markers.map(([x, y], i) => (
+      {plotted.map(([x, y], i) => (
         <g key={i} className="gnss-marker" transform={`translate(${x} ${y})`}>
           <circle r="4" />
           <text x="0" y="2.6">M</text>

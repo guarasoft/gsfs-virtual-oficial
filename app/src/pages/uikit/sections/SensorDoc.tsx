@@ -24,7 +24,7 @@ export default function SensorDoc() {
         {KINDS.map((k) => (
           <Cell key={k} label={GRAPH_LABEL[k]}>
             <div style={{ width: 220, height: 120, border: '1px solid var(--color-border)', borderRadius: 4, overflow: 'hidden' }}>
-              <SensorGraph kind={k} progress={55} detections={1} signatures={[{ depth: 3, kind: 'hyperbola' }]} emiPeaks={[0.5]} motion="rough" disturbances={[0.4]} />
+              <SensorGraph kind={k} progress={55} markers={[0.4]} signatures={[{ depth: 3, kind: 'hyperbola' }]} emiPeaks={[0.5]} motion="rough" disturbances={[0.4]} />
             </div>
           </Cell>
         ))}

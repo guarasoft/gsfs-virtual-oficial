@@ -29,20 +29,19 @@ describe('SensorGraph', () => {
     expect(container.querySelectorAll('.gpr-hline').length).toBe(1)
   })
 
-  it('GNSS plota um marcador por detecção alcançada pelo progresso', () => {
-    // progress alto o suficiente para revelar as 2 primeiras frações (0.22, 0.46)
-    const { container } = render(<SensorGraph kind="gnss" progress={100} detections={2} />)
+  it('GNSS plota um marcador por achado já alcançado pelo progresso', () => {
+    const { container } = render(<SensorGraph kind="gnss" progress={100} markers={[0.3, 0.6]} />)
     expect(container.querySelectorAll('.gnss-marker').length).toBe(2)
   })
 
-  it('GNSS não plota marcador ainda não alcançado pelo progresso', () => {
-    // progress baixo: nenhuma fração de marcador (≥0.22) foi atingida
-    const { container } = render(<SensorGraph kind="gnss" progress={5} detections={3} />)
+  it('GNSS não plota marcador de achado ainda não alcançado pelo progresso', () => {
+    // progress 5% → nenhum achado (em 0.3/0.6) foi atingido ainda
+    const { container } = render(<SensorGraph kind="gnss" progress={5} markers={[0.3, 0.6]} />)
     expect(container.querySelectorAll('.gnss-marker').length).toBe(0)
   })
 
   it('EMI renderiza a curva de resposta de condutividade', () => {
-    const { container } = render(<SensorGraph kind="emi" progress={40} detections={1} />)
+    const { container } = render(<SensorGraph kind="emi" progress={40} emiPeaks={[0.3]} />)
     expect(container.querySelector('.emi-line')).not.toBeNull()
   })
 })
