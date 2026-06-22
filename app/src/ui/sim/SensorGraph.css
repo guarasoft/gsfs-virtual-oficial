@@ -62,6 +62,7 @@
 
 /* ---------------- IMU — séries temporais (roll / pitch) ---------------- */
 .svg-imu .imu-zero { stroke: color-mix(in srgb, var(--color-primary) 14%, transparent); stroke-width: 0.5; }
+.svg-imu .imu-event { stroke: color-mix(in srgb, var(--color-warning, #ffaa00) 45%, transparent); stroke-width: 0.8; stroke-dasharray: 3 3; }
 .svg-imu .imu-roll {
   fill: none;
   stroke: var(--color-primary);

@@ -173,18 +173,33 @@ function Emi({ progress, peaks }: { progress: number; peaks: number[] }) {
 // movimento muda conforme a modalidade do cenário.
 // --------------------------------------------------------------------------
 
-const IMU_N = 96
+const IMU_N = 110
 const IMU_WINDOW = 0.5 // janela temporal visível (rola, igual ao EMI)
 const IMU_STEPF = 150 // cadência de passos (walk/rough)
+const IMU_BURST_W = 0.03 // largura do burst de vibração (fração da varredura)
+const IMU_BURST_F = 320 // frequência do ringing do burst
+const IMU_BURST_A = 17 // amplitude do burst
 
 interface ImuParams { roll: number; pitch: number; fa: number; fb: number; step: number }
 const IMU_PARAMS: Record<ImuMotion, ImuParams> = {
+  // fundo discreto por modalidade (não é o protagonista — o evento é)
   // carrinho: drift baixo, trajetória regular → amplitude baixa, sem passos
-  smooth: { roll: 7, pitch: 5, fa: 60, fb: 27, step: 0 },
+  smooth: { roll: 5, pitch: 3.5, fa: 60, fb: 27, step: 0 },
   // mochila / a pé: oscilação cíclica de passos → cadência marcada
-  walk: { roll: 13, pitch: 9, fa: 64, fb: 30, step: 7 },
-  // manual sobre terreno irregular → amplitude alta e mais errática
-  rough: { roll: 18, pitch: 12, fa: 88, fb: 41, step: 5 },
+  walk: { roll: 9, pitch: 6, fa: 64, fb: 30, step: 5 },
+  // manual sobre terreno irregular → amplitude um pouco maior e errática
+  rough: { roll: 11, pitch: 7, fa: 88, fb: 41, step: 4 },
+}
+
+// Burst de vibração: trepidação curta e amortecida quando o operador
+// pausa/re-passa sobre um achado — é o que o IMU "traz" em relação ao achado.
+function imuBurst(u: number, peaks: number[]): number {
+  let s = 0
+  for (const f of peaks) {
+    const d = (u - f) / IMU_BURST_W
+    s += Math.exp(-d * d) * Math.sin((u - f) * IMU_BURST_F) * IMU_BURST_A
+  }
+  return s
 }
 
 function Imu({ progress, motion, disturbances }: { progress: number; motion: ImuMotion; disturbances: number[] }) {
@@ -194,34 +209,33 @@ function Imu({ progress, motion, disturbances }: { progress: number; motion: Imu
   const head = clamp(progress, 0, 100) / 100
   const start = head - IMU_WINDOW
   const P = IMU_PARAMS[motion]
-  // envelope no tempo narrativo: warmup calmo (F1, "IMU zera referência") +
-  // agitação localizada a cada achado (operador re-passa/pausa sobre o ponto)
-  const env = (u: number) => {
-    const warm = clamp(u / 0.14, 0, 1)
-    let agit = 1
-    for (const f of disturbances) {
-      const d = (u - f) / 0.05
-      agit += Math.exp(-d * d) * 0.6
-    }
-    return warm * agit
-  }
-  const build = (amp: number, fa: number, fb: number, ph: number, step: number): string => {
+  const warm = (u: number) => clamp(u / 0.14, 0, 1) // F1: "IMU zera referência"
+  const build = (amp: number, fa: number, fb: number, ph: number, step: number, burstScale: number): string => {
     const pts: string[] = []
     for (let i = 0; i <= IMU_N; i++) {
       const u = start + (i / IMU_N) * IMU_WINDOW
       const x = (i / IMU_N) * 200
       const wave = Math.sin(u * fa + ph) * 0.7 + Math.sin(u * fb + ph * 1.7) * 0.3
       const cad = step ? Math.sin(u * IMU_STEPF + ph) * step : 0
-      const y = clamp(mid - env(u) * (wave * amp + cad), top + 1, bottom - 1)
+      const ambient = wave * amp + cad
+      const burst = imuBurst(u, disturbances) * burstScale
+      const y = clamp(mid - warm(u) * (ambient + burst), top + 1, bottom - 1)
       pts.push(`${x.toFixed(2)} ${y.toFixed(2)}`)
     }
     return 'M ' + pts.join(' L ')
   }
-  const roll = build(P.roll, P.fa, P.fb, 0, 0)
-  const pitch = build(P.pitch, P.fa * 0.8, P.fb * 1.3, 1.2, P.step) // cadência de passos bate mais no pitch
+  const roll = build(P.roll, P.fa, P.fb, 0, 0, 1)
+  const pitch = build(P.pitch, P.fa * 0.8, P.fb * 1.3, 1.2, P.step, 1.15)
+  // marcas verticais nos instantes de achado (dentro da janela) → relação explícita
+  const markers = disturbances
+    .map((f) => ((f - start) / IMU_WINDOW) * 200)
+    .filter((x) => x >= 0 && x <= 200)
   return (
     <svg viewBox="0 0 200 100" preserveAspectRatio="none" className="svg-imu">
       <line className="imu-zero" x1="0" y1="50" x2="200" y2="50" />
+      {markers.map((x, i) => (
+        <line key={i} className="imu-event" x1={x} y1="10" x2={x} y2="90" />
+      ))}
       <path className="imu-roll" d={roll} vectorEffect="non-scaling-stroke" />
       <path className="imu-pitch" d={pitch} vectorEffect="non-scaling-stroke" />
       <text className="svg-axis" x="4" y="12">ROLL / PITCH</text>
