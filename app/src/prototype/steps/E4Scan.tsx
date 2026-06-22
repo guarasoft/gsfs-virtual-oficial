@@ -61,7 +61,7 @@ export function E4Scan() {
     >
       <ScanView state={scan} />
 
-      {/* Sheet overlay */}
+      {/* Sheet lateral com as ações */}
       {sheet && (
         <>
           <div className="e4-overlay" onClick={closeSheet} />
@@ -71,41 +71,44 @@ export function E4Scan() {
               <button className="e4-sheet-close" onClick={closeSheet} aria-label="Fechar">✕</button>
             </div>
             <div className="e4-sheet-actions">
-              {confirm === null && (
-                <>
-                  <button className="e4-sheet-btn" onClick={() => setConfirm('restart')}>
-                    <span className="e4-sheet-btn-t">↻ Reiniciar varredura</span>
-                    <small>Recomeça a operação do início (t=0).</small>
-                  </button>
-                  <button className="e4-sheet-btn e4-sheet-btn--danger" onClick={() => setConfirm('abort')}>
-                    <span className="e4-sheet-btn-t">⨯ Abortar varredura</span>
-                    <small>Encerra sem gerar GSFS_RECORD.</small>
-                  </button>
-                </>
-              )}
-              {confirm === 'restart' && (
-                <div className="e4-confirm">
-                  <div className="e4-confirm-h">Reiniciar varredura?</div>
-                  <p className="e4-confirm-body">A varredura recomeçará do início (<strong>t=0</strong>) e o progresso atual será descartado.</p>
-                  <div className="e4-confirm-actions">
-                    <Button variant="ghost" onClick={() => setConfirm(null)}>Cancelar</Button>
-                    <Button onClick={handleRestart}>Reiniciar varredura</Button>
-                  </div>
-                </div>
-              )}
-              {confirm === 'abort' && (
-                <div className="e4-confirm">
-                  <div className="e4-confirm-h">Abortar varredura?</div>
-                  <p className="e4-confirm-body">A varredura será encerrada e <strong>nenhum GSFS_RECORD será gerado</strong>. Esta ação não pode ser desfeita.</p>
-                  <div className="e4-confirm-actions">
-                    <Button variant="ghost" onClick={() => setConfirm(null)}>Continuar varredura</Button>
-                    <Button variant="danger" onClick={handleAbort}>Abortar varredura</Button>
-                  </div>
-                </div>
-              )}
+              <button className="e4-sheet-btn" onClick={() => setConfirm('restart')}>
+                <span className="e4-sheet-btn-t">↻ Reiniciar varredura</span>
+                <small>Recomeça a operação do início (t=0).</small>
+              </button>
+              <button className="e4-sheet-btn e4-sheet-btn--danger" onClick={() => setConfirm('abort')}>
+                <span className="e4-sheet-btn-t">⨯ Abortar varredura</span>
+                <small>Encerra sem gerar GSFS_RECORD.</small>
+              </button>
             </div>
           </div>
         </>
+      )}
+
+      {/* Modal de confirmação — centralizado na tela (sobre o sheet), por cenário */}
+      {confirm && (
+        <div className="e4-modal-overlay" onClick={() => setConfirm(null)}>
+          <div className="e4-modal" role="dialog" aria-modal="true" onClick={(e) => e.stopPropagation()}>
+            {confirm === 'restart' ? (
+              <>
+                <div className="e4-modal-h">Reiniciar varredura?</div>
+                <p className="e4-modal-body">A varredura recomeçará do início (<strong>t=0</strong>) e o progresso atual será descartado.</p>
+                <div className="e4-modal-actions">
+                  <Button variant="ghost" onClick={() => setConfirm(null)}>Cancelar</Button>
+                  <Button onClick={handleRestart}>Reiniciar varredura</Button>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="e4-modal-h">Abortar varredura?</div>
+                <p className="e4-modal-body">A varredura será encerrada e <strong>nenhum GSFS_RECORD será gerado</strong>. Esta ação não pode ser desfeita.</p>
+                <div className="e4-modal-actions">
+                  <Button variant="ghost" onClick={() => setConfirm(null)}>Continuar varredura</Button>
+                  <Button variant="danger" onClick={handleAbort}>Abortar varredura</Button>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
       )}
     </Screen>
   )
