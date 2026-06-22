@@ -42,8 +42,8 @@ export type ScanState = {
   modality: Modality
   /** assinaturas de GPR já reveladas (uma por achado de GPR, no seu instante) */
   gprSignatures: GprSignature[]
-  /** instantes (0..1) dos achados já revelados → picos na curva de condutividade */
-  emiPeaks: number[]
+  /** instantes (0..1) dos achados já revelados — picos no EMI e agitação no IMU */
+  detectionPeaks: number[]
   sensorNotes: Partial<Record<'gpr' | 'emi' | 'imu' | 'gnss', string>>
   detections: ScanDetection[]
   fusionNote: string | null
@@ -176,9 +176,10 @@ export function useScan(
       return { depth: tgt?.depth ?? 2.5, kind: 'hyperbola', at } as GprSignature
     })
 
-  // Picos de condutividade: cada detecção gera um pico no seu instante (mesma
-  // escala da varredura), entrando pela direita e rolando — ligado à narrativa.
-  const emiPeaks = events
+  // Instantes dos achados (fração da varredura). Alimentam o EMI (picos de
+  // condutividade) e o IMU (agitação ao re-passar sobre o ponto) no mesmo eixo
+  // temporal — ligado à narrativa de cada cenário.
+  const detectionPeaks = events
     .filter((e) => e.kind === 'detection' && e.t <= elapsed)
     .map((e) => Math.max(0, Math.min(1, e.t / f2EndSec)))
 
@@ -192,7 +193,7 @@ export function useScan(
     gnss: elapsed >= scenario.fixSec ? 'FIX' : 'NO FIX',
     modality: scenario.modality,
     gprSignatures,
-    emiPeaks,
+    detectionPeaks,
     sensorNotes,
     detections,
     fusionNote,

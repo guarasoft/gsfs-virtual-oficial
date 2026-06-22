@@ -29,6 +29,8 @@ export interface SensorGraphProps {
   emiPeaks?: number[]
   /** IMU: assinatura de movimento conforme a modalidade do cenário */
   motion?: ImuMotion
+  /** IMU: instantes (0..1) dos achados → agitação localizada (re-passes) */
+  disturbances?: number[]
 }
 
 const VIZ_LABEL: Record<SensorKind, string> = {
@@ -51,12 +53,13 @@ export function SensorGraph({
   signatures = [],
   emiPeaks = [],
   motion = 'rough',
+  disturbances = [],
 }: SensorGraphProps) {
   return (
     <div className={`gsfs-svgraph gsfs-svgraph--${kind}`} role="img" aria-label={VIZ_LABEL[kind]}>
       {kind === 'gpr' && <Gpr progress={progress} signatures={signatures} />}
       {kind === 'emi' && <Emi progress={progress} peaks={emiPeaks} />}
-      {kind === 'imu' && <Imu progress={progress} motion={motion} />}
+      {kind === 'imu' && <Imu progress={progress} motion={motion} disturbances={disturbances} />}
       {kind === 'gnss' && <Gnss progress={progress} detections={detections} />}
     </div>
   )
@@ -170,44 +173,52 @@ function Emi({ progress, peaks }: { progress: number; peaks: number[] }) {
 // movimento muda conforme a modalidade do cenário.
 // --------------------------------------------------------------------------
 
-const IMU_N = 80
+const IMU_N = 96
+const IMU_WINDOW = 0.5 // janela temporal visível (rola, igual ao EMI)
+const IMU_STEPF = 150 // cadência de passos (walk/rough)
 
-interface ImuParams { roll: number; pitch: number; f1: number; f2: number; step: number; stepf: number }
+interface ImuParams { roll: number; pitch: number; fa: number; fb: number; step: number }
 const IMU_PARAMS: Record<ImuMotion, ImuParams> = {
   // carrinho: drift baixo, trajetória regular → amplitude baixa, sem passos
-  smooth: { roll: 9, pitch: 6, f1: 0.09, f2: 0.05, step: 0, stepf: 0 },
+  smooth: { roll: 7, pitch: 5, fa: 60, fb: 27, step: 0 },
   // mochila / a pé: oscilação cíclica de passos → cadência marcada
-  walk: { roll: 17, pitch: 12, f1: 0.12, f2: 0.06, step: 9, stepf: 0.6 },
+  walk: { roll: 13, pitch: 9, fa: 64, fb: 30, step: 7 },
   // manual sobre terreno irregular → amplitude alta e mais errática
-  rough: { roll: 26, pitch: 16, f1: 0.17, f2: 0.09, step: 5, stepf: 0.34 },
+  rough: { roll: 18, pitch: 12, fa: 88, fb: 41, step: 5 },
 }
 
-function Imu({ progress, motion }: { progress: number; motion: ImuMotion }) {
-  const pr = clamp(progress, 0, 100)
-  const phase = pr * 1.6
-  // envelope do tempo narrativo: warmup calmo (≈ até 14%) → atividade que
-  // varia com o terreno ao longo da varredura
-  const warm = clamp(pr / 14, 0, 1)
-  const terrain = 0.6 + 0.4 * (0.5 + 0.5 * Math.sin(pr * 0.11 + 0.6))
-  const env = warm * terrain
+function Imu({ progress, motion, disturbances }: { progress: number; motion: ImuMotion; disturbances: number[] }) {
+  const top = 14
+  const bottom = 86
+  const mid = 50
+  const head = clamp(progress, 0, 100) / 100
+  const start = head - IMU_WINDOW
   const P = IMU_PARAMS[motion]
-
-  const build = (amp: number, phaseShift: number, stepScale: number): string => {
-    const mid = 50
+  // envelope no tempo narrativo: warmup calmo (F1, "IMU zera referência") +
+  // agitação localizada a cada achado (operador re-passa/pausa sobre o ponto)
+  const env = (u: number) => {
+    const warm = clamp(u / 0.14, 0, 1)
+    let agit = 1
+    for (const f of disturbances) {
+      const d = (u - f) / 0.05
+      agit += Math.exp(-d * d) * 0.6
+    }
+    return warm * agit
+  }
+  const build = (amp: number, fa: number, fb: number, ph: number, step: number): string => {
     const pts: string[] = []
-    for (let i = 0; i < IMU_N; i++) {
-      const x = (i / (IMU_N - 1)) * 200
-      const w = i + phase
-      const wave = Math.sin(w * P.f1 + phaseShift) * 0.7 + Math.sin(w * P.f2 + phaseShift * 1.7) * 0.3
-      const step = P.step ? Math.sin(w * P.stepf + phaseShift) * P.step * stepScale : 0
-      const y = mid - env * (wave * amp + step)
+    for (let i = 0; i <= IMU_N; i++) {
+      const u = start + (i / IMU_N) * IMU_WINDOW
+      const x = (i / IMU_N) * 200
+      const wave = Math.sin(u * fa + ph) * 0.7 + Math.sin(u * fb + ph * 1.7) * 0.3
+      const cad = step ? Math.sin(u * IMU_STEPF + ph) * step : 0
+      const y = clamp(mid - env(u) * (wave * amp + cad), top + 1, bottom - 1)
       pts.push(`${x.toFixed(2)} ${y.toFixed(2)}`)
     }
     return 'M ' + pts.join(' L ')
   }
-
-  const roll = build(P.roll, 0, 0.5)
-  const pitch = build(P.pitch, 1.2, 1) // a cadência de passos bate mais no pitch
+  const roll = build(P.roll, P.fa, P.fb, 0, 0)
+  const pitch = build(P.pitch, P.fa * 0.8, P.fb * 1.3, 1.2, P.step) // cadência de passos bate mais no pitch
   return (
     <svg viewBox="0 0 200 100" preserveAspectRatio="none" className="svg-imu">
       <line className="imu-zero" x1="0" y1="50" x2="200" y2="50" />

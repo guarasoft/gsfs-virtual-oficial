@@ -26,6 +26,7 @@ function SensorPanelFull({
   signatures,
   emiPeaks,
   motion,
+  disturbances,
 }: {
   kind: SensorKind
   title: string
@@ -36,6 +37,7 @@ function SensorPanelFull({
   signatures?: GprSignature[]
   emiPeaks?: number[]
   motion?: ImuMotion
+  disturbances?: number[]
 }) {
   return (
     <div className="sv-panel">
@@ -45,7 +47,7 @@ function SensorPanelFull({
       </div>
       <div className="sv-panel-body">
         <div className="sv-panel-viz">
-          <SensorGraph kind={kind} progress={progress} detections={detections} signatures={signatures} emiPeaks={emiPeaks} motion={motion} />
+          <SensorGraph kind={kind} progress={progress} detections={detections} signatures={signatures} emiPeaks={emiPeaks} motion={motion} disturbances={disturbances} />
         </div>
         {note && <div className="sv-panel-note">{note}</div>}
       </div>
@@ -121,8 +123,8 @@ export function ScanView({ state, banner, controls }: ScanViewProps) {
         {/* 4-panel sensor grid */}
         <div className="sv-sensor-grid">
           <SensorPanelFull kind="gpr" title="GPR" tag="eco / reflexão" note={state.sensorNotes.gpr} progress={state.progressExact} detections={state.detections.length} signatures={state.gprSignatures} />
-          <SensorPanelFull kind="emi" title="EMI" tag="condutividade" note={state.sensorNotes.emi} progress={state.progressExact} detections={state.detections.length} emiPeaks={state.emiPeaks} />
-          <SensorPanelFull kind="imu" title="IMU" tag="orientação 6 eixos" note={state.sensorNotes.imu} progress={state.progressExact} detections={state.detections.length} motion={IMU_MOTION[state.modality]} />
+          <SensorPanelFull kind="emi" title="EMI" tag="condutividade" note={state.sensorNotes.emi} progress={state.progressExact} detections={state.detections.length} emiPeaks={state.detectionPeaks} />
+          <SensorPanelFull kind="imu" title="IMU" tag="orientação 6 eixos" note={state.sensorNotes.imu} progress={state.progressExact} detections={state.detections.length} motion={IMU_MOTION[state.modality]} disturbances={state.detectionPeaks} />
           <SensorPanelFull kind="gnss" title="GNSS / RTK" tag="posicionamento" note={state.sensorNotes.gnss} progress={state.progressExact} detections={state.detections.length} />
         </div>
 
