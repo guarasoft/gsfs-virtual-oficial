@@ -107,4 +107,12 @@ describe('E7Replay — tela de Replay hi-fi', () => {
     expect(screen.getByText('GSFS-RECORD-2026-06-03-138')).toBeTruthy() // ID do C2
     expect(screen.queryByText('Gravações de sessão (GSFS_RECORD)')).toBeNull()
   })
+
+  it('no replay vindo da E5, "VOLTAR" retorna à tela de resultado (e5-result)', () => {
+    useSimulator.getState().selectScenario('c1')
+    useSimulator.getState().replayCurrent()
+    render(<E7Replay />)
+    fireEvent.click(screen.getByText('VOLTAR'))
+    expect(useSimulator.getState().step).toBe('e5-result')
+  })
 })

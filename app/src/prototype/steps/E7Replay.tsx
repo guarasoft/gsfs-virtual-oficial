@@ -229,9 +229,12 @@ export function E7Replay() {
   const replayTarget = useSimulator((s) => s.replayTarget)
   const [view, setView] = useState<E7View>(replayTarget ? 'replay' : 'listagem')
   const [replayScenarioId, setReplayScenarioId] = useState<ScenarioId | null>(replayTarget)
+  // origem do replay atual: vindo da E5 (volta ao resultado) ou da lista (volta à lista)
+  const [fromResult, setFromResult] = useState<boolean>(!!replayTarget)
 
   function handlePlay(id: ScenarioId) {
     setReplayScenarioId(id)
+    setFromResult(false)
     setView('replay')
   }
 
@@ -241,7 +244,12 @@ export function E7Replay() {
   }
 
   if (view === 'replay' && replayScenarioId != null) {
-    return <ReplayPlayer scenarioId={replayScenarioId} onBack={handleBackToList} />
+    return (
+      <ReplayPlayer
+        scenarioId={replayScenarioId}
+        onBack={fromResult ? () => goTo('e5-result') : handleBackToList}
+      />
+    )
   }
 
   return (
