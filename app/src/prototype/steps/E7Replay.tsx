@@ -224,8 +224,11 @@ type E7View = 'listagem' | 'replay'
 
 export function E7Replay() {
   const goTo = useSimulator((s) => s.goTo)
-  const [view, setView] = useState<E7View>('listagem')
-  const [replayScenarioId, setReplayScenarioId] = useState<ScenarioId | null>(null)
+  // Entrada vinda da E5 (replayTarget definido) → reproduz direto o cenário
+  // atual; entrada pelo menu (null) → abre a lista de gravações.
+  const replayTarget = useSimulator((s) => s.replayTarget)
+  const [view, setView] = useState<E7View>(replayTarget ? 'replay' : 'listagem')
+  const [replayScenarioId, setReplayScenarioId] = useState<ScenarioId | null>(replayTarget)
 
   function handlePlay(id: ScenarioId) {
     setReplayScenarioId(id)

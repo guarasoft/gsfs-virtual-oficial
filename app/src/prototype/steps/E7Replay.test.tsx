@@ -93,4 +93,18 @@ describe('E7Replay — tela de Replay hi-fi', () => {
     fireEvent.click(screen.getAllByText('Reproduzir')[2])
     expect(screen.getByText('GSFS-RECORD-2026-06-02-131')).toBeTruthy()
   })
+
+  // --------------------------------------------------------------------------
+  // Entrada direta vinda da E5 (replayCurrent) — reproduz o cenário atual
+  // --------------------------------------------------------------------------
+
+  it('vindo da E5 (replayCurrent) entra direto no replay do cenário atual, sem a lista', () => {
+    useSimulator.getState().selectScenario('c2')
+    useSimulator.getState().replayCurrent()
+    render(<E7Replay />)
+    // Já está no player (MODO REPLAY), não na listagem
+    expect(screen.getByText('MODO REPLAY')).toBeTruthy()
+    expect(screen.getByText('GSFS-RECORD-2026-06-03-138')).toBeTruthy() // ID do C2
+    expect(screen.queryByText('Gravações de sessão (GSFS_RECORD)')).toBeNull()
+  })
 })

@@ -18,6 +18,7 @@ function formatDepth(d: number): string {
 export function E5Result() {
   const goTo = useSimulator((s) => s.goTo)
   const newOperation = useSimulator((s) => s.newOperation)
+  const replayCurrent = useSimulator((s) => s.replayCurrent)
   const selectedScenarioId = useSimulator((s) => s.selectedScenarioId)
 
   const scenarioId = selectedScenarioId ?? 'c1'
@@ -104,7 +105,7 @@ export function E5Result() {
       {/* ---- Barra de ações ---- */}
       <div className="e5-actions">
         <Button variant="ghost" onClick={() => newOperation()}>Nova operação</Button>
-        <Button variant="secondary" onClick={() => goTo('e7-replay')}>Replay</Button>
+        <Button variant="secondary" onClick={() => replayCurrent()}>Replay</Button>
         <Button variant="primary" onClick={() => goTo('e6-export')}>Exportar →</Button>
       </div>
       </div>
