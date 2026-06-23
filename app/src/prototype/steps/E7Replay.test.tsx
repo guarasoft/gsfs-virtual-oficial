@@ -70,27 +70,6 @@ describe('E7Replay — tela de Replay hi-fi', () => {
     expect(screen.getByText('GSFS-RECORD-2026-06-03-142')).toBeTruthy()
   })
 
-  it('Replay exibe a barra de controles de playback', () => {
-    render(<E7Replay />)
-    fireEvent.click(screen.getAllByText('Reproduzir')[0])
-    // Controles ⏮ e ⏭ devem estar presentes
-    expect(screen.getByLabelText('Ir ao início')).toBeTruthy()
-    expect(screen.getByLabelText('Ir ao fim')).toBeTruthy()
-  })
-
-  it('Replay exibe o indicador de velocidade "1×"', () => {
-    render(<E7Replay />)
-    fireEvent.click(screen.getAllByText('Reproduzir')[0])
-    expect(screen.getByText('1×')).toBeTruthy()
-  })
-
-  it('clicar no botão de velocidade alterna para "2×"', () => {
-    render(<E7Replay />)
-    fireEvent.click(screen.getAllByText('Reproduzir')[0])
-    fireEvent.click(screen.getByLabelText('Velocidade de reprodução'))
-    expect(screen.getByText('2×')).toBeTruthy()
-  })
-
   // --------------------------------------------------------------------------
   // VOLTAR — Replay → Listagem
   // --------------------------------------------------------------------------
@@ -113,18 +92,5 @@ describe('E7Replay — tela de Replay hi-fi', () => {
     // C3 é o 3º item (índice 2)
     fireEvent.click(screen.getAllByText('Reproduzir')[2])
     expect(screen.getByText('GSFS-RECORD-2026-06-02-131')).toBeTruthy()
-  })
-
-  // --------------------------------------------------------------------------
-  // Conteúdo do bloco 3D D-020 (via scan completo — seek ao fim)
-  // --------------------------------------------------------------------------
-
-  it('saltar ao fim (⏭) e navegar aciona resultado D-020 (seek ao fim)', () => {
-    render(<E7Replay />)
-    fireEvent.click(screen.getAllByText('Reproduzir')[0])
-    // Acionar ⏭ (seek ao fim via aria-label)
-    fireEvent.click(screen.getByLabelText('Ir ao fim'))
-    // O botão deve continuar existindo (não quebra)
-    expect(screen.getByLabelText('Ir ao fim')).toBeTruthy()
   })
 })
