@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { Button, Card } from '../../ui'
 import { Screen } from '../shell/Screen'
 import { useSimulator } from '../store'
@@ -69,6 +69,10 @@ const FORMATS: { id: FormatId; tag: string; tone: 'info' | 'success' | 'warning'
 export function E6Export() {
   const goTo = useSimulator((s) => s.goTo)
   const [active, setActive] = useState<FormatId | null>(null)
+  const [exporting, setExporting] = useState(false)
+  const [toast, setToast] = useState(false)
+  const timers = useRef<number[]>([])
+  useEffect(() => () => timers.current.forEach(clearTimeout), [])
 
   const handleBack = () => {
     if (active !== null) {
@@ -76,6 +80,21 @@ export function E6Export() {
     } else {
       goTo('e5-result')
     }
+  }
+
+  // Geração SIMBÓLICA (D-008 / Layout §3): animação de geração + toast
+  // "Arquivo simbólico gerado" — sem download real / binário.
+  const handleExport = () => {
+    if (exporting) return
+    setToast(false)
+    setExporting(true)
+    timers.current.push(
+      window.setTimeout(() => {
+        setExporting(false)
+        setToast(true)
+        timers.current.push(window.setTimeout(() => setToast(false), 3200))
+      }, 1200),
+    )
   }
 
   return (
@@ -212,11 +231,31 @@ export function E6Export() {
             {active !== null ? '← Formatos' : '← Voltar ao resultado'}
           </Button>
           {active !== null && (
-            <Button variant="primary" disabled title="Sem download real (D-008)">
-              Exportar arquivo
+            <Button
+              variant="primary"
+              onClick={handleExport}
+              disabled={exporting}
+              title="Geração simbólica — sem download real (D-008)"
+            >
+              {exporting ? (
+                <>
+                  <span className="e6-spinner" aria-hidden="true" />
+                  Gerando…
+                </>
+              ) : (
+                'Exportar arquivo'
+              )}
             </Button>
           )}
         </div>
+
+        {/* Toast de geração simbólica (sem arquivo real) */}
+        {toast && (
+          <div className="e6-toast" role="status">
+            <span className="e6-toast-check" aria-hidden="true">✓</span>
+            Arquivo simbólico gerado
+          </div>
+        )}
       </div>
     </Screen>
   )

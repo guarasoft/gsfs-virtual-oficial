@@ -266,3 +266,44 @@
   border-top: 1px solid var(--color-border);
   margin-top: auto;
 }
+
+/* Spinner do botão durante a geração simbólica */
+.e6-spinner {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid color-mix(in srgb, currentColor 30%, transparent);
+  border-top-color: currentColor;
+  display: inline-block;
+  margin-right: 8px;
+  vertical-align: -1px;
+  animation: e6-spin 0.7s linear infinite;
+}
+@keyframes e6-spin { to { transform: rotate(360deg); } }
+
+/* Toast "Arquivo simbólico gerado" (sem download real) */
+.e6-toast {
+  position: absolute;
+  bottom: 92px;
+  right: 24px;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--color-bg-raised);
+  border: 1px solid color-mix(in srgb, var(--color-success) 45%, var(--color-border));
+  border-left: 3px solid var(--color-success);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  font-size: 13px;
+  color: var(--color-text);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.4);
+  animation: e6-toast-in 240ms ease-out;
+}
+.e6-toast-check { color: var(--color-success); font-weight: 700; }
+@keyframes e6-toast-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .e6-spinner { animation: none; }
+  .e6-toast { animation: none; }
+}

@@ -1,5 +1,5 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest'
-import { render, screen, fireEvent, cleanup } from '@testing-library/react'
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
+import { render, screen, fireEvent, cleanup, act } from '@testing-library/react'
 import { E6Export } from './E6Export'
 import { useSimulator } from '../store'
 
@@ -113,12 +113,28 @@ describe('E6Export — tela de Exportação hi-fi', () => {
     expect(screen.queryByText('Exportar arquivo')).toBeNull()
   })
 
-  it('dentro de um preview, exibe botão "Exportar arquivo" desabilitado', () => {
+  it('dentro de um preview, exibe botão "Exportar arquivo" habilitado (geração simbólica)', () => {
     render(<E6Export />)
     const btns = screen.getAllByText(/Pré-visualizar/)
     fireEvent.click(btns[0])
     const exportBtn = screen.getByText('Exportar arquivo')
     expect(exportBtn).toBeTruthy()
-    expect((exportBtn as HTMLButtonElement).disabled).toBe(true)
+    expect((exportBtn.closest('button') as HTMLButtonElement).disabled).toBe(false)
+  })
+
+  it('clicar em "Exportar arquivo" inicia a geração simbólica e depois mostra o toast', () => {
+    vi.useFakeTimers()
+    try {
+      render(<E6Export />)
+      fireEvent.click(screen.getAllByText(/Pré-visualizar/)[0])
+      fireEvent.click(screen.getByText('Exportar arquivo'))
+      // durante a geração: botão vira "Gerando…"
+      expect(screen.getByText('Gerando…')).toBeTruthy()
+      act(() => { vi.advanceTimersByTime(1200) })
+      // após a geração: toast simbólico
+      expect(screen.getByText('Arquivo simbólico gerado')).toBeTruthy()
+    } finally {
+      vi.useRealTimers()
+    }
   })
 })
