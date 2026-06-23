@@ -60,10 +60,34 @@
   height: 100%;
 }
 
-.e6-card-top {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
+/* Container do tipo de arquivo (grande, como no wireframe) */
+.e6-card-icon {
+  height: 120px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-raised);
+  font-family: var(--font-secondary);
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--color-text-muted);
+}
+.e6-card-icon--info {
+  color: var(--color-info);
+  border-color: color-mix(in srgb, var(--color-info) 35%, var(--color-border));
+  background: color-mix(in srgb, var(--color-info) 7%, var(--color-bg-raised));
+}
+.e6-card-icon--success {
+  color: var(--color-success);
+  border-color: color-mix(in srgb, var(--color-success) 35%, var(--color-border));
+  background: color-mix(in srgb, var(--color-success) 7%, var(--color-bg-raised));
+}
+.e6-card-icon--warning {
+  color: var(--color-warning);
+  border-color: color-mix(in srgb, var(--color-warning) 35%, var(--color-border));
+  background: color-mix(in srgb, var(--color-warning) 7%, var(--color-bg-raised));
 }
 
 .e6-card-name {

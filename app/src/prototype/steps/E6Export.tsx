@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Button, Badge, Card } from '../../ui'
+import { Button, Card } from '../../ui'
 import { Screen } from '../shell/Screen'
 import { useSimulator } from '../store'
 import './E6Export.css'
@@ -108,10 +108,8 @@ export function E6Export() {
               <div className="e6-card" key={f.id}>
                 <Card>
                   <div className="e6-card-inner">
-                    <div className="e6-card-top">
-                      <Badge tone={f.tone}>{f.tag}</Badge>
-                      <span className="e6-card-name">{f.name}</span>
-                    </div>
+                    <div className={`e6-card-icon e6-card-icon--${f.tone}`} aria-hidden="true">{f.tag}</div>
+                    <span className="e6-card-name">{f.name}</span>
                     <p className="e6-card-desc">{f.desc}</p>
                     <Button variant="secondary" onClick={() => setActive(f.id)}>
                       Pré-visualizar →
@@ -210,7 +208,7 @@ export function E6Export() {
 
         {/* ---- Barra de ações ---- */}
         <div className="e6-actions">
-          <Button variant="ghost" onClick={handleBack}>
+          <Button variant="secondary" onClick={handleBack}>
             {active !== null ? '← Formatos' : '← Voltar ao resultado'}
           </Button>
           {active !== null && (
