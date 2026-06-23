@@ -27,6 +27,7 @@ const statusItems: [string, string][] = [
 
 export function E2Menu() {
   const goTo = useSimulator((s) => s.goTo)
+  const openReplayList = useSimulator((s) => s.openReplayList)
 
   return (
     <Screen
@@ -52,7 +53,7 @@ export function E2Menu() {
               index={a.k}
               title={a.name}
               description={a.desc}
-              onClick={() => goTo(a.step)}
+              onClick={() => (a.step === 'e7-replay' ? openReplayList() : goTo(a.step))}
             />
           ))}
         </div>

@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react'
-import type { ScenarioId } from '../data/types'
+import type { GprSignature, GnssMarker } from '../../ui'
+import type { ScenarioId, Modality, TargetType } from '../data/types'
 import { getScenario } from '../data/scenarios'
 import { getTimeline } from '../data/timeline'
 import type { TimelineEvent } from '../data/timeline'
@@ -8,6 +9,14 @@ import { useTimeline } from '../engine/useTimeline'
 // ---------------------------------------------------------------------------
 // Pure helpers (exported for unit tests)
 // ---------------------------------------------------------------------------
+
+// Rótulo do marcador GNSS por tipo de material (Roteiro: [M] [Au] [V] [H2O])
+const GNSS_MARKER_LABEL: Record<TargetType, string> = {
+  magnetita: 'M',
+  ouro: 'Au',
+  vazio: 'V',
+  agua: 'H2O',
+}
 
 export function batteryFromElapsed(elapsed: number, durationSec: number): number {
   return Math.max(0, Math.round(98 - (elapsed / durationSec) * 8))
@@ -29,11 +38,22 @@ export type ScanDetection = {
 
 export type ScanState = {
   progress: number
+  /** progresso contínuo (não arredondado) — alimenta os gráficos para
+      movimento fluido a cada frame, sem os "degraus" do valor inteiro */
+  progressExact: number
   elapsedSec: number
   clock: string
   battery: number
   temp: number
   gnss: 'FIX' | 'NO FIX'
+  /** modalidade do cenário — define a assinatura de movimento do IMU */
+  modality: Modality
+  /** assinaturas de GPR já reveladas (uma por achado de GPR, no seu instante) */
+  gprSignatures: GprSignature[]
+  /** instantes (0..1) dos achados já revelados — picos no EMI e agitação no IMU */
+  detectionPeaks: number[]
+  /** marcadores dos achados na trajetória GNSS (instante + rótulo do material) */
+  gnssMarkers: GnssMarker[]
   sensorNotes: Partial<Record<'gpr' | 'emi' | 'imu' | 'gnss', string>>
   detections: ScanDetection[]
   fusionNote: string | null
@@ -140,7 +160,7 @@ export function useScan(
     timeline.play()
   }, [timeline])
 
-  const { elapsed, progress, playing, play, pause, seek, setRate } = timeline
+  const { elapsed, playing, play, pause, seek, setRate } = timeline
 
   const clock = new Date().toLocaleTimeString('pt-BR', {
     hour: '2-digit',
@@ -149,13 +169,49 @@ export function useScan(
     hour12: false,
   })
 
+  // A barra da varredura atinge 100% no fim da F2 (Roteiro §2.4); os últimos
+  // 10s são F3 — Consolidação (barra em 100%, geração do GSFS_RECORD).
+  const f2EndSec = Math.max(1, durationSec - 10)
+  const progressExact = Math.max(0, Math.min(100, (elapsed / f2EndSec) * 100))
+
+  // Padrão: TODA detecção gera uma hipérbole no radargrama, surgindo no seu
+  // instante. `at` = instante do achado na escala da varredura (mesma da linha
+  // de varredura / barra), posicionando a hipérbole onde a varredura estava ao
+  // detectar; `depth` posiciona no eixo vertical (raso = acima, fundo = abaixo).
+  const gprSignatures: GprSignature[] = events
+    .filter((e) => e.kind === 'detection' && e.t <= elapsed)
+    .map((e) => {
+      const tgt = scenario.targets.find((t) => t.label === e.targetRef)
+      const at = Math.max(0, Math.min(1, e.t / f2EndSec))
+      return { depth: tgt?.depth ?? 2.5, kind: 'hyperbola', at } as GprSignature
+    })
+
+  // Achados revelados (fração da varredura + rótulo do material). Alimentam o
+  // GNSS (marcador rotulado), o EMI (pico de condutividade) e o IMU (agitação)
+  // no mesmo eixo temporal — ligado à narrativa de cada cenário.
+  const gnssMarkers: GnssMarker[] = events
+    .filter((e) => e.kind === 'detection' && e.t <= elapsed)
+    .map((e) => {
+      const tgt = scenario.targets.find((t) => t.label === e.targetRef)
+      return {
+        at: Math.max(0, Math.min(1, e.t / f2EndSec)),
+        label: tgt ? GNSS_MARKER_LABEL[tgt.type] : 'M',
+      }
+    })
+  const detectionPeaks = gnssMarkers.map((m) => m.at)
+
   return {
-    progress: Math.round(progress),
+    progress: Math.round(progressExact),
+    progressExact,
     elapsedSec: elapsed,
     clock,
     battery: batteryFromElapsed(elapsed, durationSec),
     temp: tempFromElapsed(elapsed, durationSec),
-    gnss: elapsed >= 10 ? 'FIX' : 'NO FIX',
+    gnss: elapsed >= scenario.fixSec ? 'FIX' : 'NO FIX',
+    modality: scenario.modality,
+    gprSignatures,
+    detectionPeaks,
+    gnssMarkers,
     sensorNotes,
     detections,
     fusionNote,

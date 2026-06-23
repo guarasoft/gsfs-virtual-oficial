@@ -1,12 +1,25 @@
 import './sim.css'
 
-export function HudMetric({ label, value, unit }: { label: string; value: string; unit?: string }) {
+// Leitura métrica do HUD com numerais tabulares.
+// size="lg" (padrão): número-destaque (ex.: resultado E5, 32px).
+// size="sm": faixa compacta do HUD de varredura (relógio/bateria/temp/GNSS).
+export function HudMetric({
+  label,
+  value,
+  unit,
+  size = 'lg',
+}: {
+  label: string
+  value: string
+  unit?: string
+  size?: 'sm' | 'lg'
+}) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-      <span className="gsfs-ui-label" style={{ color: 'var(--color-text-muted)' }}>{label}</span>
-      <span>
-        <span className="gsfs-metric" style={{ color: 'var(--color-text-strong)' }}>{value}</span>
-        {unit && <span className="gsfs-ui" style={{ color: 'var(--color-text-muted)', marginLeft: 6 }}>{unit}</span>}
+    <div className={`gsfs-hudmetric gsfs-hudmetric--${size}`}>
+      <span className="gsfs-hudmetric-label">{label}</span>
+      <span className="gsfs-hudmetric-value">
+        {value}
+        {unit && <span className="gsfs-hudmetric-unit">{unit}</span>}
       </span>
     </div>
   )

@@ -70,27 +70,6 @@ describe('E7Replay — tela de Replay hi-fi', () => {
     expect(screen.getByText('GSFS-RECORD-2026-06-03-142')).toBeTruthy()
   })
 
-  it('Replay exibe a barra de controles de playback', () => {
-    render(<E7Replay />)
-    fireEvent.click(screen.getAllByText('Reproduzir')[0])
-    // Controles ⏮ e ⏭ devem estar presentes
-    expect(screen.getByLabelText('Ir ao início')).toBeTruthy()
-    expect(screen.getByLabelText('Ir ao fim')).toBeTruthy()
-  })
-
-  it('Replay exibe o indicador de velocidade "1×"', () => {
-    render(<E7Replay />)
-    fireEvent.click(screen.getAllByText('Reproduzir')[0])
-    expect(screen.getByText('1×')).toBeTruthy()
-  })
-
-  it('clicar no botão de velocidade alterna para "2×"', () => {
-    render(<E7Replay />)
-    fireEvent.click(screen.getAllByText('Reproduzir')[0])
-    fireEvent.click(screen.getByLabelText('Velocidade de reprodução'))
-    expect(screen.getByText('2×')).toBeTruthy()
-  })
-
   // --------------------------------------------------------------------------
   // VOLTAR — Replay → Listagem
   // --------------------------------------------------------------------------
@@ -116,15 +95,24 @@ describe('E7Replay — tela de Replay hi-fi', () => {
   })
 
   // --------------------------------------------------------------------------
-  // Conteúdo do bloco 3D D-020 (via scan completo — seek ao fim)
+  // Entrada direta vinda da E5 (replayCurrent) — reproduz o cenário atual
   // --------------------------------------------------------------------------
 
-  it('saltar ao fim (⏭) e navegar aciona resultado D-020 (seek ao fim)', () => {
+  it('vindo da E5 (replayCurrent) entra direto no replay do cenário atual, sem a lista', () => {
+    useSimulator.getState().selectScenario('c2')
+    useSimulator.getState().replayCurrent()
     render(<E7Replay />)
-    fireEvent.click(screen.getAllByText('Reproduzir')[0])
-    // Acionar ⏭ (seek ao fim via aria-label)
-    fireEvent.click(screen.getByLabelText('Ir ao fim'))
-    // O botão deve continuar existindo (não quebra)
-    expect(screen.getByLabelText('Ir ao fim')).toBeTruthy()
+    // Já está no player (MODO REPLAY), não na listagem
+    expect(screen.getByText('MODO REPLAY')).toBeTruthy()
+    expect(screen.getByText('GSFS-RECORD-2026-06-03-138')).toBeTruthy() // ID do C2
+    expect(screen.queryByText('Gravações de sessão (GSFS_RECORD)')).toBeNull()
+  })
+
+  it('no replay vindo da E5, "VOLTAR" retorna à tela de resultado (e5-result)', () => {
+    useSimulator.getState().selectScenario('c1')
+    useSimulator.getState().replayCurrent()
+    render(<E7Replay />)
+    fireEvent.click(screen.getByText('VOLTAR'))
+    expect(useSimulator.getState().step).toBe('e5-result')
   })
 })

@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { Button, Card, Panel, EdgeTab } from '../../ui'
+import { useState, useEffect } from 'react'
+import { Button, EdgeTab } from '../../ui'
 import { Screen } from '../shell/Screen'
 import { useSimulator } from '../store'
 import { SCENARIOS, getScenario } from '../data/scenarios'
@@ -64,18 +64,8 @@ function formatDuration(sec: number): string {
   return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
 }
 
-function formatDepth(d: number): string {
-  return d.toFixed(1).replace('.', ',') + ' m'
-}
-
-function formatElapsed(sec: number): string {
-  const m = Math.floor(sec / 60)
-  const s = Math.floor(sec % 60)
-  return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
-}
-
 // ---------------------------------------------------------------------------
-// Subcomponente: Banner MODO REPLAY (D-017 — dados da missão)
+// Tarja MODO REPLAY (D-017 — dados essenciais da missão)
 // ---------------------------------------------------------------------------
 
 function ReplayBanner({ scenarioId }: { scenarioId: ScenarioId }) {
@@ -110,182 +100,9 @@ function ReplayBanner({ scenarioId }: { scenarioId: ScenarioId }) {
 }
 
 // ---------------------------------------------------------------------------
-// Subcomponente: Barra de controles de playback
-// ---------------------------------------------------------------------------
-
-function PlaybackBar({
-  playing,
-  elapsedSec,
-  durationSec,
-  rate,
-  onPlay,
-  onPause,
-  onSeek,
-  onSkipStart,
-  onSkipEnd,
-  onRateToggle,
-}: {
-  playing: boolean
-  elapsedSec: number
-  durationSec: number
-  rate: number
-  onPlay: () => void
-  onPause: () => void
-  onSeek: (t: number) => void
-  onSkipStart: () => void
-  onSkipEnd: () => void
-  onRateToggle: () => void
-}) {
-  return (
-    <div className="e7-playback">
-      <button
-        className="e7-pb-ctrl"
-        title="Ir ao início"
-        onClick={onSkipStart}
-        aria-label="Ir ao início"
-      >
-        ⏮
-      </button>
-      <button
-        className="e7-pb-ctrl"
-        title={playing ? 'Pausar' : 'Reproduzir'}
-        onClick={playing ? onPause : onPlay}
-        aria-label={playing ? 'Pausar' : 'Reproduzir'}
-      >
-        {playing ? '⏸' : '▶'}
-      </button>
-      <button
-        className="e7-pb-ctrl"
-        title="Ir ao fim"
-        onClick={onSkipEnd}
-        aria-label="Ir ao fim"
-      >
-        ⏭
-      </button>
-      <input
-        type="range"
-        className="e7-pb-scrub"
-        min={0}
-        max={durationSec}
-        step={1}
-        value={Math.floor(elapsedSec)}
-        onChange={(e) => onSeek(Number(e.target.value))}
-        aria-label="Linha do tempo"
-      />
-      <span className="e7-pb-time">
-        {formatElapsed(elapsedSec)} / {formatDuration(durationSec)}
-      </span>
-      <button
-        className="e7-pb-rate"
-        onClick={onRateToggle}
-        title="Velocidade de reprodução"
-        aria-label="Velocidade de reprodução"
-      >
-        {rate}×
-      </button>
-    </div>
-  )
-}
-
-// ---------------------------------------------------------------------------
-// Subcomponente: Bloco de resultado final (D-020 — espelha E5)
-// ---------------------------------------------------------------------------
-
-function ReplayResultBlock({
-  scenarioId,
-  onBack,
-}: {
-  scenarioId: ScenarioId
-  onBack: () => void
-}) {
-  const scenario = getScenario(scenarioId)
-  const rec = RECORD_META[scenarioId]
-
-  const assets = scenario.targets.map((t) => ({
-    name: t.label,
-    meta: formatDepth(t.depth) + (t.angle != null ? ` · ${t.angle}°` : ''),
-  }))
-
-  return (
-    <div className="e7-result-overlay" role="region" aria-label="Resultado do replay">
-      <div className="e7-result-header">
-        <span className="e7-result-header-title">RESULTADO DA SESSÃO GRAVADA</span>
-        <span className="e7-result-header-sub">
-          D-020 · bloco 3D do subsolo (Guarasoft) — revisão em replay
-        </span>
-      </div>
-
-      <div className="e7-result-body">
-        {/* Bloco 3D — mesmo padrão visual de E5 */}
-        <div className="e7-3d-block" aria-label="Visualização 3D do subsolo">
-          <div className="e7-3d-inner">
-            <div className="e7-3d-label">[ Bloco 3D do subsolo · perspectiva em 1ª pessoa ]</div>
-            <div className="e7-3d-caption">
-              vídeo interpretativo (Guarasoft) · marcadores:{' '}
-              {assets.map((a) => a.name).join(', ')}
-            </div>
-          </div>
-        </div>
-
-        {/* Legenda lateral */}
-        <aside className="e7-legend">
-          <Panel title="Registro da operação">
-            <div className="e7-legend-body">
-              <div className="e7-legend-rows">
-                <div className="e7-legend-row">
-                  <span className="e7-legend-key">Data</span>
-                  <strong className="e7-legend-val">{rec.dt}</strong>
-                </div>
-                <div className="e7-legend-row">
-                  <span className="e7-legend-key">Hora</span>
-                  <strong className="e7-legend-val">{rec.hora}</strong>
-                </div>
-                <div className="e7-legend-row">
-                  <span className="e7-legend-key">Duração</span>
-                  <strong className="e7-legend-val">{formatDuration(scenario.durationSec)}</strong>
-                </div>
-                <div className="e7-legend-row">
-                  <span className="e7-legend-key">Volume cúbico</span>
-                  <strong className="e7-legend-val">{rec.volume}</strong>
-                </div>
-              </div>
-
-              <div className="e7-legend-section">ATIVOS IDENTIFICADOS</div>
-              <div className="e7-assets">
-                {assets.map((a) => (
-                  <Card key={a.name}>
-                    <div className="e7-asset">
-                      <span className="e7-asset-name">{a.name}</span>
-                      <span className="e7-asset-meta">{a.meta}</span>
-                    </div>
-                  </Card>
-                ))}
-              </div>
-
-              <div className="e7-legend-section">GSFS_RECORD</div>
-              <div className="e7-legend-rows">
-                <div className="e7-legend-row">
-                  <span className="e7-legend-key">ID</span>
-                  <strong className="e7-legend-val e7-legend-val--mono">{rec.id}</strong>
-                </div>
-              </div>
-
-              <div className="e7-legend-section">HASH SHA-256 (cadeia de custódia)</div>
-              <div className="e7-hash">{rec.hash}</div>
-            </div>
-          </Panel>
-        </aside>
-      </div>
-
-      <div className="e7-result-actions">
-        <Button variant="ghost" onClick={onBack}>← Voltar às gravações</Button>
-      </div>
-    </div>
-  )
-}
-
-// ---------------------------------------------------------------------------
-// Subcomponente: Tela de Replay (um cenário em reprodução)
+// Player de Replay — espelha a tela de varredura (ScanView) + tarja Replay.
+// Ao concluir, o conteúdo some e aparecem dois botões centrais (D-020: o
+// replay espelha a varredura 2D; o bloco 3D fica só no fechamento da E5).
 // ---------------------------------------------------------------------------
 
 function ReplayPlayer({
@@ -295,54 +112,46 @@ function ReplayPlayer({
   scenarioId: ScenarioId
   onBack: () => void
 }) {
-  const [rate, setRateState] = useState(1)
   const [completed, setCompleted] = useState(false)
-
-  const scan = useScan(scenarioId, {
-    autostart: true,
-    onComplete: () => setCompleted(true),
-  })
-
+  const scan = useScan(scenarioId, { autostart: true })
   const scenario = getScenario(scenarioId)
+  const rec = RECORD_META[scenarioId]
 
-  function handleRateToggle() {
-    const next = rate === 1 ? 2 : 1
-    setRateState(next)
-    scan.setRate(next)
-  }
+  // Fim da reprodução (barra em 100%): some o conteúdo e mostra Reiniciar/Voltar
+  useEffect(() => {
+    if (scan.progress < 100) return
+    const id = window.setTimeout(() => setCompleted(true), 600)
+    return () => clearTimeout(id)
+  }, [scan.progress])
 
-  if (completed) {
-    return (
-      <div className="e7-root">
-        <ReplayResultBlock scenarioId={scenarioId} onBack={onBack} />
-      </div>
-    )
+  const handleRestart = () => {
+    setCompleted(false)
+    scan.restart()
   }
 
   return (
-    <div className="e7-root">
-      <ScanView
-        state={scan}
-        banner={<ReplayBanner scenarioId={scenarioId} />}
-        controls={
-          <PlaybackBar
-            playing={scan.playing}
-            elapsedSec={scan.elapsedSec}
-            durationSec={scenario.durationSec}
-            rate={rate}
-            onPlay={scan.play}
-            onPause={scan.pause}
-            onSeek={scan.seek}
-            onSkipStart={() => scan.seek(0)}
-            onSkipEnd={() => scan.seek(scenario.durationSec)}
-            onRateToggle={handleRateToggle}
-          />
-        }
-      />
-      <EdgeTab side="left" onClick={onBack} title="Voltar às gravações">
-        VOLTAR
-      </EdgeTab>
-    </div>
+    <Screen
+      title="REPRODUÇÃO DE SESSÃO"
+      subtitle="GROUND SCANNING FUSION SYSTEM"
+      meta={[`CENÁRIO: C${scenario.n} · ${scenario.name}`, `SESSÃO: ${rec.id}`, 'MODO: REPLAY']}
+      edge={
+        !completed ? (
+          <EdgeTab side="left" onClick={onBack} aria-label="Voltar às gravações">VOLTAR</EdgeTab>
+        ) : undefined
+      }
+    >
+      {completed ? (
+        <div className="e7-end">
+          <div className="e7-end-title">Replay concluído</div>
+          <div className="e7-end-actions">
+            <Button variant="secondary" onClick={handleRestart}>↻ Reiniciar</Button>
+            <Button variant="primary" onClick={onBack}>Voltar</Button>
+          </div>
+        </div>
+      ) : (
+        <ScanView state={scan} banner={<ReplayBanner scenarioId={scenarioId} />} />
+      )}
+    </Screen>
   )
 }
 
@@ -387,16 +196,10 @@ function RecordList({
                 <span className="e7-rec-col">{targetLabel}</span>
                 <span className="e7-rec-col e7-rec-id">{rec.id}</span>
                 <div className="e7-rec-actions">
-                  <Button
-                    variant="primary"
-                    onClick={() => onPlay(s.id)}
-                  >
+                  <Button variant="primary" onClick={() => onPlay(s.id)}>
                     Reproduzir
                   </Button>
-                  <Button
-                    variant="ghost"
-                    onClick={() => onExport(s.id)}
-                  >
+                  <Button variant="ghost" onClick={() => onExport(s.id)}>
                     Exportar
                   </Button>
                 </div>
@@ -421,11 +224,17 @@ type E7View = 'listagem' | 'replay'
 
 export function E7Replay() {
   const goTo = useSimulator((s) => s.goTo)
-  const [view, setView] = useState<E7View>('listagem')
-  const [replayScenarioId, setReplayScenarioId] = useState<ScenarioId | null>(null)
+  // Entrada vinda da E5 (replayTarget definido) → reproduz direto o cenário
+  // atual; entrada pelo menu (null) → abre a lista de gravações.
+  const replayTarget = useSimulator((s) => s.replayTarget)
+  const [view, setView] = useState<E7View>(replayTarget ? 'replay' : 'listagem')
+  const [replayScenarioId, setReplayScenarioId] = useState<ScenarioId | null>(replayTarget)
+  // origem do replay atual: vindo da E5 (volta ao resultado) ou da lista (volta à lista)
+  const [fromResult, setFromResult] = useState<boolean>(!!replayTarget)
 
   function handlePlay(id: ScenarioId) {
     setReplayScenarioId(id)
+    setFromResult(false)
     setView('replay')
   }
 
@@ -438,7 +247,7 @@ export function E7Replay() {
     return (
       <ReplayPlayer
         scenarioId={replayScenarioId}
-        onBack={handleBackToList}
+        onBack={fromResult ? () => goTo('e5-result') : handleBackToList}
       />
     )
   }

@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { Button, Badge, Card } from '../../ui'
+import { useState, useRef, useEffect } from 'react'
+import { Button, Card } from '../../ui'
 import { Screen } from '../shell/Screen'
 import { useSimulator } from '../store'
 import './E6Export.css'
@@ -42,6 +42,17 @@ const DISCLAIMER_CA08 =
   'Documento gerado em ambiente de simulação técnico-institucional. Valores são representações ' +
   'simbólicas e plausíveis, não medições validadas (PRD CA-08).'
 
+// Disclaimer por formato — exibido numa barra única no rodapé do conteúdo
+const DISCLAIMER: Record<FormatId, string> = {
+  pdf: DISCLAIMER_CA08,
+  gis:
+    'Pacote geoespacial simbólico. Coordenadas e datums são simulados para fins demonstrativos; ' +
+    'integração com GIS de produção depende da implementação definitiva.',
+  bim:
+    'Pacote BIM simbólico. Elementos IFC são modelos paramétricos simulados para fins demonstrativos ' +
+    'de integração; não representam medição estrutural validada.',
+}
+
 const FORMATS: { id: FormatId; tag: string; tone: 'info' | 'success' | 'warning'; name: string; desc: string }[] = [
   {
     id: 'pdf',
@@ -69,6 +80,10 @@ const FORMATS: { id: FormatId; tag: string; tone: 'info' | 'success' | 'warning'
 export function E6Export() {
   const goTo = useSimulator((s) => s.goTo)
   const [active, setActive] = useState<FormatId | null>(null)
+  const [exporting, setExporting] = useState(false)
+  const [toast, setToast] = useState(false)
+  const timers = useRef<number[]>([])
+  useEffect(() => () => timers.current.forEach(clearTimeout), [])
 
   const handleBack = () => {
     if (active !== null) {
@@ -76,6 +91,21 @@ export function E6Export() {
     } else {
       goTo('e5-result')
     }
+  }
+
+  // Geração SIMBÓLICA (D-008 / Layout §3): animação de geração + toast
+  // "Arquivo simbólico gerado" — sem download real / binário.
+  const handleExport = () => {
+    if (exporting) return
+    setToast(false)
+    setExporting(true)
+    timers.current.push(
+      window.setTimeout(() => {
+        setExporting(false)
+        setToast(true)
+        timers.current.push(window.setTimeout(() => setToast(false), 3200))
+      }, 1200),
+    )
   }
 
   return (
@@ -108,10 +138,8 @@ export function E6Export() {
               <div className="e6-card" key={f.id}>
                 <Card>
                   <div className="e6-card-inner">
-                    <div className="e6-card-top">
-                      <Badge tone={f.tone}>{f.tag}</Badge>
-                      <span className="e6-card-name">{f.name}</span>
-                    </div>
+                    <div className={`e6-card-icon e6-card-icon--${f.tone}`} aria-hidden="true">{f.tag}</div>
+                    <span className="e6-card-name">{f.name}</span>
                     <p className="e6-card-desc">{f.desc}</p>
                     <Button variant="secondary" onClick={() => setActive(f.id)}>
                       Pré-visualizar →
@@ -142,9 +170,6 @@ export function E6Export() {
                 </div>
               ))}
             </div>
-            <div className="e6-disclaimer" role="note">
-              {DISCLAIMER_CA08}
-            </div>
           </div>
         )}
 
@@ -168,10 +193,6 @@ export function E6Export() {
                 <div className="e6-meta-row">
                   <span>Missão</span>
                   <strong>…-142</strong>
-                </div>
-                <div className="e6-disclaimer" role="note">
-                  Pacote geoespacial simbólico. Coordenadas e datums são simulados para fins
-                  demonstrativos; integração com GIS de produção depende da implementação definitiva.
                 </div>
               </div>
             </div>
@@ -199,26 +220,47 @@ export function E6Export() {
                   <span>Sistema</span>
                   <strong>coordenadas locais</strong>
                 </div>
-                <div className="e6-disclaimer" role="note">
-                  Pacote BIM simbólico. Elementos IFC são modelos paramétricos simulados para fins
-                  demonstrativos de integração; não representam medição estrutural validada.
-                </div>
               </div>
             </div>
           </div>
         )}
 
+        {/* ---- Disclaimer (rodapé do conteúdo, acima da barra de ações) ---- */}
+        {active !== null && (
+          <div className="e6-disclaimer" role="note">{DISCLAIMER[active]}</div>
+        )}
+
         {/* ---- Barra de ações ---- */}
         <div className="e6-actions">
-          <Button variant="ghost" onClick={handleBack}>
+          <Button variant="secondary" onClick={handleBack}>
             {active !== null ? '← Formatos' : '← Voltar ao resultado'}
           </Button>
           {active !== null && (
-            <Button variant="primary" disabled title="Sem download real (D-008)">
-              Exportar arquivo
+            <Button
+              variant="primary"
+              onClick={handleExport}
+              disabled={exporting}
+              title="Geração simbólica — sem download real (D-008)"
+            >
+              {exporting ? (
+                <>
+                  <span className="e6-spinner" aria-hidden="true" />
+                  Gerando…
+                </>
+              ) : (
+                'Exportar arquivo'
+              )}
             </Button>
           )}
         </div>
+
+        {/* Toast de geração simbólica (sem arquivo real) */}
+        {toast && (
+          <div className="e6-toast" role="status">
+            <span className="e6-toast-check" aria-hidden="true">✓</span>
+            Arquivo simbólico gerado
+          </div>
+        )}
       </div>
     </Screen>
   )
