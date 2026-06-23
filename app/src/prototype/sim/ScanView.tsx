@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import { Progress, HudMetric, SensorPanel, SensorGraph, DetectionBadge } from '../../ui'
-import type { SensorKind, ImuMotion, GprSignature } from '../../ui'
+import type { SensorKind, ImuMotion, GprSignature, GnssMarker } from '../../ui'
 import type { Modality } from '../data/types'
 import type { ScanState } from './useScan'
 import './ScanView.css'
@@ -33,7 +33,7 @@ function SensorPanelFull({
   tag: string
   note?: string
   progress: number
-  markers?: number[]
+  markers?: GnssMarker[]
   signatures?: GprSignature[]
   emiPeaks?: number[]
   motion?: ImuMotion
@@ -125,7 +125,7 @@ export function ScanView({ state, banner, controls }: ScanViewProps) {
           <SensorPanelFull kind="gpr" title="GPR" tag="eco / reflexão" note={state.sensorNotes.gpr} progress={state.progressExact} signatures={state.gprSignatures} />
           <SensorPanelFull kind="emi" title="EMI" tag="condutividade" note={state.sensorNotes.emi} progress={state.progressExact} emiPeaks={state.detectionPeaks} />
           <SensorPanelFull kind="imu" title="IMU" tag="orientação 6 eixos" note={state.sensorNotes.imu} progress={state.progressExact} motion={IMU_MOTION[state.modality]} disturbances={state.detectionPeaks} />
-          <SensorPanelFull kind="gnss" title="GNSS / RTK" tag="posicionamento" note={state.sensorNotes.gnss} progress={state.progressExact} markers={state.detectionPeaks} />
+          <SensorPanelFull kind="gnss" title="GNSS / RTK" tag="posicionamento" note={state.sensorNotes.gnss} progress={state.progressExact} markers={state.gnssMarkers} />
         </div>
 
         {/* Right rail */}

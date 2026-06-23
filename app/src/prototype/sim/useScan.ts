@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react'
-import type { GprSignature } from '../../ui'
-import type { ScenarioId, Modality } from '../data/types'
+import type { GprSignature, GnssMarker } from '../../ui'
+import type { ScenarioId, Modality, TargetType } from '../data/types'
 import { getScenario } from '../data/scenarios'
 import { getTimeline } from '../data/timeline'
 import type { TimelineEvent } from '../data/timeline'
@@ -9,6 +9,14 @@ import { useTimeline } from '../engine/useTimeline'
 // ---------------------------------------------------------------------------
 // Pure helpers (exported for unit tests)
 // ---------------------------------------------------------------------------
+
+// Rótulo do marcador GNSS por tipo de material (Roteiro: [M] [Au] [V] [H2O])
+const GNSS_MARKER_LABEL: Record<TargetType, string> = {
+  magnetita: 'M',
+  ouro: 'Au',
+  vazio: 'V',
+  agua: 'H2O',
+}
 
 export function batteryFromElapsed(elapsed: number, durationSec: number): number {
   return Math.max(0, Math.round(98 - (elapsed / durationSec) * 8))
@@ -44,6 +52,8 @@ export type ScanState = {
   gprSignatures: GprSignature[]
   /** instantes (0..1) dos achados já revelados — picos no EMI e agitação no IMU */
   detectionPeaks: number[]
+  /** marcadores dos achados na trajetória GNSS (instante + rótulo do material) */
+  gnssMarkers: GnssMarker[]
   sensorNotes: Partial<Record<'gpr' | 'emi' | 'imu' | 'gnss', string>>
   detections: ScanDetection[]
   fusionNote: string | null
@@ -176,12 +186,19 @@ export function useScan(
       return { depth: tgt?.depth ?? 2.5, kind: 'hyperbola', at } as GprSignature
     })
 
-  // Instantes dos achados (fração da varredura). Alimentam o EMI (picos de
-  // condutividade) e o IMU (agitação ao re-passar sobre o ponto) no mesmo eixo
-  // temporal — ligado à narrativa de cada cenário.
-  const detectionPeaks = events
+  // Achados revelados (fração da varredura + rótulo do material). Alimentam o
+  // GNSS (marcador rotulado), o EMI (pico de condutividade) e o IMU (agitação)
+  // no mesmo eixo temporal — ligado à narrativa de cada cenário.
+  const gnssMarkers: GnssMarker[] = events
     .filter((e) => e.kind === 'detection' && e.t <= elapsed)
-    .map((e) => Math.max(0, Math.min(1, e.t / f2EndSec)))
+    .map((e) => {
+      const tgt = scenario.targets.find((t) => t.label === e.targetRef)
+      return {
+        at: Math.max(0, Math.min(1, e.t / f2EndSec)),
+        label: tgt ? GNSS_MARKER_LABEL[tgt.type] : 'M',
+      }
+    })
+  const detectionPeaks = gnssMarkers.map((m) => m.at)
 
   return {
     progress: Math.round(progressExact),
@@ -194,6 +211,7 @@ export function useScan(
     modality: scenario.modality,
     gprSignatures,
     detectionPeaks,
+    gnssMarkers,
     sensorNotes,
     detections,
     fusionNote,

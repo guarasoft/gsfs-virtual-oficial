@@ -16,13 +16,19 @@ export interface GprSignature {
   at?: number
 }
 
+/** marcador de achado na trajetória GNSS: instante (0..1) + rótulo do tipo
+    (M Magnetita · Au Ouro · V Vazio · H2O Água) */
+export interface GnssMarker {
+  at: number
+  label: string
+}
+
 export interface SensorGraphProps {
   kind: SensorKind
   /** progresso da varredura 0..100 — avança a varredura / trajetória */
   progress: number
-  /** GNSS: instantes (0..1) dos achados → marcador na trajetória no ponto/tempo
-      em que cada achado ocorreu */
-  markers?: number[]
+  /** GNSS: marcadores dos achados (ponto/tempo + rótulo do material) */
+  markers?: GnssMarker[]
   /** GPR: assinaturas já reveladas (cada achado de GPR no seu instante) */
   signatures?: GprSignature[]
   /** EMI: instantes (0..1) dos achados já revelados → picos na curva, cada um
@@ -278,15 +284,18 @@ function pointAt(pts: [number, number][], frac: number): [number, number] {
   return pts[pts.length - 1]
 }
 
-function Gnss({ progress, markers }: { progress: number; markers: number[] }) {
+function Gnss({ progress, markers }: { progress: number; markers: GnssMarker[] }) {
   const frac = clamp(progress, 0, 100) / 100
   const d = 'M ' + GNSS_PTS.map((p) => p.join(' ')).join(' L ')
   const head = pointAt(GNSS_PTS, frac)
   // cada marcador no ponto da trajetória onde a varredura estava no instante do
-  // achado (só os já alcançados pela varredura)
+  // achado (só os já alcançados pela varredura), com o rótulo do material
   const plotted = markers
-    .filter((f) => f <= frac)
-    .map((f) => pointAt(GNSS_PTS, f))
+    .filter((m) => m.at <= frac)
+    .map((m) => {
+      const [x, y] = pointAt(GNSS_PTS, m.at)
+      return { x, y, label: m.label }
+    })
   return (
     <svg viewBox="0 0 200 100" preserveAspectRatio="none" className="svg-gnss">
       {/* grade do mapa */}
@@ -295,11 +304,11 @@ function Gnss({ progress, markers }: { progress: number; markers: number[] }) {
       {/* trajetória: pista + revelado proporcional ao progresso */}
       <path className="gnss-track-bg" d={d} />
       <path className="gnss-track" d={d} pathLength={100} style={{ strokeDashoffset: 100 - clamp(progress, 0, 100) }} />
-      {/* marcadores de detecção plotados */}
-      {plotted.map(([x, y], i) => (
-        <g key={i} className="gnss-marker" transform={`translate(${x} ${y})`}>
-          <circle r="4" />
-          <text x="0" y="2.6">M</text>
+      {/* marcadores de detecção plotados — rótulo do material acima do ponto */}
+      {plotted.map((m, i) => (
+        <g key={i} className="gnss-marker" transform={`translate(${m.x} ${m.y})`}>
+          <circle r="2.6" />
+          <text x="0" y="-4">{m.label}</text>
         </g>
       ))}
       {/* cabeça da varredura (posição atual) */}

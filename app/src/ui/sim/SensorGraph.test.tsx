@@ -29,14 +29,18 @@ describe('SensorGraph', () => {
     expect(container.querySelectorAll('.gpr-hline').length).toBe(1)
   })
 
-  it('GNSS plota um marcador por achado já alcançado pelo progresso', () => {
-    const { container } = render(<SensorGraph kind="gnss" progress={100} markers={[0.3, 0.6]} />)
+  it('GNSS plota um marcador rotulado por achado já alcançado pelo progresso', () => {
+    const { container, getByText } = render(
+      <SensorGraph kind="gnss" progress={100} markers={[{ at: 0.3, label: 'Au' }, { at: 0.6, label: 'H2O' }]} />,
+    )
     expect(container.querySelectorAll('.gnss-marker').length).toBe(2)
+    expect(getByText('Au')).toBeTruthy()
+    expect(getByText('H2O')).toBeTruthy()
   })
 
   it('GNSS não plota marcador de achado ainda não alcançado pelo progresso', () => {
     // progress 5% → nenhum achado (em 0.3/0.6) foi atingido ainda
-    const { container } = render(<SensorGraph kind="gnss" progress={5} markers={[0.3, 0.6]} />)
+    const { container } = render(<SensorGraph kind="gnss" progress={5} markers={[{ at: 0.3, label: 'M' }, { at: 0.6, label: 'V' }]} />)
     expect(container.querySelectorAll('.gnss-marker').length).toBe(0)
   })
 
