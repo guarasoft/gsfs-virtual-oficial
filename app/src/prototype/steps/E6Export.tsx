@@ -42,6 +42,17 @@ const DISCLAIMER_CA08 =
   'Documento gerado em ambiente de simulação técnico-institucional. Valores são representações ' +
   'simbólicas e plausíveis, não medições validadas (PRD CA-08).'
 
+// Disclaimer por formato — exibido numa barra única no rodapé do conteúdo
+const DISCLAIMER: Record<FormatId, string> = {
+  pdf: DISCLAIMER_CA08,
+  gis:
+    'Pacote geoespacial simbólico. Coordenadas e datums são simulados para fins demonstrativos; ' +
+    'integração com GIS de produção depende da implementação definitiva.',
+  bim:
+    'Pacote BIM simbólico. Elementos IFC são modelos paramétricos simulados para fins demonstrativos ' +
+    'de integração; não representam medição estrutural validada.',
+}
+
 const FORMATS: { id: FormatId; tag: string; tone: 'info' | 'success' | 'warning'; name: string; desc: string }[] = [
   {
     id: 'pdf',
@@ -159,9 +170,6 @@ export function E6Export() {
                 </div>
               ))}
             </div>
-            <div className="e6-disclaimer" role="note">
-              {DISCLAIMER_CA08}
-            </div>
           </div>
         )}
 
@@ -185,10 +193,6 @@ export function E6Export() {
                 <div className="e6-meta-row">
                   <span>Missão</span>
                   <strong>…-142</strong>
-                </div>
-                <div className="e6-disclaimer" role="note">
-                  Pacote geoespacial simbólico. Coordenadas e datums são simulados para fins
-                  demonstrativos; integração com GIS de produção depende da implementação definitiva.
                 </div>
               </div>
             </div>
@@ -216,13 +220,14 @@ export function E6Export() {
                   <span>Sistema</span>
                   <strong>coordenadas locais</strong>
                 </div>
-                <div className="e6-disclaimer" role="note">
-                  Pacote BIM simbólico. Elementos IFC são modelos paramétricos simulados para fins
-                  demonstrativos de integração; não representam medição estrutural validada.
-                </div>
               </div>
             </div>
           </div>
+        )}
+
+        {/* ---- Disclaimer (rodapé do conteúdo, acima da barra de ações) ---- */}
+        {active !== null && (
+          <div className="e6-disclaimer" role="note">{DISCLAIMER[active]}</div>
         )}
 
         {/* ---- Barra de ações ---- */}

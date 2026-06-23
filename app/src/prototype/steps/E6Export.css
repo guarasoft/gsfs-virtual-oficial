@@ -244,7 +244,7 @@
   font-family: var(--font-secondary);
 }
 
-/* Disclaimer CA-08 */
+/* Disclaimer CA-08 — barra única no rodapé do conteúdo, acima da barra de ações */
 .e6-disclaimer {
   font-size: 11px;
   color: var(--color-text-muted);
@@ -254,7 +254,7 @@
   padding: var(--space-3) var(--space-4);
   line-height: 1.55;
   background: var(--color-bg-surface);
-  margin-top: var(--space-3);
+  margin-top: 0;
 }
 
 /* Barra de ações */
