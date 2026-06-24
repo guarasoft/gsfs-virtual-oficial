@@ -37,10 +37,9 @@ describe('E5Result — tela de Resultado hi-fi', () => {
     expect(screen.getByText('3,0 m · 65°')).toBeTruthy()
   })
 
-  it('exibe o GSFS_RECORD ID', () => {
+  it('exibe o GSFS_RECORD ID com a data real (formato GSFS-RECORD-AAAA-MM-DD-142)', () => {
     render(<E5Result />)
-    // O ID aparece em dois lugares: meta header e legenda
-    const occurrences = screen.getAllByText('GSFS-RECORD-2026-06-03-142')
+    const occurrences = screen.getAllByText(/^GSFS-RECORD-\d{4}-\d{2}-\d{2}-142$/)
     expect(occurrences.length).toBeGreaterThanOrEqual(1)
   })
 

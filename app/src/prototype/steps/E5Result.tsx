@@ -5,7 +5,6 @@ import { useSimulator } from '../store'
 import { getScenario } from '../data/scenarios'
 import './E5Result.css'
 
-const RECORD_ID = 'GSFS-RECORD-2026-06-03-142'
 const HASH = 'a9f2c71d4e8b3f06d21a7c95e0b48f1c6d3a92e7b8045fc1ad9e23b6708c4f5d'
 const VOLUME = '2,4 m³'
 
@@ -28,6 +27,10 @@ export function E5Result() {
   const [now] = useState(() => new Date())
   const DATA = now.toLocaleDateString('pt-BR')
   const HORA = now.toLocaleTimeString('pt-BR')
+  // ID do GSFS_RECORD com a data real (formato GSFS-RECORD-AAAA-MM-DD-NNN);
+  // o sufixo NNN (sessão) permanece simbólico, assim como o hash.
+  const pad = (n: number) => String(n).padStart(2, '0')
+  const RECORD_ID = `GSFS-RECORD-${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}-142`
 
   const assets = scenario.targets.map((t) => ({
     name: t.label,
