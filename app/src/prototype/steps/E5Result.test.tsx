@@ -49,9 +49,15 @@ describe('E5Result — tela de Resultado hi-fi', () => {
     expect(screen.getByText('Data')).toBeTruthy()
     expect(screen.getByText('Hora')).toBeTruthy()
     expect(screen.getByText('Volume cúbico')).toBeTruthy()
-    expect(screen.getByText('03/06/2026')).toBeTruthy()
-    expect(screen.getByText('14:34:31')).toBeTruthy()
     expect(screen.getByText('2,4 m³')).toBeTruthy()
+  })
+
+  it('exibe Data e Hora reais (não estáticas) no formato pt-BR', () => {
+    render(<E5Result />)
+    // Data real DD/MM/AAAA
+    expect(screen.getByText(/^\d{2}\/\d{2}\/\d{4}$/)).toBeTruthy()
+    // Hora real HH:MM:SS (também aparece no relógio do rodapé → getAllByText)
+    expect(screen.getAllByText(/^\d{2}:\d{2}:\d{2}$/).length).toBeGreaterThanOrEqual(1)
   })
 
   it('exibe o hash SHA-256', () => {

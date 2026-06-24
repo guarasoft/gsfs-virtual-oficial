@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Button, Card, Panel } from '../../ui'
 import { Screen } from '../shell/Screen'
 import { useSimulator } from '../store'
@@ -6,8 +7,6 @@ import './E5Result.css'
 
 const RECORD_ID = 'GSFS-RECORD-2026-06-03-142'
 const HASH = 'a9f2c71d4e8b3f06d21a7c95e0b48f1c6d3a92e7b8045fc1ad9e23b6708c4f5d'
-const DATA = '03/06/2026'
-const HORA = '14:34:31'
 const VOLUME = '2,4 m³'
 
 function formatDepth(d: number): string {
@@ -23,6 +22,12 @@ export function E5Result() {
 
   const scenarioId = selectedScenarioId ?? 'c1'
   const scenario = getScenario(scenarioId)
+
+  // Data/hora reais da conclusão da operação (PRD §6 / Teto: timestamp real),
+  // capturadas ao abrir o resultado — como na E3, que traz a data atual.
+  const [now] = useState(() => new Date())
+  const DATA = now.toLocaleDateString('pt-BR')
+  const HORA = now.toLocaleTimeString('pt-BR')
 
   const assets = scenario.targets.map((t) => ({
     name: t.label,
