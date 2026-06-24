@@ -2,7 +2,7 @@
 
 **Projeto:** GSFS Virtual — Simulador Técnico-Institucional
 **Documento:** Radar/dashboard do projeto (documento vivo)
-**Última atualização:** 2026-06-15
+**Última atualização:** 2026-06-24
 **Responsável Técnico:** Jonathan — Result
 
 ---
@@ -11,11 +11,11 @@
 
 | Campo | Valor |
 |---|---|
-| **Fase atual** | **Fase 2 — Design visual e UI Kit. ✅ APROVADA PARA CONTINUIDADE pelo cliente (11/06).** UI Kit entregue (09/06); feedback do cliente (6 pontos de alinhamento) incorporado (11/06); **pacote documental de fechamento/governança entregue** (`entrega-fase2-cliente/`, [D-019]) |
+| **Fase atual** | **Fase 4 — Integração das peças 3D.** Fase 3 (telas em alta fidelidade) **concluída e VALIDADA pelo cliente em 24/06**; aguardando o envio dos 5 vídeos 3D pela **Guarasoft (Daniel)** para integração no fechamento (E5). |
 | **Saúde da fase** | 🟢 Verde |
-| **Próximo marco** | **Iniciar a Fase 3** — vestir os wireframes em alta fidelidade (`/ui-kit` → `/prototype`), incorporando [D-017] (replay E7) e as 4 notas de continuidade. (Acesso ao repositório reservado para a entrega final — D-019.) |
-| **Próxima fase** | Fase 3 — Telas em alta fidelidade (código) |
-| **Bloqueios ativos** | **Nenhum.** Fase 2 aprovada; [D-017] e as 4 notas (identidade, C5 premium, Teto, exportação simbólica) serão incorporados ao vestir os wireframes na Fase 3. |
+| **Próximo marco** | **Receber e integrar os 5 vídeos 3D** no bloco de resultado (E5), substituindo os placeholders. Briefing técnico de produção entregue (`discovery/briefing-videos-3d/`). |
+| **Próxima fase** | Fase 5 — Testes e polimento |
+| **Bloqueios ativos** | **Dependência externa (EXT-02):** entrega dos 5 vídeos 3D pelo Daniel. Não bloqueia o restante da Fase 4 enquanto não chegam (integração com placeholders já pronta). |
 
 ---
 
@@ -26,8 +26,8 @@
 | **Fase 0** — Cenários e desbloqueio de pendências | 3 dias | ✅ Concluída | 2026-05-26 | 2026-06-02 |
 | Fase 1 — Arquitetura de informação e fluxos | 1 semana | ✅ Concluída (aprovada pelo cliente em 05/06) | 2026-06-02 | 2026-06-05 |
 | Fase 2 — Design visual e UI Kit | 1 semana | ✅ Aprovada para continuidade pelo cliente (11/06); pacote de fechamento entregue (D-019) | 2026-06-05 | 2026-06-11 |
-| Fase 3 — Telas em alta fidelidade (código) | 3 semanas | ⚪ Não iniciada (próxima) | — | — |
-| Fase 4 — Integração das peças 3D | 1 semana | ⚪ Não iniciada | — | — |
+| Fase 3 — Telas em alta fidelidade (código) | 3 semanas | ✅ **Concluída e VALIDADA pelo cliente (24/06)** — E1–E7 em alta fidelidade | 2026-06-16 | 2026-06-24 |
+| Fase 4 — Integração das peças 3D | 1 semana | 🟡 **Em andamento (iniciada 24/06)** — aguardando os 5 vídeos 3D (Guarasoft/Daniel) | 2026-06-24 | — |
 | Fase 5 — Testes e polimento | 1 semana | ⚪ Não iniciada | — | — |
 
 Legenda: ⚪ Não iniciada · 🟡 Em andamento · ✅ Concluída · 🔴 Bloqueada
@@ -86,6 +86,9 @@ Conforme cronograma + item 7 derivado da decisão de stack ([D-001](Decisoes_GSF
 | 2026-06-11 | **Fase 2 APROVADA PARA CONTINUIDADE pelo cliente.** Cliente validou a direção do UI Kit (frase institucional, controles laterais Voltar/Ações, replay, métricas, GSFS_RECORD, Teto de Métricas). Pedido associado ao fechamento: garantia de entrega/acesso organizado ao versionamento → atendido por **pacote documental** (`entrega-fase2-cliente/`): Fechamento da Fase 2, Catálogo do UI Kit, Mapa do Repositório, Instruções de Execução, Extrato de Versionamento + 12 screenshots da rota `/ui-kit`. Acesso ao repo reservado para a entrega final | [D-019](Decisoes_GSFS_Virtual.md#d-019--governanca-da-fase-2-pacote-documental-em-vez-de-acesso-ao-repositorio) · `entrega-fase2-cliente/` |
 | 2026-06-15 | **Briefing complementar dos vídeos 3D (cliente) recebido e conferido.** Alta aderência às fontes normativas (alvos/profundidades/ângulos/ordem das detecções conferem nos 5 cenários; CA-06 íntegro no C4; regras visuais respeitam o Teto de Métricas e o CA-08). Ponto estrutural alinhado com o cliente: **vídeo 3D permanece no fechamento (E5)** — a varredura (E4) e o replay (E7) seguem 2D, **sem alteração de IA** ([D-020]). Confirmados ainda: proporção 16:10 com área segura, e preservação do painel showcase dos 5 atributos do C5 (responsabilidade da UI). Cliente **reemitiu o briefing ajustado no mesmo dia**, incorporando os 4 pontos; conferido pela Result e **aprovado — produção destravada**. Dois detalhes mínimos **resolvidos pela Result**: mantém-se o **nome validado do C5** no app; e a **E7/Replay** reproduz a varredura 2D (CA-07) + dados (D-017) **e, ao final, apresenta o bloco 3D de resultado da E5** (reaproveita o ativo; anotado na IA da Fase 1 como refinamento da Fase 3). Vídeos seguem como insumo da Fase 4 (não-bloqueante). | [D-020](Decisoes_GSFS_Virtual.md#d-020--videos-3d-aplicados-no-fechamento-e5-arquitetura-da-fase-1-mantida) · [Roteiro](Roteiro_Tecnico_GSFS_Virtual.md) · [Teto](Teto_Metricas_GSFS_Virtual.md) |
 | 2026-06-11 | **Feedback do cliente na Fase 2 — 6 pontos de alinhamento incorporados.** **(1)** fontes editáveis — esclarecido (entregável já é código/tokens). **(2)** frase de amostra da Tipografia reescrita para versão institucional. **(3)** **símbolo isolado da marca reintroduzido como ativo oficial** nos 3 tratamentos (RGB/mono-branco/mono-preto), extraído em vetor do lockup horizontal e exposto no UI Kit — [D-018]. **(4)** **abas laterais "Voltar"/"Ações"** desenhadas no UI Kit como componente `EdgeTab` (seção Botões) — sem alterar a IA da Fase 1. **(5)** replay — esclarecido (já espelha toda a varredura, D-017). **(6)** Teto de Métricas — reafirmado (política vigente, D-009). | [D-018](Decisoes_GSFS_Virtual.md#d-018--simbolo-isolado-reintroduzido-como-ativo-oficial-para-usos-compactos-pedido-do-cliente) · [Identidade](../brand-assets/guidelines/Identidade_Visual_GSFS_Virtual.md) · `app/src/ui/` |
+| 2026-06-24 | **Fase 3 concluída e VALIDADA pelo cliente.** Telas E1–E7 em alta fidelidade: Fundação (E1 Boot · E2 Menu · E3 Setup) + **E4 Varredura** (4 gráficos de sensor determinísticos — GPR/EMI/IMU/GNSS —, HUD e eventos), **E5 Resultado** (bloco 3D + registro), **E6 Exportação** (simbólica) e **E7 Replay** (espelha a varredura 2D + tarja). Único ajuste pós-validação: **data/hora/ID reais na E5**. | [Decisoes](Decisoes_GSFS_Virtual.md) (D-016/D-017/D-020) · `app/` |
+| 2026-06-24 | **Briefing técnico dos 5 vídeos 3D** documentado para a produção (Guarasoft/Daniel): regras gerais + 1 doc por cenário (alvos, profundidades, ângulos, dimensões, trajetória, ordem de revelação, duração/loop 20s·30s, cor de fundo e escala do container). | `discovery/briefing-videos-3d/` · [D-020](Decisoes_GSFS_Virtual.md#d-020--videos-3d-aplicados-no-fechamento-e5-arquitetura-da-fase-1-mantida) |
+| 2026-06-24 | **Fase 4 iniciada** — integração das peças 3D; **aguardando o envio dos 5 vídeos pela Guarasoft (Daniel)**. | [Cronograma](Cronograma_GSFS_Virtual.md) |
 
 ---
 
@@ -96,7 +99,8 @@ Conforme cronograma + item 7 derivado da decisão de stack ([D-001](Decisoes_GSF
 1. ✅ **Fase 1 concluída e aprovada pelo cliente** (05/06) — wireframes das 7 etapas + documento de IA.
 2. ✅ **UI Kit da Fase 2 entregue** (09/06) — galeria de design system + biblioteca de 23 componentes.
 3. ✅ **Fase 2 aprovada para continuidade pelo cliente** (11/06); **pacote documental de fechamento/governança entregue** (`entrega-fase2-cliente/`, [D-019]).
-4. ➡️ **Iniciar a Fase 3:** vestir os wireframes em alta fidelidade importando `app/src/ui/`, incorporando o replay enriquecido [D-017] (E7) e as 4 notas de continuidade (identidade, C5 premium, Teto de Métricas, exportação simbólica).
+4. ✅ **Fase 3 concluída e validada pelo cliente** (24/06) — telas E1–E7 em alta fidelidade; ajuste pós-validação (data/hora/ID reais na E5) aplicado.
+5. ➡️ **Fase 4 — Integração das peças 3D:** aguardar o envio dos 5 vídeos pela Guarasoft (Daniel) e integrá-los no fechamento (E5), substituindo os placeholders. Briefing de produção entregue (`discovery/briefing-videos-3d/`).
 
 ### Fase 2 — Design visual e UI Kit (✅ aprovada para continuidade)
 
@@ -107,12 +111,16 @@ Entregue:
 - Acessibilidade dos campos (rótulos associados, erro texto+ícone, foco visível) atendendo WCAG.
 - Hub/portal de review vestido com a paleta da marca.
 
-### Fase 3 — Telas em alta fidelidade (próxima)
+### Fase 3 — Telas em alta fidelidade (✅ concluída e validada em 24/06)
 
-- Vestir os wireframes da Fase 1 com a linguagem visual, importando a biblioteca `app/src/ui/` (sobre `/ui-kit` e depois `/prototype`).
-- Incorporar o replay enriquecido [D-017] (E7) e as 4 notas de continuidade.
+- Wireframes vestidos em alta fidelidade (E1–E7) sobre `/prototype`, importando `app/src/ui/`; replay enriquecido [D-017] (E7) e as 4 notas de continuidade incorporados.
+- Refino da E4 (Varredura): 4 gráficos de sensor determinísticos (GPR/EMI/IMU/GNSS) + aderência ao Roteiro (FIX por cenário, barra a 100% no fim da F2).
+- Ajuste pós-validação aplicado: data/hora/ID reais na E5.
 
-A identidade está 100% validada e o UI Kit está pronto, então a Fase 3 não terá bloqueio de insumo de design.
+### Fase 4 — Integração das peças 3D (atual)
+
+- Aguardar e integrar os **5 vídeos 3D** (Guarasoft/Daniel) no bloco de resultado (E5), substituindo os placeholders.
+- Briefing técnico de produção entregue: `discovery/briefing-videos-3d/` (regras gerais + 1 por cenário).
 
 ---
 
@@ -123,7 +131,7 @@ A identidade está 100% validada e o UI Kit está pronto, então a Fase 3 não t
 | EXT-01 | Validação da identidade visual proposta (cliente) | Aprovação externa | ✅ Resolvido — aprovada em 28/05 (ID-V1/V2/V3/V5) | Design system proposto pela Result ([D-010](Decisoes_GSFS_Virtual.md#d-010--identidade-visual-documentar-entregue--propor-design-system-completo-result)); resta apenas CL-01 |
 | EXT-04 | Arquivos-fonte vetoriais / alta-res dos logos (cliente) | Insumo externo | ✅ **Resolvido em 02/06** — logos definitivos entregues e validados (CL-01, D-012) | — |
 | INT-01 | Tarefas Result de identidade (fontes + favicon.ico) | Tarefa interna Result | ✅ Resolvido | Concluído em 2026-05-26 (PR-04/05/08) |
-| EXT-02 | Produção dos 5 vídeos 3D | Insumo externo | 🟢 Produtor definido — **Guarasoft/Daniel** (D-013). **Briefing complementar ajustado recebido e conferido em 15/06 — aderente; aprovado pela Result, produção destravada (D-020)** (3D no fechamento E5, proporção 16:10, painel showcase do C5 pela UI). Vídeos são insumo da Fase 4 | Fase 1 não aguarda as specs; integrar com placeholders durante Fase 3 |
+| EXT-02 | Produção dos 5 vídeos 3D | Insumo externo | 🟡 **Dependência ativa da Fase 4.** Produtor: **Guarasoft/Daniel** (D-013). Briefing complementar aprovado (D-020, 15/06) + **briefing técnico detalhado da Result entregue em 24/06** (`discovery/briefing-videos-3d/`). **Aguardando o envio dos vídeos.** | Integração com placeholders pronta (E5); substituir pelos vídeos ao chegarem |
 | EXT-03 | Validação do cliente sobre Matriz/Roteiro/Teto/Identidade | Aprovação externa | ✅ **Resolvido em 02/06** — todas aprovadas, incl. VR-05 (C5 v0.2) | — |
 
 ---
@@ -134,7 +142,7 @@ A identidade está 100% validada e o UI Kit está pronto, então a Fase 3 não t
 |---|---|---|
 | Demora do cliente em aprovar matriz de cenários | ✅ Resolvido | Aprovada integralmente (V-01…V-05; C5 v0.2 validado em 02/06) |
 | Demora do cliente em fornecer identidade de marca | ✅ Mitigado | Identidade 100% validada; CL-01 resolvido em 02/06 (logos definitivos entregues) |
-| Atraso na entrega dos vídeos 3D | 🟢 Monitorando | Produtor definido (Guarasoft/Daniel, D-013); briefing complementar recebido e alinhado (D-020, 15/06) — produção destravada; Fase 1 não aguarda |
+| Atraso na entrega dos vídeos 3D | 🟡 Monitorando (dependência da Fase 4) | Produtor definido (Guarasoft/Daniel); briefings alinhados (D-020, 15/06) + técnico Result (24/06); **Fase 4 aguarda o envio**; integração com placeholders pronta |
 | Limitações técnicas do Figma Make | ✅ Mitigado | Acionado fallback técnico ([D-001](Decisoes_GSFS_Virtual.md#d-001--acionar-o-fallback-tecnico-typescript-em-lugar-do-figma-make)) |
 | Projetos paralelos consumindo o tempo previsto | 🟢 Monitorando | — |
 
