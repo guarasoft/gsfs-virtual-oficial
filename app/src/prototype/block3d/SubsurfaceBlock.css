@@ -1,0 +1,212 @@
+/* SubsurfaceBlock — bloco 3D do resultado (E5) */
+
+.sb3d-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+/* ---- Rótulos dos alvos (Html do R3F — herdam as fontes do app) ---- */
+.sb3d-target-label {
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.sb3d-chip {
+  display: inline-block;
+  text-align: left;
+  font-family: var(--font-secondary, 'JetBrains Mono', monospace);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: rgba(10, 19, 36, 0.82);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+}
+
+.sb3d-chip--ouro { border-color: #f5a623; color: #f5a623; }
+.sb3d-chip--magnetita { border-color: #9b6dff; color: #9b6dff; }
+.sb3d-chip--vazio { border-color: #a6b2c6; color: #a6b2c6; }
+.sb3d-chip--agua { border-color: #2bc8d9; color: #2bc8d9; }
+.sb3d-chip--confirmado { border-color: #7ed321; color: #7ed321; }
+.sb3d-chip--descartado {
+  border-color: #e5484d;
+  color: #e5484d;
+  text-decoration: line-through;
+  opacity: 0.85;
+}
+.sb3d-chip--zona {
+  border-color: #c7363b;
+  color: #c7363b;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+}
+
+.sb3d-chip-name {
+  display: block;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  opacity: 0.85;
+  margin-bottom: 1px;
+}
+
+/* ---- Régua de profundidade e eixos ---- */
+.sb3d-ruler-label {
+  pointer-events: none;
+  font-family: var(--font-secondary, 'JetBrains Mono', monospace);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+/* ---- Legenda gerada pelo gráfico (colorbar + limiares + materiais) ---- */
+.sb3d-legend {
+  position: absolute;
+  left: 50%;
+  bottom: 10px;
+  transform: translateX(-50%);
+  z-index: 30;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-3);
+  max-width: 92%;
+  padding: 5px 14px;
+  border-radius: 8px;
+  background: rgba(10, 19, 36, 0.78);
+  border: 1px solid var(--color-border);
+  font-family: var(--font-secondary, 'JetBrains Mono', monospace);
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.sb3d-legend-title {
+  font-weight: 700;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-text);
+}
+
+.sb3d-legend-ramp {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.sb3d-legend-ramp i {
+  width: 72px;
+  height: 8px;
+  border-radius: 2px;
+  display: inline-block;
+  border: 1px solid rgba(230, 234, 240, 0.18);
+}
+
+.sb3d-legend-ramp em {
+  font-style: normal;
+  font-size: 9px;
+  opacity: 0.8;
+}
+
+.sb3d-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.sb3d-legend-item--ouro { color: #f5a623; }
+.sb3d-legend-item--magnetita { color: #9b6dff; }
+.sb3d-legend-item--vazio { color: #a6b2c6; }
+.sb3d-legend-item--agua { color: #2bc8d9; }
+
+.sb3d-legend-note {
+  font-size: 9px;
+  opacity: 0.65;
+}
+
+.sb3d-legend-sep {
+  width: 1px;
+  height: 14px;
+  background: var(--color-border);
+}
+
+.sb3d-cube {
+  width: 9px;
+  height: 9px;
+  border-radius: 2px;
+  display: inline-block;
+}
+
+.sb3d-cube--alta { background: #00b6c8; }
+.sb3d-cube--media { background: rgba(0, 182, 200, 0.38); border: 1px solid rgba(0, 182, 200, 0.5); }
+.sb3d-cube--baixa { background: transparent; border: 1px solid rgba(0, 182, 200, 0.55); }
+
+/* ---- Inset de radargrama (B-scan sintético — "dado bruto" da linha) ---- */
+.sb3d-radargram {
+  position: absolute;
+  left: 12px;
+  bottom: 44px;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 6px;
+  border-radius: 8px;
+  background: rgba(10, 19, 36, 0.78);
+  border: 1px solid var(--color-border);
+  pointer-events: none;
+}
+
+.sb3d-radargram canvas {
+  width: 150px;
+  height: 65px;
+  border-radius: 4px;
+  display: block;
+}
+
+.sb3d-radargram-label {
+  font-family: var(--font-secondary, 'JetBrains Mono', monospace);
+  font-size: 8px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+/* ---- Fallback (sem WebGL / cenário sem spec) — visual do placeholder anterior ---- */
+.sb3d-fallback {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  text-align: center;
+  padding: var(--space-6);
+}
+
+.sb3d-fallback-label {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--color-text-muted);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-4) var(--space-6);
+  background: var(--color-bg);
+}
+
+.sb3d-fallback-caption {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  letter-spacing: 0.03em;
+  opacity: 0.7;
+}

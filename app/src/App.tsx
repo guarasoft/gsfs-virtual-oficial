@@ -9,6 +9,7 @@ import E4Scan from './pages/wireframe/E4Scan'
 import E5Result from './pages/wireframe/E5Result'
 import E6Export from './pages/wireframe/E6Export'
 import E7Replay from './pages/wireframe/E7Replay'
+import Block3DPreview from './pages/Block3DPreview'
 import UiKitLayout from './pages/uikit/UiKitLayout'
 import Cores from './pages/uikit/sections/Cores'
 import Tipografia from './pages/uikit/sections/Tipografia'
@@ -66,6 +67,9 @@ export default function App() {
 
       {/* Fase 3 — protótipo de alta fidelidade (simulador navegável) */}
       <Route path="/prototype" element={<Prototype />} />
+
+      {/* Fase 4 — review do bloco 3D de resultado (interno) */}
+      <Route path="/block3d" element={<Block3DPreview />} />
     </Routes>
   )
 }

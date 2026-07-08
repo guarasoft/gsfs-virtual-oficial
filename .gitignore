@@ -31,3 +31,8 @@ Thumbs.db
 .vscode/*
 !.vscode/extensions.json
 .idea/
+
+# Build do viewer single-file (gerado por npm run build:viewer)
+app/dist-viewer/
+app/vite.viewer.config.js
+app/vite.viewer.config.d.ts
