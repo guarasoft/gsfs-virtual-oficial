@@ -7,7 +7,6 @@ import {
   DEPTH_M,
   getSceneSpec,
   resolveTarget,
-  utmForTarget,
   type DegradationZone,
   type SceneSpec,
   type TargetGeom,
@@ -506,9 +505,6 @@ function TargetMesh({
   ]
     .filter(Boolean)
     .join(' · ')
-  // referência espacial da missão (checklist §3): UTM simulado, metros inteiros
-  const utm = utmForTarget(spec, geom, { x: scenario.area.x, y: scenario.area.y })
-  const coord = `${spec.origin.zone} · ${utm.e.toLocaleString('pt-BR')} E · ${utm.n.toLocaleString('pt-BR')} N`
   const side = geom.labelSide ?? (order % 2 === 0 ? -1 : 1)
   // espaçamento vertical dos callouts cresce com o nº de alvos (C5 tem 4)
   const step = 1.0 + spec.targets.length * 0.22
@@ -559,7 +555,9 @@ function TargetMesh({
           <span className={`sb3d-chip sb3d-chip--${chipClass}`}>
             <span className="sb3d-chip-name">TARGET {num} — {t.label}</span>
             {metrics}
-            <span className="sb3d-chip-coord">{coord}</span>
+            {/* coordenadas completas = ativo técnico da missão, protegido pela
+                governança do Geo-Cartucho — nunca exibidas no bloco */}
+            <span className="sb3d-chip-gov">🔒 REF. GEOESPACIAL PROTEGIDA · GEO-CARTUCHO</span>
           </span>
         </Html>
       </group>
@@ -810,9 +808,9 @@ export function SubsurfaceBlock({ scenario }: SubsurfaceBlockProps) {
       <div className="sb3d-caption">
         <strong>GSFS Virtual</strong>
         Interpretação multimodal consolidada
+        <span className="sb3d-caption-sub">Fusão GPR + EMI + IMU + GNSS/RTK</span>
         <span className="sb3d-caption-sub">
-          Fusão GPR + EMI + IMU + GNSS/RTK · malha {spec.origin.zone} {spec.origin.e.toLocaleString('pt-BR')} E ·{' '}
-          {spec.origin.n.toLocaleString('pt-BR')} N
+          Referência geoespacial protegida — liberação mediante autenticação do Geo-Cartucho
         </span>
       </div>
       <RadargramInset scenario={scenario} spec={spec} />

@@ -62,7 +62,11 @@ export interface SceneSpec {
   terrain: TerrainKind
   /** intensidade da atenuação do sinal com a profundidade (0–1) */
   attenuation: number
-  /** origem georreferenciada da malha (canto SW) — UTM simulado da missão (GNSS/RTK) */
+  /**
+   * Origem georreferenciada da malha (canto SW) — ATIVO TÉCNICO da missão,
+   * protegido pela governança do Geo-Cartucho: existe no GSFS_RECORD mas
+   * NUNCA é exibido no bloco (feedback do cliente 2026-07-10).
+   */
   origin: { zone: string; e: number; n: number }
   targets: TargetGeom[]
   zones?: DegradationZone[]
@@ -263,6 +267,11 @@ export interface ResolvedTarget {
  * Coordenada UTM simulada do alvo (metros inteiros — precisão de cm é vetada
  * pelo Teto de Métricas). Easting cresce com plot.x; Northing com o norte da
  * malha (z da cena cresce para o sul).
+ *
+ * GOVERNANÇA (feedback 2026-07-10): ativo técnico da missão — a visualização
+ * e a exportação dependem de autenticação/autorização do Geo-Cartucho. Não
+ * renderizar no bloco 3D; os rótulos exibem apenas a indicação de referência
+ * geoespacial protegida.
  */
 export function utmForTarget(
   spec: SceneSpec,
