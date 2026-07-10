@@ -13,22 +13,10 @@ import {
   type TerrainKind,
   type TrajectoryPattern,
 } from './sceneSpec'
-import {
-  getTerrainPreset,
-  hash3,
-  fbm2,
-  rampColor,
-  RAMP_CSS,
-  terrainHeight,
-  voxelizeBlob,
-  voxelizeShell,
-  voxelizeSlab,
-  voxelizeVein,
-  VOXEL_BLOB,
-  VOXEL_VEIN,
-  VOXEL_WATER,
-  type Voxel,
-} from './voxelize'
+import { getTerrainPreset, hash3, fbm2, terrainHeight } from './voxelize'
+import { buildTargetTiers, veinletPaths, type IsoTiers } from './isosurface'
+import { makeRockSideTexture } from './rockTexture'
+import { makeSectionFaces } from './sectionPaint'
 import './SubsurfaceBlock.css'
 
 /** Cores institucionais (brand-assets/tokens + briefing §4/§6) */
@@ -87,7 +75,12 @@ function Reveal({ at, reduced, children }: { at: number; reduced: boolean; child
   return <group ref={inner}>{children}</group>
 }
 
-/** Casca do bloco de solo: volume translúcido + arestas + estratos por metro */
+/**
+ * Bloco de rocha "cortado" (referência do cliente): casca interna escura +
+ * laterais de rocha texturizada semi-transparentes — o bloco lê como volume
+ * SÓLIDO, mas os corpos mineralizados brilham através do corte. Estratos por
+ * metro preservados (leitura de profundidade elogiada pelo cliente).
+ */
 function SoilBox({ ax, az }: { ax: number; az: number }) {
   const strata = useMemo(() => {
     const pts: THREE.Vector3[][] = []
@@ -104,16 +97,55 @@ function SoilBox({ ax, az }: { ax: number; az: number }) {
     return pts
   }, [ax, az])
 
+  const rockTex = useMemo(() => makeRockSideTexture(), [])
+
   return (
     <group>
-      <mesh position={[0, -DEPTH_M / 2, 0]}>
+      {/* interior escuro do corte (faces traseiras) — dá massa ao bloco */}
+      <mesh position={[0, -DEPTH_M / 2, 0]} renderOrder={0}>
         <boxGeometry args={[ax, DEPTH_M, az]} />
-        <meshStandardMaterial color={COLORS.soil} transparent opacity={0.3} depthWrite={false} />
+        <meshBasicMaterial color="#0A1220" transparent opacity={0.9} depthWrite={false} side={THREE.BackSide} />
+      </mesh>
+      {/* laterais de rocha (semi-transparentes: renderizadas por cima dos corpos) */}
+      <mesh position={[0, -DEPTH_M / 2, 0]} renderOrder={3}>
+        <boxGeometry args={[ax, DEPTH_M, az]} />
+        <meshStandardMaterial
+          map={rockTex ?? undefined}
+          color="#e8eef8"
+          transparent
+          opacity={0.66}
+          depthWrite={false}
+          roughness={0.95}
+          metalness={0.05}
+        />
         <Edges color={COLORS.edge} />
       </mesh>
       {strata.map((ring, i) => (
-        <Line key={i} points={ring} color={COLORS.edge} transparent opacity={0.45} lineWidth={1} />
+        <Line key={i} points={ring} color={COLORS.edge} transparent opacity={0.35} lineWidth={1} />
       ))}
+    </group>
+  )
+}
+
+/**
+ * VISÃO DE CORTE (referência do cliente): seções dos corpos EXPOSTAS nas
+ * faces do bloco — como um recorte geológico. As texturas vêm do mesmo campo
+ * de probabilidade dos corpos (sectionPaint.ts), então a exposição na parede
+ * casa com o corpo que brilha atrás dela.
+ */
+function SectionExposures({ scenario, spec }: { scenario: ScenarioMeta; spec: SceneSpec }) {
+  const faces = useMemo(() => makeSectionFaces(scenario, spec), [scenario, spec])
+  return (
+    <group>
+      {faces.map(
+        (f, i) =>
+          f.texture && (
+            <mesh key={i} position={f.position} rotation={[0, f.rotationY, 0]} renderOrder={4}>
+              <planeGeometry args={[f.width, DEPTH_M]} />
+              <meshBasicMaterial map={f.texture} transparent depthWrite={false} />
+            </mesh>
+          ),
+      )}
     </group>
   )
 }
@@ -125,7 +157,7 @@ function SoilBox({ ax, az }: { ax: number; az: number }) {
 function Terrain({ ax, az, kind }: { ax: number; az: number; kind: TerrainKind }) {
   const { topGeo, skirtGeo, preset } = useMemo(() => {
     const preset = getTerrainPreset(kind)
-    const seg = 56
+    const seg = 96
     const topGeo = new THREE.PlaneGeometry(ax, az, seg, seg)
     topGeo.rotateX(-Math.PI / 2)
     const pos = topGeo.attributes.position
@@ -147,9 +179,11 @@ function Terrain({ ax, az, kind }: { ax: number; az: number; kind: TerrainKind }
       const grain = fbm2(x * 1.1 + 21, z * 1.1 - 13)
       c.lerp(dark, grain * 0.45)
       const m1 = fbm2(x * 0.5 - 33, z * 0.5 + 27)
-      if (m1 > 0.56) c.lerp(acc1, Math.min(1, (m1 - 0.56) * 2.4))
+      if (m1 > 0.54) c.lerp(acc1, Math.min(1, (m1 - 0.54) * 2.6))
       const m2 = fbm2(x * 0.45 + 55, z * 0.45 + 55)
-      if (m2 > 0.6) c.lerp(acc2, Math.min(1, (m2 - 0.6) * 2.6))
+      if (m2 > 0.55) c.lerp(acc2, Math.min(1, (m2 - 0.55) * 2.8))
+      // micro-variação de luminância (grão fino e crisp da referência)
+      c.multiplyScalar(0.82 + fbm2(x * 3.1 + 7, z * 3.1 - 9) * 0.24 + (hash3(i, 3, 17) - 0.5) * 0.14)
       colors[i * 3] = c.r
       colors[i * 3 + 1] = c.g
       colors[i * 3 + 2] = c.b
@@ -241,7 +275,7 @@ function SurveyLines({ ax, az, kind, pattern }: { ax: number; az: number; kind: 
     const x1 = ax / 2 - ax * margin
     const z0 = -az / 2 + az * margin
     const z1 = az / 2 - az * margin
-    const steps = 24
+    const steps = 48
     for (let i = 0; i <= passes; i++) {
       const zBase = z0 + ((z1 - z0) * i) / passes
       const [xa, xb] = i % 2 === 0 ? [x0, x1] : [x1, x0]
@@ -253,11 +287,11 @@ function SurveyLines({ ax, az, kind, pattern }: { ax: number; az: number; kind: 
             : pattern === 'organic'
               ? (fbm2(t * 6 + i * 3.1, i * 2.7) - 0.5) * az * 0.06
               : (hash3(i, s, 7) - 0.5) * az * 0.004 // raster: drift mínimo
-        pts.push(drape(xa + (xb - xa) * t, zBase + wiggle, 0.09))
+        pts.push(drape(xa + (xb - xa) * t, zBase + wiggle, 0.12))
       }
       if (i < passes) {
         const zNext = z0 + ((z1 - z0) * (i + 1)) / passes
-        pts.push(drape(xb, zNext, 0.09))
+        pts.push(drape(xb, zNext, 0.12))
       }
     }
     return pts
@@ -266,7 +300,7 @@ function SurveyLines({ ax, az, kind, pattern }: { ax: number; az: number; kind: 
   return (
     <group>
       <lineSegments geometry={gridGeo}>
-        <lineBasicMaterial color={COLORS.cyan} transparent opacity={0.14} />
+        <lineBasicMaterial color={COLORS.cyan} transparent opacity={0.09} />
       </lineSegments>
       <Line points={track} color={COLORS.cyan} lineWidth={1.6} transparent opacity={0.9} />
     </group>
@@ -356,60 +390,77 @@ const MATERIAL_NAME: Record<string, string> = {
   agua: 'Água',
 }
 
-/**
- * Cluster de voxels. Cor por voxel = rampa de probabilidade (como modelos de
- * inversão reais); camadas por limiar: ≥90% sólido · 70–90% translúcido ·
- * <70% fantasma. `fixedColor` troca a rampa por cor única (cavidade, descartado).
- */
-function VoxelCluster({
-  voxels,
-  size,
-  fixedColor,
-  ghost,
-}: {
-  voxels: Voxel[]
-  size: number
-  fixedColor?: string
-  ghost?: boolean
-}) {
-  const group = useMemo(() => {
-    const geo = new THREE.BoxGeometry(size, size, size)
-    const materials: THREE.MeshStandardMaterial[] = [
-      new THREE.MeshStandardMaterial({ roughness: 0.38, metalness: 0.2, emissiveIntensity: 0.5 }),
-      new THREE.MeshStandardMaterial({ transparent: true, opacity: 0.3, depthWrite: false, roughness: 0.5 }),
-      new THREE.MeshStandardMaterial({ transparent: true, opacity: 0.16, depthWrite: false, roughness: 0.6 }),
-    ]
-    const g = new THREE.Group()
-    const M = new THREE.Matrix4()
-    const c = new THREE.Color()
-    const fixed = fixedColor ? new THREE.Color(fixedColor) : null
-    for (const tier of [0, 1, 2] as const) {
-      const list = voxels.filter((v) => (ghost ? tier === 2 : v.tier === tier))
-      if (list.length === 0) continue
-      const mat = materials[tier]
-      if (tier === 0 && !fixed) mat.emissive = new THREE.Color('#803a1e')
-      const mesh = new THREE.InstancedMesh(geo, mat, list.length)
-      list.forEach((v, idx) => {
-        M.makeTranslation(v.x, v.y, v.z)
-        mesh.setMatrixAt(idx, M)
-        if (fixed) {
-          c.copy(fixed)
-        } else {
-          const rc = rampColor(v.prob)
-          c.setRGB(rc.r, rc.g, rc.b)
-        }
-        mesh.setColorAt(idx, c)
-      })
-      mesh.instanceMatrix.needsUpdate = true
-      if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true
-      mesh.renderOrder = tier
-      g.add(mesh)
-      if (ghost) break
-    }
-    return g
-  }, [voxels, size, fixedColor, ghost])
+/** cores do corpo por material — referência do cliente: ouro incandescente, magnetita vítrea escura */
+const BODY: Record<
+  string,
+  {
+    core: string
+    emissive?: string
+    metal: number
+    rough?: number
+    glow?: number
+    shell: string
+    mediaOp?: number
+    baixaOp?: number
+  }
+> = {
+  ouro: { core: '#FFB733', emissive: '#B45E0C', metal: 0.5, rough: 0.28, glow: 0.95, shell: '#F5A623', mediaOp: 0.22, baixaOp: 0.08 },
+  magnetita: { core: '#232733', metal: 0.9, rough: 0.24, shell: '#8677C9', mediaOp: 0.34, baixaOp: 0.14 },
+  vazio: { core: '#A6B2C6', metal: 0.05, shell: '#A6B2C6', mediaOp: 0.42, baixaOp: 0.16 },
+  agua: { core: '#2BC8D9', metal: 0.05, shell: '#2BC8D9' },
+}
 
-  return <primitive object={group} />
+/**
+ * Corpo orgânico do achado: isosuperfícies suaves do campo de probabilidade
+ * (marching cubes), uma por nível QUALITATIVO de confiança —
+ * ALTA = núcleo sólido · MÉDIA = envelope translúcido · BAIXA = halo difuso.
+ * `ghost` (descartado no C4) mostra só os envelopes, em vermelho.
+ */
+function IsoBody({ tiers, kind, ghost }: { tiers: IsoTiers; kind: string; ghost?: boolean }) {
+  const body = BODY[kind] ?? BODY.vazio
+  const shell = ghost ? COLORS.descartado : body.shell
+  // opacidades por material (cavidade/magnetita precisam ler contra a rocha escura)
+  const mediaOp = ghost ? 0.24 : (body.mediaOp ?? 0.3)
+  const baixaOp = ghost ? 0.1 : (body.baixaOp ?? 0.12)
+  return (
+    <group scale={tiers.scale}>
+      {tiers.alta && !ghost && (
+        <mesh geometry={tiers.alta} renderOrder={0}>
+          <meshStandardMaterial
+            color={body.core}
+            roughness={body.rough ?? 0.35}
+            metalness={body.metal}
+            emissive={body.emissive ?? '#000000'}
+            emissiveIntensity={body.glow ?? 0.35}
+          />
+        </mesh>
+      )}
+      {tiers.media && (
+        <mesh geometry={tiers.media} renderOrder={1}>
+          <meshStandardMaterial
+            color={shell}
+            transparent
+            opacity={mediaOp}
+            depthWrite={false}
+            roughness={0.5}
+            side={THREE.DoubleSide}
+          />
+        </mesh>
+      )}
+      {tiers.baixa && (
+        <mesh geometry={tiers.baixa} renderOrder={2}>
+          <meshStandardMaterial
+            color={shell}
+            transparent
+            opacity={baixaOp}
+            depthWrite={false}
+            roughness={0.6}
+            side={THREE.DoubleSide}
+          />
+        </mesh>
+      )}
+    </group>
+  )
 }
 
 /** Um achado plotado na profundidade/posição do cenário */
@@ -433,13 +484,16 @@ function TargetMesh({
   const surfaceY = terrainHeight(spec.terrain, x, z, scenario.area.x, scenario.area.y)
   const descartado = t.status === 'descartado'
 
-  const voxels = useMemo(() => {
-    if (t.kind === 'ouro') return voxelizeVein(geom.size.x, geom.size.z, t.angle ?? 0, centerDepth, spec.attenuation)
-    if (t.kind === 'magnetita')
-      return voxelizeBlob(Math.max(geom.size.x, geom.size.y) * 0.72, centerDepth, spec.attenuation, order * 13)
-    if (t.kind === 'vazio') return voxelizeShell(geom.size)
-    return voxelizeSlab(geom.size, order * 17) // água — lâmina/bolsão em voxels
-  }, [geom, t.kind, t.angle, centerDepth, spec.attenuation, order])
+  const tiers = useMemo(
+    () => buildTargetTiers(t.kind, geom.size, t.angle, centerDepth, spec.attenuation, order * 13),
+    [geom, t.kind, t.angle, centerDepth, spec.attenuation, order],
+  )
+
+  // vênulas ramificadas irradiando do veio (referência do cliente)
+  const veinlets = useMemo(
+    () => (t.kind === 'ouro' && !descartado ? veinletPaths(geom.size.x, geom.size.z, t.angle ?? 0, order * 7) : null),
+    [t.kind, geom.size, t.angle, order, descartado],
+  )
 
   const num = String(order + 1).padStart(2, '0')
   const metrics = [
@@ -452,9 +506,11 @@ function TargetMesh({
     .filter(Boolean)
     .join(' · ')
   const side = order % 2 === 0 ? -1 : 1
+  // espaçamento vertical dos callouts cresce com o nº de alvos (C5 tem 4)
+  const step = 0.8 + spec.targets.length * 0.16
   const anchor = new THREE.Vector3(
-    side * scenario.area.x * (0.26 + 0.07 * Math.floor(order / 2)),
-    1.0 + order * 0.9 + (t.kind === 'ouro' ? 0.5 : 0),
+    side * scenario.area.x * (0.28 + 0.09 * Math.floor(order / 2)),
+    1.0 + order * step + (t.kind === 'ouro' ? 0.5 : 0),
     0,
   )
   const chipClass = descartado ? 'descartado' : t.status === 'confirmado' ? 'confirmado' : t.kind
@@ -463,34 +519,27 @@ function TargetMesh({
     <group>
       {!descartado && <DrillLine x={x} z={z} depth={t.depth} surfaceY={surfaceY} />}
       <group position={[x, y, z]}>
-        <VoxelCluster
-          voxels={voxels}
-          size={t.kind === 'ouro' ? VOXEL_VEIN : t.kind === 'agua' ? VOXEL_WATER : VOXEL_BLOB}
-          fixedColor={
-            descartado
-              ? COLORS.descartado
-              : t.kind === 'vazio'
-                ? COLORS.vazio
-                : t.kind === 'agua'
-                  ? COLORS.agua
-                  : undefined
-          }
-          ghost={descartado}
-        />
+        {/* azimute: o corpo (e o halo, se houver) atravessa o bloco em diagonal */}
+        <group rotation={[0, ((geom.azimuth ?? 0) * Math.PI) / 180, 0]}>
+          <IsoBody tiers={tiers} kind={t.kind} ghost={descartado} />
+          {veinlets?.map((pts, i) => (
+            <Line key={i} points={pts} color="#E8A93C" lineWidth={1.1} transparent opacity={0.5} />
+          ))}
+          {t.status === 'confirmado' && (
+            // halo de confirmação da fusão (3 sensores) — briefing C4
+            <mesh>
+              <boxGeometry args={[geom.size.x + 0.6, geom.size.z * 0.9 + 0.6, geom.size.z + 0.6]} />
+              <meshStandardMaterial color={COLORS.confirmado} transparent opacity={0.04} depthWrite={false} />
+              <Edges color={COLORS.confirmado} />
+            </mesh>
+          )}
+        </group>
         {t.kind === 'vazio' && !descartado && (
           // delimitação da cavidade (briefing: contorno, sem preenchimento)
           <mesh>
             <boxGeometry args={[geom.size.x, geom.size.y, geom.size.z]} />
             <meshStandardMaterial color={COLORS.vazio} transparent opacity={0.05} depthWrite={false} />
             <Edges color={COLORS.vazio} />
-          </mesh>
-        )}
-        {t.status === 'confirmado' && (
-          // halo de confirmação da fusão (3 sensores) — briefing C4
-          <mesh>
-            <boxGeometry args={[geom.size.x + 0.6, geom.size.z * 0.9 + 0.6, geom.size.z + 0.6]} />
-            <meshStandardMaterial color={COLORS.confirmado} transparent opacity={0.04} depthWrite={false} />
-            <Edges color={COLORS.confirmado} />
           </mesh>
         )}
         <Line
@@ -540,13 +589,16 @@ function BlockScene({ scenario, spec, reduced }: { scenario: ScenarioMeta; spec:
   const az = scenario.area.y
   return (
     <>
-      <ambientLight intensity={0.75} />
-      <hemisphereLight args={['#9fb2cc', '#0a1324', 0.7]} />
-      <directionalLight position={[6, 8, 4]} intensity={1.35} />
+      {/* luz dramática da referência: chave quente forte + rim frio + ambiente baixo */}
+      <ambientLight intensity={0.5} />
+      <hemisphereLight args={['#9fb2cc', '#0a1324', 0.55]} />
+      <directionalLight position={[6, 8, 4]} intensity={1.7} color="#ffe2bd" />
+      <directionalLight position={[-8, 5, -6]} intensity={0.5} color="#6f9fdd" />
       <DepthRuler ax={ax} az={az} />
       <AxesAndScale ax={ax} az={az} />
       <OrbitGroup reduced={reduced}>
         <SoilBox ax={ax} az={az} />
+        <SectionExposures scenario={scenario} spec={spec} />
         <Terrain ax={ax} az={az} kind={spec.terrain} />
         <SurveyLines ax={ax} az={az} kind={spec.terrain} pattern={spec.trajectory} />
         {spec.zones?.map((zone) => (
@@ -678,34 +730,30 @@ function RadargramInset({ scenario, spec }: { scenario: ScenarioMeta; spec: Scen
   return (
     <div className="sb3d-radargram">
       <canvas ref={ref} width={300} height={130} />
-      <span className="sb3d-radargram-label">GPR · B-SCAN · linha central · ganho SEC</span>
+      <span className="sb3d-radargram-label">Referência GPR · B-scan · linha central</span>
     </div>
   )
 }
 
-/** Legenda gerada pelo próprio gráfico: rampa de probabilidade com limiares */
+/**
+ * Legenda gerada pelo próprio gráfico — classificação QUALITATIVA de
+ * confiança (Teto de Métricas §3.7: sem percentuais expostos) + materiais.
+ */
 function Legend({ spec }: { spec: SceneSpec }) {
   const kinds = Array.from(new Set(spec.targets.map((t) => t.kind)))
   return (
     <div className="sb3d-legend">
-      <span className="sb3d-legend-title">Probabilidade (fusão)</span>
-      <span className="sb3d-legend-ramp">
-        <i style={{ background: RAMP_CSS }} />
-        <em>0</em>
-        <em>50</em>
-        <em>100%</em>
-      </span>
-      <span className="sb3d-legend-sep" />
-      <span className="sb3d-legend-item"><i className="sb3d-cube sb3d-cube--alta" /> ≥90%</span>
-      <span className="sb3d-legend-item"><i className="sb3d-cube sb3d-cube--media" /> 70–90%</span>
-      <span className="sb3d-legend-item"><i className="sb3d-cube sb3d-cube--baixa" /> &lt;70%</span>
+      <span className="sb3d-legend-title">Confiança da fusão</span>
+      <span className="sb3d-legend-item"><i className="sb3d-cube sb3d-cube--alta" /> ALTA · sólido</span>
+      <span className="sb3d-legend-item"><i className="sb3d-cube sb3d-cube--media" /> MÉDIA · translúcido</span>
+      <span className="sb3d-legend-item"><i className="sb3d-cube sb3d-cube--baixa" /> BAIXA · difuso</span>
       <span className="sb3d-legend-sep" />
       {kinds.map((k) => (
         <span key={k} className={`sb3d-legend-item sb3d-legend-item--${k}`}>
           {MARKER[k]} {MATERIAL_NAME[k]}
         </span>
       ))}
-      <span className="sb3d-legend-note">prof. 0–5 m · v≈0,10 m/ns</span>
+      <span className="sb3d-legend-note">prof. 0–5 m</span>
     </div>
   )
 }
@@ -717,10 +765,11 @@ export interface SubsurfaceBlockProps {
 /**
  * Bloco 3D interpretativo da área escaneada (E5 · Resultado — D-020/CA-04).
  * Template único dos 5 cenários, fiel ao que a geofísica real entrega
- * (pesquisa verificada 2026-07-08): terreno do cenário, grade de varredura +
- * trilha RTK, achados como voxels de probabilidade com limiares e atenuação
- * em profundidade, estados da fusão (C4), radargrama sintético e legenda com
- * colorbar. Sem spec de cena ou sem WebGL, cai no placeholder textual.
+ * (pesquisa verificada 2026-07-08; morfologia orgânica do feedback round 2):
+ * terreno do cenário, grade de varredura + trilha RTK, achados como
+ * isosuperfícies orgânicas por nível qualitativo de confiança (Teto §3.7),
+ * atenuação em profundidade, estados da fusão (C4), inset "referência GPR"
+ * e legenda qualitativa. Sem spec de cena ou sem WebGL, cai no placeholder.
  */
 export function SubsurfaceBlock({ scenario }: SubsurfaceBlockProps) {
   const spec = getSceneSpec(scenario.id)
@@ -738,18 +787,23 @@ export function SubsurfaceBlock({ scenario }: SubsurfaceBlockProps) {
     )
   }
 
-  // câmera elevada ("god view" da referência), distância proporcional à área
-  const dist = Math.max(scenario.area.x, scenario.area.y) * 1.55
+  // câmera da referência: elevada ~15°, olhando o canto do bloco de cima
+  const dist = Math.max(scenario.area.x, scenario.area.y) * 1.7
   return (
     <div className="sb3d-canvas" aria-hidden="true">
       <Canvas
         gl={{ alpha: true, antialias: true }}
         dpr={[1, 2]}
-        camera={{ position: [dist * 0.95, dist * 0.11, dist * 1.1], fov: 38 }}
-        onCreated={({ camera }) => camera.lookAt(0, -DEPTH_M / 2 + 0.2, 0)}
+        camera={{ position: [dist * 0.85, dist * 0.33, dist * 1.0], fov: 38 }}
+        onCreated={({ camera }) => camera.lookAt(0, -DEPTH_M / 2 + 0.3, 0)}
       >
         <BlockScene scenario={scenario} spec={spec} reduced={reduced} />
       </Canvas>
+      {/* o bloco é a interpretação CONSOLIDADA da fusão — o inset GPR é só referência */}
+      <div className="sb3d-caption">
+        <strong>GSFS Virtual</strong>
+        Interpretação 3D · fusão multimodal consolidada
+      </div>
       <RadargramInset scenario={scenario} spec={spec} />
       <Legend spec={spec} />
     </div>

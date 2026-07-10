@@ -32,6 +32,8 @@ export interface TargetGeom {
   /** profundidade em m (centro; para 'vazio' é o TETO, como no briefing) */
   depth?: number
   angle?: number
+  /** rotação do strike em planta (°) — veios atravessam o bloco em diagonal */
+  azimuth?: number
   status?: TargetStatus
   /** posição do centro em planta, normalizada 0–1 sobre a área do cenário */
   plot: { x: number; z: number }
@@ -69,20 +71,21 @@ const SPECS: Record<ScenarioId, SceneSpec> = {
     terrain: 'encosta-rochosa',
     attenuation: 0.35, // rocha resistiva: sinal penetra bem
     targets: [
-      // Magnetita acessória · 1,8 m · massa pontual no centro do plot
+      // Magnetita acessória · 1,8 m · massa exposta na face leste (referência)
       {
         targetIndex: 0,
         kind: 'magnetita',
-        plot: { x: 0.38, z: 0.3 },
-        size: { x: 1.0, y: 0.8, z: 1.0 },
+        plot: { x: 0.88, z: 0.3 },
+        size: { x: 1.3, y: 0.9, z: 1.3 },
         revealAt: 3,
       },
-      // Veio de ouro · 3,0 m · ~65° · extensão lateral ~4 m atravessando a área
+      // Veio de ouro · 3,0 m · ~65° · atravessa o bloco e aflora no CORTE frontal
       {
         targetIndex: 1,
         kind: 'ouro',
-        plot: { x: 0.5, z: 0.6 },
-        size: { x: 4.0, y: 0.14, z: 2.6 },
+        azimuth: 38,
+        plot: { x: 0.5, z: 0.82 },
+        size: { x: 4.6, y: 0.14, z: 3.4 },
         revealAt: 8,
       },
     ],
@@ -103,16 +106,16 @@ const SPECS: Record<ScenarioId, SceneSpec> = {
         revealAt: 3,
       },
       {
-        targetIndex: 1, // Magnetita B · 2,2 m · 3×2 m · Centro
+        targetIndex: 1, // Magnetita B · 2,2 m · 3×2 m — exposta no corte frontal
         kind: 'magnetita',
-        plot: { x: 0.52, z: 0.52 },
+        plot: { x: 0.52, z: 0.88 },
         size: { x: 3.0, y: 1.4, z: 2.0 },
         revealAt: 7,
       },
       {
-        targetIndex: 2, // Magnetita C · 3,1 m · 1,5×1,5 m · SE
+        targetIndex: 2, // Magnetita C · 3,1 m · 1,5×1,5 m · SE — exposta no corte leste
         kind: 'magnetita',
-        plot: { x: 0.74, z: 0.74 },
+        plot: { x: 0.95, z: 0.74 },
         size: { x: 1.5, y: 1.0, z: 1.5 },
         revealAt: 11,
       },
@@ -127,17 +130,17 @@ const SPECS: Record<ScenarioId, SceneSpec> = {
     attenuation: 0.75, // solo condutivo: atenuação alta em profundidade
     targets: [
       {
-        targetIndex: 0, // Cavidade · teto 2,5 m · 3×2×1 m · região central
+        targetIndex: 0, // Cavidade · teto 2,5 m · 3×2×1 m — exposta no corte frontal
         kind: 'vazio',
-        plot: { x: 0.5, z: 0.45 },
+        plot: { x: 0.5, z: 0.93 },
         size: { x: 3.0, y: 1.0, z: 2.0 },
         revealAt: 3,
       },
       {
-        targetIndex: 1, // Lençol freático · 4,2 m · lâmina contínua
+        targetIndex: 1, // Lençol freático · 4,2 m · lâmina contínua (aflora nos 4 cortes)
         kind: 'agua',
         plot: { x: 0.5, z: 0.5 },
-        size: { x: 13.5, y: 0.5, z: 13.5 },
+        size: { x: 15.6, y: 0.5, z: 15.6 },
         revealAt: 10,
       },
     ],
@@ -174,13 +177,14 @@ const SPECS: Record<ScenarioId, SceneSpec> = {
         size: { x: 1.0, y: 0.8, z: 1.0 },
         revealAt: 6.5,
       },
-      // Ouro real · 3,2 m · ~50° · confirmado por 3 sensores (halo verde)
+      // Ouro real · 3,2 m · ~50° · confirmado por 3 sensores — aflora no corte sul
       {
         targetIndex: 0,
         kind: 'ouro',
         status: 'confirmado',
-        plot: { x: 0.52, z: 0.5 },
-        size: { x: 4.0, y: 0.14, z: 2.4 },
+        azimuth: 50,
+        plot: { x: 0.52, z: 0.93 },
+        size: { x: 4.6, y: 0.14, z: 3.6 },
         revealAt: 10,
       },
     ],
@@ -194,16 +198,17 @@ const SPECS: Record<ScenarioId, SceneSpec> = {
     attenuation: 0.5,
     targets: [
       {
-        targetIndex: 0, // Ouro · 2,0 m · ~40°
+        targetIndex: 0, // Ouro · 2,0 m · ~40° — aflora no corte frontal
         kind: 'ouro',
-        plot: { x: 0.35, z: 0.4 },
-        size: { x: 3.5, y: 0.14, z: 2.2 },
+        azimuth: 42,
+        plot: { x: 0.32, z: 0.88 },
+        size: { x: 3.8, y: 0.14, z: 2.4 },
         revealAt: 3,
       },
       {
-        targetIndex: 1, // Magnetita · 3,0 m · massa pontual
+        targetIndex: 1, // Magnetita · 3,0 m · massa exposta no corte leste
         kind: 'magnetita',
-        plot: { x: 0.62, z: 0.3 },
+        plot: { x: 0.95, z: 0.3 },
         size: { x: 1.2, y: 0.9, z: 1.2 },
         revealAt: 6,
       },

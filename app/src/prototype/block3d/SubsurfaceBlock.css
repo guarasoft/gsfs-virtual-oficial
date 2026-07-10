@@ -64,7 +64,34 @@
   white-space: nowrap;
 }
 
-/* ---- Legenda gerada pelo gráfico (colorbar + limiares + materiais) ---- */
+/* ---- Selo: o bloco é a interpretação consolidada (inset GPR = referência) ---- */
+.sb3d-caption {
+  position: absolute;
+  left: 12px;
+  top: 10px;
+  z-index: 30;
+  padding: 6px 12px;
+  border-radius: 6px;
+  background: rgba(10, 19, 36, 0.72);
+  border: 1px solid var(--color-border);
+  font-family: var(--font-secondary, 'JetBrains Mono', monospace);
+  font-size: 9px;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  pointer-events: none;
+}
+
+.sb3d-caption strong {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  color: var(--color-text);
+  margin-bottom: 2px;
+}
+
+/* ---- Legenda gerada pelo gráfico (confiança qualitativa + materiais) ---- */
 .sb3d-legend {
   position: absolute;
   left: 50%;
@@ -97,26 +124,6 @@
   color: var(--color-text);
 }
 
-.sb3d-legend-ramp {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.sb3d-legend-ramp i {
-  width: 72px;
-  height: 8px;
-  border-radius: 2px;
-  display: inline-block;
-  border: 1px solid rgba(230, 234, 240, 0.18);
-}
-
-.sb3d-legend-ramp em {
-  font-style: normal;
-  font-size: 9px;
-  opacity: 0.8;
-}
-
 .sb3d-legend-item {
   display: inline-flex;
   align-items: center;
@@ -139,16 +146,17 @@
   background: var(--color-border);
 }
 
+/* swatches de confiança — mesmo idioma do render: sólido / translúcido / difuso */
 .sb3d-cube {
   width: 9px;
   height: 9px;
-  border-radius: 2px;
+  border-radius: 50%;
   display: inline-block;
 }
 
 .sb3d-cube--alta { background: #00b6c8; }
 .sb3d-cube--media { background: rgba(0, 182, 200, 0.38); border: 1px solid rgba(0, 182, 200, 0.5); }
-.sb3d-cube--baixa { background: transparent; border: 1px solid rgba(0, 182, 200, 0.55); }
+.sb3d-cube--baixa { background: rgba(0, 182, 200, 0.14); border: 1px dashed rgba(0, 182, 200, 0.55); }
 
 /* ---- Inset de radargrama (B-scan sintético — "dado bruto" da linha) ---- */
 .sb3d-radargram {
