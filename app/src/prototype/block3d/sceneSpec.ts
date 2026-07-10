@@ -41,6 +41,10 @@ export interface TargetGeom {
   size: { x: number; y: number; z: number }
   /** segundo (desde a montagem) em que o alvo é revelado — beat sheet */
   revealAt: number
+  /** lado do callout (±1) — sobrepõe a alternância padrão quando os chips colidem */
+  labelSide?: 1 | -1
+  /** elevação extra do callout (m) — desempata colisões de perspectiva */
+  labelLift?: number
 }
 
 /** faixa sombreada de baixa confiança (C4) — retângulo em planta, 0–1 */
@@ -48,6 +52,8 @@ export interface DegradationZone {
   rect: { x0: number; z0: number; x1: number; z1: number }
   label: string
   revealAt: number
+  /** elevação extra do rótulo (m) — desvia dos chips de falso-eco no mesmo canto */
+  labelLift?: number
 }
 
 export interface SceneSpec {
@@ -56,6 +62,8 @@ export interface SceneSpec {
   terrain: TerrainKind
   /** intensidade da atenuação do sinal com a profundidade (0–1) */
   attenuation: number
+  /** origem georreferenciada da malha (canto SW) — UTM simulado da missão (GNSS/RTK) */
+  origin: { zone: string; e: number; n: number }
   targets: TargetGeom[]
   zones?: DegradationZone[]
 }
@@ -70,6 +78,7 @@ const SPECS: Record<ScenarioId, SceneSpec> = {
     trajectory: 'zigzag', // modalidade manual
     terrain: 'encosta-rochosa',
     attenuation: 0.35, // rocha resistiva: sinal penetra bem
+    origin: { zone: '23K', e: 612430, n: 7801260 },
     targets: [
       // Magnetita acessória · 1,8 m · massa exposta na face leste (referência)
       {
@@ -97,6 +106,7 @@ const SPECS: Record<ScenarioId, SceneSpec> = {
     trajectory: 'raster',
     terrain: 'campo-arenoso',
     attenuation: 0.3,
+    origin: { zone: '23K', e: 598712, n: 7794105 },
     targets: [
       {
         targetIndex: 0, // Magnetita A · 1,5 m · 2×2 m · Centro-NW
@@ -118,6 +128,7 @@ const SPECS: Record<ScenarioId, SceneSpec> = {
         plot: { x: 0.95, z: 0.74 },
         size: { x: 1.5, y: 1.0, z: 1.5 },
         revealAt: 11,
+        labelSide: 1,
       },
     ],
   },
@@ -128,6 +139,7 @@ const SPECS: Record<ScenarioId, SceneSpec> = {
     trajectory: 'organic',
     terrain: 'solo-saturado',
     attenuation: 0.75, // solo condutivo: atenuação alta em profundidade
+    origin: { zone: '23K', e: 605338, n: 7810042 },
     targets: [
       {
         targetIndex: 0, // Cavidade · teto 2,5 m · 3×2×1 m — exposta no corte frontal
@@ -153,9 +165,10 @@ const SPECS: Record<ScenarioId, SceneSpec> = {
     trajectory: 'raster',
     terrain: 'rochoso-plano',
     attenuation: 0.45,
+    origin: { zone: '23K', e: 621904, n: 7787516 },
     zones: [
-      { rect: { x0: 0.04, z0: 0.04, x1: 0.34, z1: 0.4 }, label: 'BAIXA CONFIANÇA · NW', revealAt: 3 },
-      { rect: { x0: 0.62, z0: 0.6, x1: 0.96, z1: 0.96 }, label: 'BAIXA CONFIANÇA · SE', revealAt: 6.5 },
+      { rect: { x0: 0.04, z0: 0.04, x1: 0.34, z1: 0.4 }, label: 'BAIXA CONFIANÇA · NW', revealAt: 3, labelLift: 1.2 },
+      { rect: { x0: 0.62, z0: 0.6, x1: 0.96, z1: 0.96 }, label: 'BAIXA CONFIANÇA · SE', revealAt: 6.5, labelLift: 2.6 },
     ],
     targets: [
       // falso-ecos: não existem em scenario.targets — extras da cena
@@ -186,6 +199,8 @@ const SPECS: Record<ScenarioId, SceneSpec> = {
         plot: { x: 0.52, z: 0.93 },
         size: { x: 4.6, y: 0.14, z: 3.6 },
         revealAt: 10,
+        labelSide: 1,
+        labelLift: 3.0,
       },
     ],
   },
@@ -196,6 +211,7 @@ const SPECS: Record<ScenarioId, SceneSpec> = {
     trajectory: 'organic',
     terrain: 'transicional',
     attenuation: 0.5,
+    origin: { zone: '23K', e: 609175, n: 7805881 },
     targets: [
       {
         targetIndex: 0, // Ouro · 2,0 m · ~40° — aflora no corte frontal
@@ -241,6 +257,22 @@ export interface ResolvedTarget {
   angle?: number
   kind: TargetType
   status: TargetStatus
+}
+
+/**
+ * Coordenada UTM simulada do alvo (metros inteiros — precisão de cm é vetada
+ * pelo Teto de Métricas). Easting cresce com plot.x; Northing com o norte da
+ * malha (z da cena cresce para o sul).
+ */
+export function utmForTarget(
+  spec: SceneSpec,
+  geom: TargetGeom,
+  area: { x: number; y: number },
+): { e: number; n: number } {
+  return {
+    e: spec.origin.e + Math.round(geom.plot.x * area.x),
+    n: spec.origin.n + Math.round((1 - geom.plot.z) * area.y),
+  }
 }
 
 export function resolveTarget(

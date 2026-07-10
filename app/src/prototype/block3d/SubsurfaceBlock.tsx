@@ -7,6 +7,7 @@ import {
   DEPTH_M,
   getSceneSpec,
   resolveTarget,
+  utmForTarget,
   type DegradationZone,
   type SceneSpec,
   type TargetGeom,
@@ -308,13 +309,13 @@ function SurveyLines({ ax, az, kind, pattern }: { ax: number; az: number; kind: 
 }
 
 /**
- * Régua de profundidade (0 · 2,5 · 5 m) — referência lateral FIXA (fora da
- * órbita), à esquerda do bloco.
+ * Régua de profundidade (marca por metro, 0–5 m — checklist §2) — referência
+ * lateral FIXA (fora da órbita), à esquerda do bloco.
  */
 function DepthRuler({ ax, az }: { ax: number; az: number }) {
   const x = -(ax / 2 + Math.max(1, ax * 0.12))
   const z = az / 2 + Math.max(1, az * 0.12)
-  const marks = [0, 2.5, 5]
+  const marks = [0, 1, 2, 3, 4, 5]
   return (
     <group>
       <Line
@@ -330,7 +331,7 @@ function DepthRuler({ ax, az }: { ax: number; az: number }) {
             lineWidth={1.2}
           />
           <Html position={[-0.85, 0, 0.85]} className="sb3d-ruler-label" center zIndexRange={[5, 0]}>
-            {m.toFixed(1).replace('.', ',')} m
+            {m} m
           </Html>
         </group>
       ))}
@@ -405,7 +406,7 @@ const BODY: Record<
   }
 > = {
   ouro: { core: '#FFB733', emissive: '#B45E0C', metal: 0.5, rough: 0.28, glow: 0.95, shell: '#F5A623', mediaOp: 0.22, baixaOp: 0.08 },
-  magnetita: { core: '#232733', metal: 0.9, rough: 0.24, shell: '#8677C9', mediaOp: 0.34, baixaOp: 0.14 },
+  magnetita: { core: '#2A2F40', emissive: '#4A4370', metal: 0.9, rough: 0.24, glow: 0.3, shell: '#8677C9', mediaOp: 0.45, baixaOp: 0.18 },
   vazio: { core: '#A6B2C6', metal: 0.05, shell: '#A6B2C6', mediaOp: 0.42, baixaOp: 0.16 },
   agua: { core: '#2BC8D9', metal: 0.05, shell: '#2BC8D9' },
 }
@@ -505,12 +506,17 @@ function TargetMesh({
   ]
     .filter(Boolean)
     .join(' · ')
-  const side = order % 2 === 0 ? -1 : 1
+  // referência espacial da missão (checklist §3): UTM simulado, metros inteiros
+  const utm = utmForTarget(spec, geom, { x: scenario.area.x, y: scenario.area.y })
+  const coord = `${spec.origin.zone} · ${utm.e.toLocaleString('pt-BR')} E · ${utm.n.toLocaleString('pt-BR')} N`
+  const side = geom.labelSide ?? (order % 2 === 0 ? -1 : 1)
   // espaçamento vertical dos callouts cresce com o nº de alvos (C5 tem 4)
-  const step = 0.8 + spec.targets.length * 0.16
+  const step = 1.0 + spec.targets.length * 0.22
+  // altura em coords do MUNDO (compensa a profundidade do alvo): chips em
+  // camadas distintas por ordem — nunca colidem, mesmo com a órbita girando
   const anchor = new THREE.Vector3(
     side * scenario.area.x * (0.28 + 0.09 * Math.floor(order / 2)),
-    1.0 + order * step + (t.kind === 'ouro' ? 0.5 : 0),
+    centerDepth + 1.0 + order * step + (t.kind === 'ouro' ? 0.5 : 0) + (geom.labelLift ?? 0),
     0,
   )
   const chipClass = descartado ? 'descartado' : t.status === 'confirmado' ? 'confirmado' : t.kind
@@ -553,6 +559,7 @@ function TargetMesh({
           <span className={`sb3d-chip sb3d-chip--${chipClass}`}>
             <span className="sb3d-chip-name">TARGET {num} — {t.label}</span>
             {metrics}
+            <span className="sb3d-chip-coord">{coord}</span>
           </span>
         </Html>
       </group>
@@ -577,7 +584,7 @@ function Zone({ zone, scenario }: { zone: DegradationZone; scenario: ScenarioMet
         <meshStandardMaterial color={COLORS.zona} transparent opacity={0.1} depthWrite={false} />
         <Edges color={COLORS.zona} />
       </mesh>
-      <Html position={[0, DEPTH_M / 2 + 2.2, 0]} center className="sb3d-target-label" zIndexRange={[6, 0]}>
+      <Html position={[0, DEPTH_M / 2 + 2.2 + (zone.labelLift ?? 0), 0]} center className="sb3d-target-label" zIndexRange={[6, 0]}>
         <span className="sb3d-chip sb3d-chip--zona">{zone.label}</span>
       </Html>
     </group>
@@ -802,7 +809,11 @@ export function SubsurfaceBlock({ scenario }: SubsurfaceBlockProps) {
       {/* o bloco é a interpretação CONSOLIDADA da fusão — o inset GPR é só referência */}
       <div className="sb3d-caption">
         <strong>GSFS Virtual</strong>
-        Interpretação 3D · fusão multimodal consolidada
+        Interpretação multimodal consolidada
+        <span className="sb3d-caption-sub">
+          Fusão GPR + EMI + IMU + GNSS/RTK · malha {spec.origin.zone} {spec.origin.e.toLocaleString('pt-BR')} E ·{' '}
+          {spec.origin.n.toLocaleString('pt-BR')} N
+        </span>
       </div>
       <RadargramInset scenario={scenario} spec={spec} />
       <Legend spec={spec} />
