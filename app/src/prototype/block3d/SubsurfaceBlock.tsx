@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
-import { Edges, Html, Line } from '@react-three/drei'
+import { Edges, Html, Line, OrbitControls } from '@react-three/drei'
 import * as THREE from 'three'
 import type { ScenarioMeta } from '../data/scenarios'
 import {
@@ -34,8 +34,10 @@ const COLORS = {
   zona: '#C7363B',
 } as const
 
-/** volta completa da órbita, em segundos (síntese do "vídeo em loop") */
+/** volta completa da órbita automática, em segundos (síntese do "vídeo em loop") */
 const ORBIT_PERIOD_S = 30
+/** tempo sem interação até a órbita automática retomar */
+const ORBIT_RESUME_MS = 5000
 
 function usePrefersReducedMotion(): boolean {
   return useMemo(
@@ -47,18 +49,35 @@ function usePrefersReducedMotion(): boolean {
   )
 }
 
-/** Órbita lenta e contínua no eixo vertical — loop perfeito por construção */
-function OrbitGroup({ children, reduced }: { children: React.ReactNode; reduced: boolean }) {
-  const group = useRef<THREE.Group>(null)
-  useFrame((_, delta) => {
-    if (!reduced && group.current) {
-      group.current.rotation.y += (delta * Math.PI * 2) / ORBIT_PERIOD_S
-    }
-  })
+/**
+ * Controles de câmera (homologação 2026-07-10): arrastar com o mouse gira o
+ * bloco em qualquer eixo, scroll aproxima/afasta. Sem interação, mantém a
+ * órbita automática lenta (mesmo período do "vídeo em loop"); ela pausa
+ * quando o usuário pega o bloco e retoma sozinha após alguns segundos.
+ */
+function BlockControls({ dist, reduced }: { dist: number; reduced: boolean }) {
+  const [engaged, setEngaged] = useState(false)
+  const timer = useRef<number>()
+  useEffect(() => () => window.clearTimeout(timer.current), [])
   return (
-    <group ref={group} rotation={[0, Math.PI / 7, 0]}>
-      {children}
-    </group>
+    <OrbitControls
+      target={[0, -DEPTH_M / 2 + 0.3, 0]}
+      autoRotate={!reduced && !engaged}
+      autoRotateSpeed={60 / ORBIT_PERIOD_S}
+      enablePan={false}
+      minDistance={dist * 0.55}
+      maxDistance={dist * 2.2}
+      // do topo (quase zenital) até um pouco abaixo do horizonte do bloco
+      maxPolarAngle={Math.PI * 0.55}
+      onStart={() => {
+        window.clearTimeout(timer.current)
+        setEngaged(true)
+      }}
+      onEnd={() => {
+        window.clearTimeout(timer.current)
+        timer.current = window.setTimeout(() => setEngaged(false), ORBIT_RESUME_MS)
+      }}
+    />
   )
 }
 
@@ -604,7 +623,8 @@ function BlockScene({ scenario, spec, reduced }: { scenario: ScenarioMeta; spec:
       <directionalLight position={[-8, 5, -6]} intensity={0.5} color="#6f9fdd" />
       <DepthRuler ax={ax} az={az} />
       <AxesAndScale ax={ax} az={az} />
-      <OrbitGroup reduced={reduced}>
+      {/* pose inicial de apresentação; a rotação agora é da câmera (BlockControls) */}
+      <group rotation={[0, Math.PI / 7, 0]}>
         <SoilBox ax={ax} az={az} />
         <SectionExposures scenario={scenario} spec={spec} />
         <Terrain ax={ax} az={az} kind={spec.terrain} />
@@ -619,7 +639,7 @@ function BlockScene({ scenario, spec, reduced }: { scenario: ScenarioMeta; spec:
             <TargetMesh geom={g} order={i} scenario={scenario} spec={spec} />
           </Reveal>
         ))}
-      </OrbitGroup>
+      </group>
     </>
   )
 }
@@ -798,13 +818,13 @@ export function SubsurfaceBlock({ scenario }: SubsurfaceBlockProps) {
   // câmera da referência: elevada ~15°, olhando o canto do bloco de cima
   const dist = Math.max(scenario.area.x, scenario.area.y) * 1.7
   return (
-    <div className="sb3d-canvas" aria-hidden="true">
+    <div className="sb3d-canvas">
       <Canvas
         gl={{ alpha: true, antialias: true }}
         dpr={[1, 2]}
         camera={{ position: [dist * 0.85, dist * 0.33, dist * 1.0], fov: 38 }}
-        onCreated={({ camera }) => camera.lookAt(0, -DEPTH_M / 2 + 0.3, 0)}
       >
+        <BlockControls dist={dist} reduced={reduced} />
         <BlockScene scenario={scenario} spec={spec} reduced={reduced} />
       </Canvas>
       {/* o bloco é a interpretação CONSOLIDADA da fusão — o inset GPR é só referência */}

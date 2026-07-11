@@ -4,6 +4,12 @@
   position: absolute;
   inset: 0;
   z-index: 1;
+  /* rotação manual (homologação): arrastar gira, scroll aproxima */
+  cursor: grab;
+}
+
+.sb3d-canvas:active {
+  cursor: grabbing;
 }
 
 /* ---- Rótulos dos alvos (Html do R3F — herdam as fontes do app) ---- */
