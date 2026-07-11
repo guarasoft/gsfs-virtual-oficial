@@ -3,7 +3,7 @@ import { Button, Card, Panel } from '../../ui'
 import { Screen } from '../shell/Screen'
 import { useSimulator } from '../store'
 import { getScenario } from '../data/scenarios'
-import { RECORD_META } from '../data/records'
+import { RECORD_META, liveSessionId } from '../data/records'
 import { SubsurfaceBlock } from '../block3d/SubsurfaceBlock'
 import './E5Result.css'
 
@@ -13,9 +13,9 @@ function formatDepth(d: number): string {
 }
 
 export function E5Result() {
-  const goTo = useSimulator((s) => s.goTo)
   const newOperation = useSimulator((s) => s.newOperation)
   const replayCurrent = useSimulator((s) => s.replayCurrent)
+  const exportCurrent = useSimulator((s) => s.exportCurrent)
   const selectedScenarioId = useSimulator((s) => s.selectedScenarioId)
 
   const scenarioId = selectedScenarioId ?? 'c1'
@@ -29,10 +29,9 @@ export function E5Result() {
   const [now] = useState(() => new Date())
   const DATA = now.toLocaleDateString('pt-BR')
   const HORA = now.toLocaleTimeString('pt-BR')
-  // ID do GSFS_RECORD com a data real (formato GSFS-RECORD-AAAA-MM-DD-NNN);
-  // o sufixo NNN (sessão) permanece simbólico, assim como o hash.
-  const pad = (n: number) => String(n).padStart(2, '0')
-  const RECORD_ID = `GSFS-RECORD-${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}-142`
+  // ID do GSFS_RECORD com a data real — mesmo helper usado pela E6 ao
+  // exportar a missão atual (coerência entre as telas)
+  const RECORD_ID = liveSessionId(now)
 
   const assets = scenario.targets.map((t) => ({
     name: t.label,
@@ -111,7 +110,7 @@ export function E5Result() {
       <div className="e5-actions">
         <Button variant="ghost" onClick={() => newOperation()}>Nova operação</Button>
         <Button variant="secondary" onClick={() => replayCurrent()}>Replay</Button>
-        <Button variant="primary" onClick={() => goTo('e6-export')}>Exportar →</Button>
+        <Button variant="primary" onClick={() => exportCurrent()}>Exportar →</Button>
       </div>
       </div>
     </Screen>

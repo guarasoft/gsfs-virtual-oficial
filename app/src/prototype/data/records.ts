@@ -14,6 +14,16 @@ export interface RecordMeta {
   volume: string
 }
 
+/**
+ * ID simbólico da sessão AO VIVO (missão recém-concluída): data real no
+ * formato GSFS-RECORD-AAAA-MM-DD-NNN; o sufixo de sessão permanece simbólico,
+ * assim como o hash (PRD §6 / Teto: timestamp real).
+ */
+export function liveSessionId(now: Date): string {
+  const pad = (n: number) => String(n).padStart(2, '0')
+  return `GSFS-RECORD-${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}-142`
+}
+
 export const RECORD_META: Record<ScenarioId, RecordMeta> = {
   c1: {
     id: 'GSFS-RECORD-2026-06-03-142',

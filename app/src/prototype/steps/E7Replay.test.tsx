@@ -57,11 +57,13 @@ describe('E7Replay — tela de Replay hi-fi', () => {
     expect(useSimulator.getState().step).toBe('e2-menu')
   })
 
-  it('"Exportar" navega para e6-export via store', () => {
+  it('"Exportar" navega para e6-export com a gravação da linha (origem: arquivo)', () => {
     render(<E7Replay />)
     const exportBtns = screen.getAllByText('Exportar')
-    fireEvent.click(exportBtns[0])
+    fireEvent.click(exportBtns[2]) // 3ª linha = C3
     expect(useSimulator.getState().step).toBe('e6-export')
+    expect(useSimulator.getState().selectedScenarioId).toBe('c3')
+    expect(useSimulator.getState().exportSource).toBe('archive')
   })
 
   // --------------------------------------------------------------------------

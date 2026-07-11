@@ -122,6 +122,33 @@ describe('E6Export — tela de Exportação hi-fi', () => {
     expect((exportBtn.closest('button') as HTMLButtonElement).disabled).toBe(false)
   })
 
+  it('exporta a MISSÃO atual por padrão: sessão com data real e cenário selecionado', () => {
+    useSimulator.getState().selectScenario('c5')
+    useSimulator.getState().exportCurrent()
+    render(<E6Export />)
+    // ID com data real (formato AAAA-MM-DD, sufixo -142) e nome do cenário
+    expect(screen.getByText(/^SESSÃO: GSFS-RECORD-\d{4}-\d{2}-\d{2}-142$/)).toBeTruthy()
+    expect(screen.getByText(/Inteligência Subsuperficial Integrada/)).toBeTruthy()
+    // volume do cenário no preview BIM (coerente com E5/E7)
+    fireEvent.click(screen.getAllByText(/Pré-visualizar/)[2])
+    expect(screen.getByText('8,2 m³')).toBeTruthy()
+  })
+
+  it('exporta uma GRAVAÇÃO do arquivo (E7): sessão com data/ID do GSFS_RECORD', () => {
+    useSimulator.getState().exportRecord('c3')
+    render(<E6Export />)
+    expect(screen.getByText('SESSÃO: GSFS-RECORD-2026-06-02-131')).toBeTruthy()
+    expect(screen.getByText(/Cavidade Subterrânea em Solo Saturado/)).toBeTruthy()
+    fireEvent.click(screen.getAllByText(/Pré-visualizar/)[2])
+    expect(screen.getByText('3,7 m³')).toBeTruthy()
+  })
+
+  it('disclaimer do GIS cita a governança do Geo-Cartucho (feedback 2026-07-10)', () => {
+    render(<E6Export />)
+    fireEvent.click(screen.getAllByText(/Pré-visualizar/)[1])
+    expect(screen.getByText(/liberação mediante autenticação do Geo-Cartucho/i)).toBeTruthy()
+  })
+
   it('clicar em "Exportar arquivo" inicia a geração simbólica e depois mostra o toast', () => {
     vi.useFakeTimers()
     try {

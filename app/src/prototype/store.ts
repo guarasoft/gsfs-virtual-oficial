@@ -18,6 +18,9 @@ export interface SimulatorState {
   record: MissionRecord | null
   /** cenário a reproduzir direto ao entrar na E7 (null = abrir a lista) */
   replayTarget: ScenarioId | null
+  /** origem da exportação: missão recém-concluída (E5, data/ID reais) ou
+      gravação do arquivo (E7, data/ID do GSFS_RECORD) */
+  exportSource: 'mission' | 'archive'
   goTo: (step: StepId) => void
   selectScenario: (id: ScenarioId) => void
   startMission: () => void
@@ -27,6 +30,10 @@ export interface SimulatorState {
   replayCurrent: () => void
   /** Menu → abre a lista de gravações no Replay */
   openReplayList: () => void
+  /** E5 → exporta a missão recém-concluída */
+  exportCurrent: () => void
+  /** E7 → exporta uma gravação do arquivo */
+  exportRecord: (id: ScenarioId) => void
   reset: () => void
 }
 
@@ -36,12 +43,15 @@ export const useSimulator = create<SimulatorState>((set) => ({
   config: DEFAULT_CONFIG,
   record: null,
   replayTarget: null,
+  exportSource: 'mission',
   goTo: (step) => set({ step }),
   selectScenario: (id) => set({ selectedScenarioId: id }),
   startMission: () => set({ step: 'e4-scan' }),
   abort: () => set({ step: 'e2-menu', record: null }),                       // D-015
-  newOperation: () => set({ step: 'e2-menu', selectedScenarioId: null, record: null, replayTarget: null }),
+  newOperation: () => set({ step: 'e2-menu', selectedScenarioId: null, record: null, replayTarget: null, exportSource: 'mission' }),
   replayCurrent: () => set((s) => ({ step: 'e7-replay', replayTarget: s.selectedScenarioId })),
   openReplayList: () => set({ step: 'e7-replay', replayTarget: null }),
-  reset: () => set({ step: 'e1-boot', selectedScenarioId: null, record: null, config: DEFAULT_CONFIG, replayTarget: null }),
+  exportCurrent: () => set({ step: 'e6-export', exportSource: 'mission' }),
+  exportRecord: (id) => set({ step: 'e6-export', selectedScenarioId: id, exportSource: 'archive' }),
+  reset: () => set({ step: 'e1-boot', selectedScenarioId: null, record: null, config: DEFAULT_CONFIG, replayTarget: null, exportSource: 'mission' }),
 }))

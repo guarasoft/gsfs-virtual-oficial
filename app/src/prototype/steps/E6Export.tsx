@@ -2,16 +2,17 @@ import { useState, useRef, useEffect } from 'react'
 import { Button, Card } from '../../ui'
 import { Screen } from '../shell/Screen'
 import { useSimulator } from '../store'
+import { getScenario } from '../data/scenarios'
+import { RECORD_META, liveSessionId } from '../data/records'
 import './E6Export.css'
 
 // E6 — Exportação (hi-fi). Formatos: PDF / GIS / BIM, todos preview-only.
 // D-007: PDF de exportação (simbólico). D-008: GIS e BIM como pacotes simbólicos preview-only.
 // Disclaimer obrigatório: CA-08 (sem afirmação técnica fechada / simbólico).
+// A sessão exportada segue a origem (store.exportSource): missão atual (E5,
+// data/ID reais) ou gravação do arquivo (E7, data/ID do GSFS_RECORD).
 
 type FormatId = 'pdf' | 'gis' | 'bim'
-
-const RECORD_ID = 'GSFS-RECORD-2026-06-03-142'
-const MISSION = 'CENÁRIO C1 · Veio de Ouro · 03/06/2026 14:34'
 
 const PDF_PAGES = [
   { n: 1, name: 'Capa', content: 'Capa institucional · título · identificação' },
@@ -21,7 +22,7 @@ const PDF_PAGES = [
   { n: 5, name: 'Custódia', content: 'Timeline · hash · disclaimer' },
 ]
 
-const GIS_TREE = `gsfs_varredura_…142.zip
+const gisTree = (suffix: string) => `gsfs_varredura_…${suffix}.zip
 ├── varredura_trajetoria.shp
 ├── varredura_trajetoria.dbf
 ├── varredura_trajetoria.shx
@@ -31,7 +32,7 @@ const GIS_TREE = `gsfs_varredura_…142.zip
 ├── metadata.xml
 └── README.txt`
 
-const BIM_TREE = `gsfs_subsolo_…142.zip
+const bimTree = (suffix: string) => `gsfs_subsolo_…${suffix}.zip
 ├── modelo_subsolo.ifc
 ├── alvos_subsolo.ifc
 ├── trajetoria_aquisicao.ifc
@@ -47,7 +48,8 @@ const DISCLAIMER: Record<FormatId, string> = {
   pdf: DISCLAIMER_CA08,
   gis:
     'Pacote geoespacial simbólico. Coordenadas e datums são simulados para fins demonstrativos; ' +
-    'integração com GIS de produção depende da implementação definitiva.',
+    'coordenadas completas, cota Z e demais ativos espaciais da missão são protegidos — ' +
+    'liberação mediante autenticação do Geo-Cartucho.',
   bim:
     'Pacote BIM simbólico. Elementos IFC são modelos paramétricos simulados para fins demonstrativos ' +
     'de integração; não representam medição estrutural validada.',
@@ -79,6 +81,23 @@ const FORMATS: { id: FormatId; tag: string; tone: 'info' | 'success' | 'warning'
 
 export function E6Export() {
   const goTo = useSimulator((s) => s.goTo)
+  const selectedScenarioId = useSimulator((s) => s.selectedScenarioId)
+  const exportSource = useSimulator((s) => s.exportSource)
+  const scenarioId = selectedScenarioId ?? 'c1'
+  const scenario = getScenario(scenarioId)
+  const rec = RECORD_META[scenarioId]
+
+  // sessão exportada: missão atual (data/ID reais, como na E5) ou gravação
+  // do arquivo (data/ID canônicos do GSFS_RECORD, como na lista da E7)
+  const [now] = useState(() => new Date())
+  const sessionId = exportSource === 'archive' ? rec.id : liveSessionId(now)
+  const sessionDt =
+    exportSource === 'archive'
+      ? `${rec.dt} ${rec.hora.slice(0, 5)}`
+      : `${now.toLocaleDateString('pt-BR')} ${now.toLocaleTimeString('pt-BR').slice(0, 5)}`
+  const missionLabel = `CENÁRIO C${scenario.n} · ${scenario.name} · ${sessionDt}`
+  const suffix = sessionId.slice(-3)
+
   const [active, setActive] = useState<FormatId | null>(null)
   const [exporting, setExporting] = useState(false)
   const [toast, setToast] = useState(false)
@@ -112,7 +131,7 @@ export function E6Export() {
     <Screen
       title="EXPORTAÇÃO"
       subtitle="GROUND SCANNING FUSION SYSTEM"
-      meta={[`SESSÃO: ${RECORD_ID}`, MISSION, 'PILAR 4 · EXPORTAÇÃO']}
+      meta={[`SESSÃO: ${sessionId}`, missionLabel, 'PILAR 4 · EXPORTAÇÃO']}
     >
       <div className="e6-body">
         {/* ---- Cabeçalho da seção ---- */}
@@ -178,7 +197,7 @@ export function E6Export() {
           <div className="e6-preview" data-testid="e6-gis-preview">
             <div className="e6-pkg">
               <div className="e6-pkg-tree">
-                <pre>{GIS_TREE}</pre>
+                <pre>{gisTree(suffix)}</pre>
               </div>
               <div className="e6-pkg-meta">
                 <div className="e6-meta-label">METADADOS</div>
@@ -192,7 +211,7 @@ export function E6Export() {
                 </div>
                 <div className="e6-meta-row">
                   <span>Missão</span>
-                  <strong>…-142</strong>
+                  <strong>…-{suffix}</strong>
                 </div>
               </div>
             </div>
@@ -204,7 +223,7 @@ export function E6Export() {
           <div className="e6-preview" data-testid="e6-bim-preview">
             <div className="e6-pkg">
               <div className="e6-pkg-tree">
-                <pre>{BIM_TREE}</pre>
+                <pre>{bimTree(suffix)}</pre>
               </div>
               <div className="e6-pkg-meta">
                 <div className="e6-meta-label">METADADOS</div>
@@ -214,7 +233,7 @@ export function E6Export() {
                 </div>
                 <div className="e6-meta-row">
                   <span>Volume total</span>
-                  <strong>2,4 m³</strong>
+                  <strong>{rec.volume}</strong>
                 </div>
                 <div className="e6-meta-row">
                   <span>Sistema</span>

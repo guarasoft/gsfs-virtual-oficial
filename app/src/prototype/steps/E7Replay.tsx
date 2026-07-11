@@ -183,6 +183,7 @@ type E7View = 'listagem' | 'replay'
 
 export function E7Replay() {
   const goTo = useSimulator((s) => s.goTo)
+  const exportRecord = useSimulator((s) => s.exportRecord)
   // Entrada vinda da E5 (replayTarget definido) → reproduz direto o cenário
   // atual; entrada pelo menu (null) → abre a lista de gravações.
   const replayTarget = useSimulator((s) => s.replayTarget)
@@ -214,7 +215,8 @@ export function E7Replay() {
   return (
     <RecordList
       onPlay={handlePlay}
-      onExport={() => goTo('e6-export')}
+      // exporta a GRAVAÇÃO selecionada (data/ID do GSFS_RECORD, não da missão)
+      onExport={(id) => exportRecord(id)}
       onMenu={() => goTo('e2-menu')}
     />
   )
