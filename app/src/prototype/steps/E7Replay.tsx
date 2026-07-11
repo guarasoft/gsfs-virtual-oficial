@@ -3,60 +3,16 @@ import { Button, EdgeTab } from '../../ui'
 import { Screen } from '../shell/Screen'
 import { useSimulator } from '../store'
 import { SCENARIOS, getScenario } from '../data/scenarios'
+import { RECORD_META } from '../data/records'
 import type { ScenarioId } from '../data/types'
 import { useScan } from '../sim/useScan'
 import { ScanView } from '../sim/ScanView'
+import { SubsurfaceBlock } from '../block3d/SubsurfaceBlock'
+import './E5Result.css' /* .e5-3d-block — mesmo container do bloco 3D da E5 */
 import './E7Replay.css'
 
-// ---------------------------------------------------------------------------
-// Dados simbólicos de cada gravação (alinhados ao wireframe E7)
-// ---------------------------------------------------------------------------
-
-interface RecordMeta {
-  id: string
-  dt: string
-  hora: string
-  hash: string
-  volume: string
-}
-
-const RECORD_META: Record<ScenarioId, RecordMeta> = {
-  c1: {
-    id: 'GSFS-RECORD-2026-06-03-142',
-    dt: '03/06/2026',
-    hora: '14:34:31',
-    hash: 'a9f2c71d4e8b3f06d21a7c95e0b48f1c6d3a92e7b8045fc1ad9e23b6708c4f5d',
-    volume: '2,4 m³',
-  },
-  c2: {
-    id: 'GSFS-RECORD-2026-06-03-138',
-    dt: '03/06/2026',
-    hora: '11:20:08',
-    hash: 'b3d1e82f5a7c40d9e13b8f26a0c97e2d4b5f18a3c6e90d7b2f41c8e35a7b9d06',
-    volume: '5,1 m³',
-  },
-  c3: {
-    id: 'GSFS-RECORD-2026-06-02-131',
-    dt: '02/06/2026',
-    hora: '16:05:44',
-    hash: 'c7f4a20e9b1d53f8a2c6e0b7d4f19a8c3e52b0d6f8a1c4e72b9d0f3a6c8e51b4',
-    volume: '3,7 m³',
-  },
-  c4: {
-    id: 'GSFS-RECORD-2026-06-02-127',
-    dt: '02/06/2026',
-    hora: '10:48:22',
-    hash: 'd2e8b51f6c3a07e9b4d0f2a7c5e31b8f4d6a09c7e2b5f81d3a0c6e49b7d2f0e5',
-    volume: '1,8 m³',
-  },
-  c5: {
-    id: 'GSFS-RECORD-2026-06-01-119',
-    dt: '01/06/2026',
-    hora: '15:12:53',
-    hash: 'e5a0d73c8b2f16e4a9c3d7b0f4a8e21c5b7d0f3a9c6e82b4d1f5a0c7e34b8d2f',
-    volume: '8,2 m³',
-  },
-}
+// Metadados simbólicos das gravações: fonte única em data/records.ts
+// (compartilhada com a E5 para coerência dos resultados por cenário).
 
 function formatDuration(sec: number): string {
   const m = Math.floor(sec / 60)
@@ -101,8 +57,8 @@ function ReplayBanner({ scenarioId }: { scenarioId: ScenarioId }) {
 
 // ---------------------------------------------------------------------------
 // Player de Replay — espelha a tela de varredura (ScanView) + tarja Replay.
-// Ao concluir, o conteúdo some e aparecem dois botões centrais (D-020: o
-// replay espelha a varredura 2D; o bloco 3D fica só no fechamento da E5).
+// Ao concluir, apresenta o MESMO bloco 3D de resultado da E5 (D-020: fluxo
+// varredura → resultado 3D, reaproveitando o ativo sem ferir o CA-07).
 // ---------------------------------------------------------------------------
 
 function ReplayPlayer({
@@ -142,7 +98,10 @@ function ReplayPlayer({
     >
       {completed ? (
         <div className="e7-end">
-          <div className="e7-end-title">Replay concluído</div>
+          <div className="e7-end-title">Replay concluído · Resultado da sessão</div>
+          <div className="e5-3d-block e7-end-block" aria-label="Visualização 3D do subsolo">
+            <SubsurfaceBlock key={scenarioId} scenario={scenario} />
+          </div>
           <div className="e7-end-actions">
             <Button variant="secondary" onClick={handleRestart}>↻ Reiniciar</Button>
             <Button variant="primary" onClick={onBack}>Voltar</Button>

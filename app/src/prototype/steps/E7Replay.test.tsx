@@ -1,9 +1,27 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest'
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { render, screen, fireEvent, cleanup } from '@testing-library/react'
 import { E7Replay } from './E7Replay'
 import { useSimulator } from '../store'
 
-beforeEach(() => useSimulator.getState().reset())
+// O hook real continua sendo chamado (regras de hooks preservadas); o wrap só
+// força progress=100 quando o teste pede, para alcançar a tela de fim do
+// replay sem reproduzir os 90–135 s da sessão.
+const scanCtl = vi.hoisted(() => ({ forceComplete: false }))
+vi.mock('../sim/useScan', async (importOriginal) => {
+  const mod = await importOriginal<typeof import('../sim/useScan')>()
+  return {
+    ...mod,
+    useScan: (...args: Parameters<typeof mod.useScan>) => {
+      const real = mod.useScan(...args)
+      return scanCtl.forceComplete ? { ...real, progress: 100 } : real
+    },
+  }
+})
+
+beforeEach(() => {
+  scanCtl.forceComplete = false
+  useSimulator.getState().reset()
+})
 afterEach(() => cleanup())
 
 describe('E7Replay — tela de Replay hi-fi', () => {
@@ -114,5 +132,21 @@ describe('E7Replay — tela de Replay hi-fi', () => {
     render(<E7Replay />)
     fireEvent.click(screen.getByText('VOLTAR'))
     expect(useSimulator.getState().step).toBe('e5-result')
+  })
+
+  // --------------------------------------------------------------------------
+  // Fim do replay — bloco 3D de resultado da E5 (D-020)
+  // --------------------------------------------------------------------------
+
+  it('ao concluir, apresenta o bloco 3D de resultado da E5 + Reiniciar/Voltar', async () => {
+    scanCtl.forceComplete = true
+    render(<E7Replay />)
+    fireEvent.click(screen.getAllByText('Reproduzir')[0])
+    // o player espera 600 ms após progress=100 para trocar para a tela final
+    expect(await screen.findByText(/Replay concluído/, undefined, { timeout: 3000 })).toBeTruthy()
+    // D-020: a E7 apresenta o MESMO bloco 3D da E5 (fallback sem WebGL no jsdom)
+    expect(screen.getByText(/Bloco 3D do subsolo/)).toBeTruthy()
+    expect(screen.getByText('↻ Reiniciar')).toBeTruthy()
+    expect(screen.getByText('Voltar')).toBeTruthy()
   })
 })

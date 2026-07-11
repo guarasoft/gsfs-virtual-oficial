@@ -66,7 +66,7 @@ describe('E5Result — tela de Resultado hi-fi', () => {
     ).toBeTruthy()
   })
 
-  it('exibe o bloco 3D placeholder', () => {
+  it('exibe o bloco 3D (SubsurfaceBlock; fallback sem WebGL no jsdom)', () => {
     render(<E5Result />)
     expect(screen.getByText(/Bloco 3D do subsolo/)).toBeTruthy()
   })
@@ -100,5 +100,14 @@ describe('E5Result — tela de Resultado hi-fi', () => {
     render(<E5Result />)
     expect(screen.getByText('Magnetita')).toBeTruthy()
     expect(screen.getByText('1,8 m')).toBeTruthy()
+  })
+
+  it('volume e hash acompanham o cenário selecionado (coerência com a E7)', () => {
+    useSimulator.getState().selectScenario('c5')
+    render(<E5Result />)
+    expect(screen.getByText('8,2 m³')).toBeTruthy()
+    expect(
+      screen.getByText('e5a0d73c8b2f16e4a9c3d7b0f4a8e21c5b7d0f3a9c6e82b4d1f5a0c7e34b8d2f')
+    ).toBeTruthy()
   })
 })

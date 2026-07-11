@@ -3,10 +3,9 @@ import { Button, Card, Panel } from '../../ui'
 import { Screen } from '../shell/Screen'
 import { useSimulator } from '../store'
 import { getScenario } from '../data/scenarios'
+import { RECORD_META } from '../data/records'
+import { SubsurfaceBlock } from '../block3d/SubsurfaceBlock'
 import './E5Result.css'
-
-const HASH = 'a9f2c71d4e8b3f06d21a7c95e0b48f1c6d3a92e7b8045fc1ad9e23b6708c4f5d'
-const VOLUME = '2,4 m³'
 
 function formatDepth(d: number): string {
   // 1 decimal, separador vírgula (pt-BR)
@@ -21,6 +20,9 @@ export function E5Result() {
 
   const scenarioId = selectedScenarioId ?? 'c1'
   const scenario = getScenario(scenarioId)
+  // volume/hash simbólicos POR CENÁRIO (data/records.ts) — coerentes com a
+  // lista de gravações da E7 no fluxo completo (homologação)
+  const rec = RECORD_META[scenarioId]
 
   // Data/hora reais da conclusão da operação (PRD §6 / Teto: timestamp real),
   // capturadas ao abrir o resultado — como na E3, que traz a data atual.
@@ -49,15 +51,10 @@ export function E5Result() {
     >
       <div className="e5-layout">
       <div className="e5-body">
-        {/* ---- Bloco 3D (placeholder para o vídeo Guarasoft D-020) ---- */}
+        {/* ---- Bloco 3D interpretativo (D-020/CA-04 — componente Guarasoft) ---- */}
         <div className="e5-3d-block" aria-label="Visualização 3D do subsolo">
-          <div className="e5-3d-inner">
-            <div className="e5-3d-label">[ Bloco 3D do subsolo · perspectiva em 1ª pessoa ]</div>
-            <div className="e5-3d-caption">
-              vídeo interpretativo (Guarasoft) · marcadores:{' '}
-              {assets.map((a) => a.name).join(', ')}
-            </div>
-          </div>
+          {/* key remonta ao trocar de cenário (reinicia órbita e beat sheet) */}
+          <SubsurfaceBlock key={scenarioId} scenario={scenario} />
         </div>
 
         {/* ---- Legenda lateral ---- */}
@@ -76,7 +73,7 @@ export function E5Result() {
                 </div>
                 <div className="e5-legend-row">
                   <span className="e5-legend-key">Volume cúbico</span>
-                  <strong className="e5-legend-val">{VOLUME}</strong>
+                  <strong className="e5-legend-val">{rec.volume}</strong>
                 </div>
               </div>
 
@@ -104,7 +101,7 @@ export function E5Result() {
 
               {/* Hash */}
               <div className="e5-legend-section">HASH SHA-256 (cadeia de custódia)</div>
-              <div className="e5-hash">{HASH}</div>
+              <div className="e5-hash">{rec.hash}</div>
             </div>
           </Panel>
         </aside>

@@ -163,16 +163,25 @@
 }
 
 /* ================================================================
-   FIM DO REPLAY — conteúdo some, dois botões centrais
+   FIM DO REPLAY — bloco 3D de resultado da E5 (D-020) + ações
    ================================================================ */
 
 .e7-end {
   height: 100%;
+  min-height: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--space-6);
+  gap: var(--space-4);
+}
+
+/* o bloco 3D ocupa o miolo da tela; largura total, mesma moldura da E5 */
+.e7-end-block {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  align-self: stretch;
 }
 
 .e7-end-title {
