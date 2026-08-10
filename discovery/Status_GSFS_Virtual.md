@@ -173,7 +173,6 @@ Entregue:
 
 - **UI Kit navegável** — rota `/ui-kit` no app (`npm run dev --prefix app` → http://localhost:5173/ui-kit): galeria de design system com fundamentos (cores, tipografia, logo, espaçamento, iconografia) e todos os componentes com variações/estados. **Marco da Fase 2.**
 - `app/src/ui/` — **biblioteca de componentes reais reutilizáveis** (13 base + 8 de simulador; inclui a `EdgeTab` — abas laterais Voltar/Ações, add. 11/06) que a Fase 3 importa para vestir os wireframes.
-- Specs internas: [2026-06-09-ui-kit-fase2-design.md](../docs/superpowers/specs/2026-06-09-ui-kit-fase2-design.md) (design) · [2026-06-09-ui-kit-fase2.md](../docs/superpowers/plans/2026-06-09-ui-kit-fase2.md) (plano de implementação).
 - **Pacote de fechamento/governança ao cliente** — `entrega-fase2-cliente/` ([D-019]): LEIA-ME, Fechamento da Fase 2, Catálogo do UI Kit (tokens + 23 componentes), Mapa do Repositório, Instruções de Execução, Extrato de Versionamento e `screenshots/` (12 seções da rota `/ui-kit`). Documental e autocontido; acesso ao repo reservado para a entrega final.
 
 ### Identidade visual (Item 3)

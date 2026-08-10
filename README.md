@@ -12,7 +12,7 @@
   <img alt="Zustand" src="https://img.shields.io/badge/state-Zustand%205-443E38">
   <img alt="R3F" src="https://img.shields.io/badge/3D-three.js%20%2B%20R3F-000000?logo=threedotjs&logoColor=white">
   <img alt="Vitest" src="https://img.shields.io/badge/tests-Vitest-6E9F18?logo=vitest&logoColor=white">
-  <img alt="Status" src="https://img.shields.io/badge/status-Fase%204%20conclu%C3%ADda%20%C2%B7%20homologa%C3%A7%C3%A3o-2BC8D9">
+  <img alt="Status" src="https://img.shields.io/badge/status-entrega%20final%20conclu%C3%ADda-2BA84A">
 </p>
 
 ---
@@ -31,27 +31,20 @@ A jornada da operação tem **7 etapas (E1–E7)** e **5 cenários (C1–C5)**. 
 
 ---
 
-## Status atual
+## Entrega final
 
-| Campo | Valor |
+O projeto foi **concluído** com o encerramento das quatro etapas contratuais da consultoria. Este repositório é o **entregável oficial**: contém o código-fonte completo do simulador, o histórico de desenvolvimento, o design system, a documentação normativa produzida ao longo do projeto e o vídeo institucional.
+
+| Item | Onde está |
 |---|---|
-| **Fase atual** | **Fase 4 concluída** — componente 3D integrado (E5 + E7); aguardando **demonstração de homologação** para o aceite formal da Etapa 3 |
-| **Saúde** | 🟢 Verde |
-| **Concluído** | Fase 3 validada pelo cliente (24/06); **componente 3D validado pelo cliente (10/07)** e integrado ao protótipo com rotação manual + zoom; governança Geo-Cartucho aplicada; E6 parametrizada por cenário |
-| **Próximo marco** | Demo de homologação (fluxo completo + 5 cenários) → aceite formal da Etapa 3 |
+| **Simulador (código-fonte)** | [`app/`](app/) — instruções de execução abaixo |
+| **Guia de entrega e continuidade** | [`ENTREGA.md`](ENTREGA.md) — dependências, licenças, build, publicação e manutenção |
+| **Publicação online (GitHub Pages)** | Workflow automático — ver [Publicação](#publicação-github-pages) |
+| **Vídeo institucional** | [`video/gsfs-virtual-institucional.mp4`](video/gsfs-virtual-institucional.mp4) |
+| **Design system** | [`brand-assets/`](brand-assets/) (tokens, logos, guidelines) + rota `/ui-kit` no app |
+| **Documentação do projeto** | [`discovery/`](discovery/) — PRD, cenários, decisões, status histórico |
 
-Radar completo (documento vivo): [`discovery/Status_GSFS_Virtual.md`](discovery/Status_GSFS_Virtual.md).
-
-### Roadmap de fases
-
-| Fase | Escopo | Status |
-|---|---|---|
-| Fase 0 | Cenários e desbloqueio de pendências | ✅ Concluída |
-| Fase 1 | Arquitetura de informação e fluxos | ✅ Concluída |
-| Fase 2 | Design visual e UI Kit | ✅ Concluída |
-| Fase 3 | Telas em alta fidelidade (código) | ✅ Concluída e validada (24/06) |
-| Fase 4 | Integração das peças 3D | ✅ Concluída (10/07) — aguardando homologação |
-| Fase 5 | Testes e polimento | ⚪ Não iniciada |
+Histórico de desenvolvimento (registro do projeto): [`discovery/Status_GSFS_Virtual.md`](discovery/Status_GSFS_Virtual.md).
 
 ---
 
@@ -145,8 +138,10 @@ gsfs-virtual/
 ├─ brand-assets/           # Design system: tokens (cores/tipografia), logos, guidelines
 ├─ discovery/              # Documentos normativos (PRD, cenários, roteiro, status, decisões…)
 │  └─ briefing-videos-3d/  # Briefing técnico de produção dos 5 vídeos 3D (Fase 4)
-├─ docs/                   # Specs e planos internos de implementação
-└─ entrega-fase2-cliente/  # Pacote documental entregue ao cliente na Fase 2
+├─ entrega-fase2-cliente/  # Pacote documental entregue ao cliente na Fase 2
+├─ video/                  # Vídeo institucional aprovado (MP4)
+├─ ENTREGA.md              # Guia de entrega e continuidade
+└─ .github/workflows/      # Deploy automático no GitHub Pages
 ```
 
 ---
@@ -175,6 +170,20 @@ Os testes ficam ao lado do código (`*.test.ts` / `*.test.tsx`), cobrindo o moto
 cd app
 npm test            # roda tudo uma vez
 ```
+
+---
+
+## Publicação (GitHub Pages)
+
+O repositório inclui um workflow ([`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml)) que **instala, testa, builda e publica** o simulador no GitHub Pages a cada push na `main`.
+
+Para ativar (uma única vez, pelo dono do repositório):
+
+1. **Settings → Pages → Source: GitHub Actions**
+2. Faça um push na `main` (ou rode o workflow manualmente em **Actions → Deploy GitHub Pages → Run workflow**)
+3. A URL ficará disponível em `https://<usuario>.github.io/<nome-do-repositorio>/`
+
+O simulador entregue ao cliente fica em `.../prototype`; a raiz é o portal de review com todas as visões. Detalhes completos de publicação, atualização e alternativas (outros provedores estáticos, execução offline) em [`ENTREGA.md`](ENTREGA.md).
 
 ---
 
