@@ -42,7 +42,7 @@ export function Screen({
     <div className="pt-screen">
       <header className="pt-screen-top">
         <div className="pt-screen-brand">
-          <img className="pt-screen-logo" src="/logos/GSFS_Logo_Icon_RGB.svg" alt="GSFS" />
+          <img className="pt-screen-logo" src={import.meta.env.BASE_URL + 'logos/GSFS_Logo_Icon_RGB.svg'} alt="GSFS" />
           <div className="pt-screen-title">
             {title && <h1>{title}</h1>}
             {subtitle && <span className="pt-screen-sub">{subtitle}</span>}

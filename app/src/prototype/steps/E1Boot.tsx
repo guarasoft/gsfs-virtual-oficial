@@ -172,7 +172,7 @@ export function E1Boot() {
         <div className="pt-boot-splash">
           <img
             className="pt-boot-logo"
-            src="/logos/GSFS_Logo_Primary_Horizontal_RGB.svg"
+            src={import.meta.env.BASE_URL + 'logos/GSFS_Logo_Primary_Horizontal_RGB.svg'}
             alt="GSFS — Ground Scanning Fusion System"
           />
           <div className="pt-boot-init">INICIALIZANDO NÚCLEO GSFS</div>

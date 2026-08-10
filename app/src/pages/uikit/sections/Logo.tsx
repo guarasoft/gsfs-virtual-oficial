@@ -9,17 +9,17 @@ export default function Logo() {
       <DocBlock title="Lockup horizontal (aplicação principal)">
         <Cell label="RGB / cor">
           <div style={{ background: 'var(--color-bg)', padding: 24, borderRadius: 8 }}>
-            <img src="/logos/GSFS_Logo_Primary_Horizontal_RGB.svg" alt="GSFS logo colorido" height={48} />
+            <img src={import.meta.env.BASE_URL + 'logos/GSFS_Logo_Primary_Horizontal_RGB.svg'} alt="GSFS logo colorido" height={48} />
           </div>
         </Cell>
         <Cell label="Mono branco">
           <div style={{ background: 'var(--navy-700)', padding: 24, borderRadius: 8 }}>
-            <img src="/logos/GSFS_Logo_Primary_Horizontal_Mono_White.svg" alt="GSFS mono branco" height={48} />
+            <img src={import.meta.env.BASE_URL + 'logos/GSFS_Logo_Primary_Horizontal_Mono_White.svg'} alt="GSFS mono branco" height={48} />
           </div>
         </Cell>
         <Cell label="Mono preto (fundo claro)">
           <div style={{ background: 'var(--neutral-100)', padding: 24, borderRadius: 8 }}>
-            <img src="/logos/GSFS_Logo_Primary_Horizontal_Mono_Black.svg" alt="GSFS mono preto" height={48} />
+            <img src={import.meta.env.BASE_URL + 'logos/GSFS_Logo_Primary_Horizontal_Mono_Black.svg'} alt="GSFS mono preto" height={48} />
           </div>
         </Cell>
       </DocBlock>
@@ -27,17 +27,17 @@ export default function Logo() {
       <DocBlock title="Símbolo isolado (usos compactos: ícone, splash, favicon, botões reduzidos, estados de sistema)">
         <Cell label="RGB / cor">
           <div style={{ background: 'var(--color-bg)', padding: 24, borderRadius: 8 }}>
-            <img src="/logos/GSFS_Logo_Icon_RGB.svg" alt="Símbolo GSFS colorido" height={72} />
+            <img src={import.meta.env.BASE_URL + 'logos/GSFS_Logo_Icon_RGB.svg'} alt="Símbolo GSFS colorido" height={72} />
           </div>
         </Cell>
         <Cell label="Mono branco">
           <div style={{ background: 'var(--navy-700)', padding: 24, borderRadius: 8 }}>
-            <img src="/logos/GSFS_Logo_Icon_Mono_White.svg" alt="Símbolo GSFS mono branco" height={72} />
+            <img src={import.meta.env.BASE_URL + 'logos/GSFS_Logo_Icon_Mono_White.svg'} alt="Símbolo GSFS mono branco" height={72} />
           </div>
         </Cell>
         <Cell label="Mono preto (fundo claro)">
           <div style={{ background: 'var(--neutral-100)', padding: 24, borderRadius: 8 }}>
-            <img src="/logos/GSFS_Logo_Icon_Mono_Black.svg" alt="Símbolo GSFS mono preto" height={72} />
+            <img src={import.meta.env.BASE_URL + 'logos/GSFS_Logo_Icon_Mono_Black.svg'} alt="Símbolo GSFS mono preto" height={72} />
           </div>
         </Cell>
       </DocBlock>
@@ -45,17 +45,17 @@ export default function Logo() {
       <DocBlock title="Símbolo em tamanhos reduzidos (legibilidade)">
         <Cell label="48 px">
           <div style={{ background: 'var(--color-bg)', padding: 24, borderRadius: 8 }}>
-            <img src="/logos/GSFS_Logo_Icon_RGB.svg" alt="Símbolo GSFS 48px" height={48} />
+            <img src={import.meta.env.BASE_URL + 'logos/GSFS_Logo_Icon_RGB.svg'} alt="Símbolo GSFS 48px" height={48} />
           </div>
         </Cell>
         <Cell label="32 px (favicon)">
           <div style={{ background: 'var(--color-bg)', padding: 24, borderRadius: 8 }}>
-            <img src="/logos/GSFS_Logo_Icon_RGB.svg" alt="Símbolo GSFS 32px" height={32} />
+            <img src={import.meta.env.BASE_URL + 'logos/GSFS_Logo_Icon_RGB.svg'} alt="Símbolo GSFS 32px" height={32} />
           </div>
         </Cell>
         <Cell label="20 px (estado de sistema)">
           <div style={{ background: 'var(--color-bg)', padding: 24, borderRadius: 8 }}>
-            <img src="/logos/GSFS_Logo_Icon_RGB.svg" alt="Símbolo GSFS 20px" height={20} />
+            <img src={import.meta.env.BASE_URL + 'logos/GSFS_Logo_Icon_RGB.svg'} alt="Símbolo GSFS 20px" height={20} />
           </div>
         </Cell>
       </DocBlock>

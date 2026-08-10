@@ -37,7 +37,7 @@ export function E2Menu() {
     >
       <div className="e2-body">
         {/* Logo (símbolo, sem tipografia) */}
-        <img className="e2-logo" src="/logos/GSFS_Logo_Icon_RGB.svg" alt="GSFS" />
+        <img className="e2-logo" src={import.meta.env.BASE_URL + 'logos/GSFS_Logo_Icon_RGB.svg'} alt="GSFS" />
 
         {/* Boas-vindas */}
         <div className="e2-welcome">
