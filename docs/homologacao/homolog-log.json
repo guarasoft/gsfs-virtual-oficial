@@ -1,0 +1,124 @@
+{
+  "startedAt": "2026-08-10T21:11:24.864Z",
+  "runs": [
+    {
+      "scenario": 1,
+      "viewport": "1280x800",
+      "tag": "c1",
+      "steps": [
+        "e1-boot",
+        "e2-menu",
+        "e3-setup",
+        "e4-scan",
+        "e5-result",
+        "e7-replay",
+        "e7-end",
+        "e6-export"
+      ],
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 404 (Not Found)"
+      ],
+      "pageErrors": []
+    },
+    {
+      "scenario": 2,
+      "viewport": "1280x800",
+      "tag": "c2",
+      "steps": [
+        "e1-boot",
+        "e2-menu",
+        "e3-setup",
+        "e4-scan",
+        "e5-result",
+        "e7-replay",
+        "e7-end",
+        "e6-export"
+      ],
+      "consoleErrors": [],
+      "pageErrors": []
+    },
+    {
+      "scenario": 3,
+      "viewport": "1280x800",
+      "tag": "c3",
+      "steps": [
+        "e1-boot",
+        "e2-menu",
+        "e3-setup",
+        "e4-scan",
+        "e5-result",
+        "e7-replay",
+        "e7-end",
+        "e6-export"
+      ],
+      "consoleErrors": [],
+      "pageErrors": []
+    },
+    {
+      "scenario": 4,
+      "viewport": "1280x800",
+      "tag": "c4",
+      "steps": [
+        "e1-boot",
+        "e2-menu",
+        "e3-setup",
+        "e4-scan",
+        "e5-result",
+        "e7-replay",
+        "e7-end",
+        "e6-export"
+      ],
+      "consoleErrors": [],
+      "pageErrors": []
+    },
+    {
+      "scenario": 5,
+      "viewport": "1280x800",
+      "tag": "c5",
+      "steps": [
+        "e1-boot",
+        "e2-menu",
+        "e3-setup",
+        "e4-scan",
+        "e5-result",
+        "e7-replay",
+        "e7-end",
+        "e6-export"
+      ],
+      "consoleErrors": [],
+      "pageErrors": []
+    },
+    {
+      "scenario": 1,
+      "viewport": "1920x1080",
+      "tag": "c1-1920x1080",
+      "steps": [
+        "e1-boot",
+        "e2-menu",
+        "e3-setup",
+        "e4-scan",
+        "e5-result",
+        "e6-export"
+      ],
+      "consoleErrors": [],
+      "pageErrors": []
+    },
+    {
+      "scenario": 1,
+      "viewport": "1366x768",
+      "tag": "c1-1366x768",
+      "steps": [
+        "e1-boot",
+        "e2-menu",
+        "e3-setup",
+        "e4-scan",
+        "e5-result",
+        "e6-export"
+      ],
+      "consoleErrors": [],
+      "pageErrors": []
+    }
+  ],
+  "errors": [],
+  "finishedAt": "2026-08-10T21:35:03.078Z"
+}

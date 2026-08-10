@@ -39,6 +39,7 @@ O projeto foi **concluído** com o encerramento das quatro etapas contratuais da
 |---|---|
 | **Simulador (código-fonte)** | [`app/`](app/) — instruções de execução abaixo |
 | **Guia de entrega e continuidade** | [`ENTREGA.md`](ENTREGA.md) — dependências, licenças, build, publicação e manutenção |
+| **Relatório de homologação (v1.0.0)** | [`HOMOLOGACAO.md`](HOMOLOGACAO.md) — bateria E1→E7 nos 5 cenários, 3 resoluções, evidências |
 | **Publicação online (GitHub Pages)** | Workflow automático — ver [Publicação](#publicação-github-pages) |
 | **Vídeo institucional** | [`video/gsfs-virtual-institucional.mp4`](video/gsfs-virtual-institucional.mp4) |
 | **Design system** | [`brand-assets/`](brand-assets/) (tokens, logos, guidelines) + rota `/ui-kit` no app |
