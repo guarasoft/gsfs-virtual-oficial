@@ -1,6 +1,11 @@
 // Bateria de homologação — GSFS Virtual
 // Jornada completa E1→E7 nos 5 cenários (resolução de referência 1280×800)
 // + jornada C1 em 1920×1080 e 1366×768 + coleta de erros de console.
+//
+// Como rodar (a partir de app/):
+//   npm run build && npx vite preview --port 4173   # terminal 1
+//   node scripts/homolog.mjs saida/                 # terminal 2 (~25 min)
+// Opcional: CHROMIUM_PATH aponta para um Chromium específico.
 import { chromium } from 'playwright'
 import { mkdirSync, writeFileSync } from 'node:fs'
 
@@ -9,7 +14,9 @@ mkdirSync(OUT, { recursive: true })
 const BASE = 'http://localhost:4173'
 const log = { startedAt: new Date().toISOString(), runs: [], errors: [] }
 
-const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium' })
+const browser = await chromium.launch(
+  process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {},
+)
 
 async function journey({ scenario, viewport, tag, full }) {
   const run = { scenario, viewport: `${viewport.width}x${viewport.height}`, tag, steps: [], consoleErrors: [], pageErrors: [], e5: {} }
